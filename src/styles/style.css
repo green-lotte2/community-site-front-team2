@@ -8,7 +8,6 @@ body {
 a {
   text-decoration: none;
   color: inherit;
-
 }
 
 header {
@@ -45,7 +44,7 @@ main {
 }
 
 main > aside {
-  height: 800px;
+  min-height: 800px;
   width: 15%;
   background-color: rgb(43, 153, 140);
 }
@@ -55,7 +54,9 @@ main > aside .sideBar {
   margin-top: 50px;
   color: #fff;
 }
-
+.chatside{
+  background-color: rgb(214, 214, 214);
+}
 main > aside .sideBar div {
   margin: 50px 0;
 }

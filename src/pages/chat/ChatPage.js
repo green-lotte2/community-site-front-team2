@@ -1,12 +1,14 @@
 import React from 'react'
-import DefaultLayout from '../../layouts/DefaultLayout'
-import Example from '../../components/main/Example'
+import ChatLayout from '../../layouts/ChatLayout'
+import ChatContent from '../../components/chat/ChatContent'
+import '../../styles/chat.css'
+
 
 const ChatPage = () => {
   return (
-    <DefaultLayout>
-       <p>채팅입니다</p>
-    </DefaultLayout>
+    <ChatLayout>
+       <ChatContent/>
+    </ChatLayout>
   )
 }
 

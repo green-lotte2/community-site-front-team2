@@ -7,6 +7,8 @@ import ViewPage from "../pages/board/ViewPage";
 import WritePage from "../pages/board/WritePage";
 import CalendarPage from '../pages/calendar/CalendarPage';
 import ProjectList from '../pages/project/ProjectList';
+import LoginPage from "../pages/user/LoginPage";
+import ChatExPage from '../pages/chat/ChatExPage';
 
 //router 생성
 const root = createBrowserRouter([
@@ -18,6 +20,8 @@ const root = createBrowserRouter([
   { path: "/board/write", element: <WritePage /> },
   { path: "/calendar", element: <CalendarPage/> },
   { path: "/project", element: <ProjectList/> },
+  { path: "/user/login", element: <LoginPage /> },
+  { path: "/chatEx", element: <ChatExPage/> },
 ]);
  
 // router 내보내기
