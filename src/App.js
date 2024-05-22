@@ -15,7 +15,6 @@ function App() {
 
   return (
     <div className="App">
-      <p>{message}</p>
       <RouterProvider router={root} />
     </div>
   );
