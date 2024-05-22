@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
 const Contents = () => {
   return (
     <>
-    <content>  </content>
+      <content> </content>
     </>
-  )
-}
+  );
+};
 
-export default Contents
+export default Contents;
