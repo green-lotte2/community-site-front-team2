@@ -1,12 +1,12 @@
 import React from "react";
 import DefaultLayout from "../../layouts/DefaultLayout";
 
-const WritePage = () => {
+const ViewPage = () => {
   return (
     <DefaultLayout>
-      <p>게시판글쓰기</p>
+      <p>게시판글보기</p>
     </DefaultLayout>
   );
 };
 
-export default WritePage;
+export default ViewPage;

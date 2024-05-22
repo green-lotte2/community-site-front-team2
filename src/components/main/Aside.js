@@ -1,32 +1,33 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Aside = () => {
   return (
     <>
-    <aside>
-    <div class="sideBar">
-      <div>
-        <a href="#">Dashboard</a>
-      </div>
-      <div>
-        <a href="#">게시판</a>
-      </div>
-      <div>
-        <a href="#">페이지</a>
-      </div>
-      <div>
-        <a href="#">프로젝트</a>
-      </div>
-      <div>
-        <a href="#">채팅</a>
-      </div>
-      <div>
-        <a href="#">일정</a>
-      </div>
-    </div>
-  </aside>
-  </>
-  )
-}
+      <aside>
+        <div class="sideBar">
+          <div>
+            <Link to="/">DashBoard</Link>
+          </div>
+          <div>
+            <Link to="/board/list">자유 게시판</Link>
+          </div>
+          <div>
+            <Link to="/page/list">Page</Link>
+          </div>
+          <div>
+            <a href="#">Project</a>
+          </div>
+          <div>
+            <a href="#">Chat</a>
+          </div>
+          <div>
+            <a href="#">Calendar</a>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
+};
 
-export default Aside
+export default Aside;
