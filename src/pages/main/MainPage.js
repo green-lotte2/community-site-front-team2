@@ -1,6 +1,6 @@
 import React from "react";
 import DefaultLayout from "../../layouts/DefaultLayout";
-import "../../styles/style.css";
+import "../../styles/style.scss";
 import Example from "../../components/main/Example";
 
 const MainPage = () => {

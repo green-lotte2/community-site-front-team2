@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Aside = () => {
   return (
@@ -6,22 +7,22 @@ const Aside = () => {
       <aside>
         <div class="sideBar">
           <div>
-            <a href="#">Dashboard</a>
+            <Link to="/">DashBoard</Link>
           </div>
           <div>
-            <a href="#">게시판</a>
+            <Link to="/board/list">자유 게시판</Link>
           </div>
           <div>
-            <a href="#">페이지</a>
+            <Link to="/page/list">Page</Link>
           </div>
           <div>
-            <a href="#">프로젝트</a>
+            <a href="/project">Project</a>
           </div>
           <div>
-            <a href="#">채팅</a>
+            <a href="#">Chat</a>
           </div>
           <div>
-            <a href="#">일정</a>
+            <a href="#">Calendar</a>
           </div>
         </div>
       </aside>

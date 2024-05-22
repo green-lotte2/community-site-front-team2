@@ -5,20 +5,40 @@ body {
   box-sizing: border-box;
 }
 
-header {
-  background-color: rgb(224, 194, 252);
-  width: 100%;
-  height: 100px;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
+header {
+  background-color: #fff;
+  border-bottom: 1px solid #7c7c7c;
+  width: 100%;
+  height: 70px;
+}
+
+header div {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 header h1 {
   margin: 0;
   padding: 10px 20px;
 }
 
-header h1 img {
-  width: 60px;
+header h1 > img {
+  width: 50px;
+  object-fit: cover;
 }
+
+header .navRight img {
+  width: 40px;
+  height: auto;
+  padding-left: 10px;
+}
+
 main {
   display: flex;
 }
@@ -26,23 +46,24 @@ main {
 main > aside {
   min-height: 800px;
   width: 15%;
-  background-color: aquamarine;
+  background-color: rgb(43, 153, 140);
 }
 
 main > aside .sideBar {
   text-align: center;
   margin-top: 50px;
+  color: #fff;
 }
 .chatside{
   background-color: rgb(214, 214, 214);
 }
 main > aside .sideBar div {
-  margin: 30px 0;
+  margin: 50px 0;
 }
 
 main > content {
   display: block;
-  background-color: pink;
+  background-color: #e7e7e7;
   width: 85%;
   height: 800px;
 }

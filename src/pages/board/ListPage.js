@@ -1,12 +1,13 @@
 import React from "react";
 import DefaultLayout from "../../layouts/DefaultLayout";
+import List from "../../components/board/List";
 
-const WritePage = () => {
+const ListPage = () => {
   return (
     <DefaultLayout>
-      <p>게시판글쓰기</p>
+      <List />
     </DefaultLayout>
   );
 };
 
-export default WritePage;
+export default ListPage;
