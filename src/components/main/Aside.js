@@ -21,7 +21,7 @@ const Aside = () => {
         <a href="#">채팅</a>
       </div>
       <div>
-        <a href="#">일정</a>
+        <a href="/calendar">일정</a>
       </div>
     </div>
   </aside>

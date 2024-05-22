@@ -15,10 +15,6 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>{message}</p>
-          Learn React
-      </header>
       <RouterProvider router={root} />
     </div>
   );
