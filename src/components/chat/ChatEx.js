@@ -62,7 +62,7 @@ const ChatEx = () => {
                             </th>
                         </tr>
                     </table>
-                </div>
+                </div>e
        
                 <div id="yourMsg">
                     <table className="inputTable">
