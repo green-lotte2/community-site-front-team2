@@ -3,9 +3,7 @@ import DefaultLayout from '../../layouts/DefaultLayout'
 import ProjectList from '../../components/project/ProjectList'
 import ProjectLayout from '../../components/project/ProjectLayout'
 import SearchBar from '../../components/project/SearchBar'
-import CreateTasks from '../../components/project/CreateTask'
-import ListTasks from '../../components/project/ListTasks'
-
+import KanbanBoard from '../../components/project/KanbanBoard'
 
 const ListPage = () => {
 
@@ -16,10 +14,9 @@ const ListPage = () => {
         <DefaultLayout>
           <ProjectLayout/>
               <SearchBar/>
-              <div className="createTasks">
-                <CreateTasks tasks={tasks} setTasks={setTasks}/>
-                <ListTasks tasks={tasks} setTasks={setTasks}/>
-              </div>
+                <KanbanBoard>
+                
+                </KanbanBoard>
         </DefaultLayout>
     </div>
   )
