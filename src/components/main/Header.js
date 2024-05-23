@@ -6,11 +6,6 @@ const Header = () => {
     <>
       <header>
         <div>
-          <h1>
-            <Link to="/">
-              <img src="/images/logo.png" alt="logo" />
-            </Link>
-          </h1>
           <div className="navRight">
             <Link to="/">
               <img src="/images/bell-50.png" alt="bell" />

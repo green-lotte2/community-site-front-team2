@@ -5,6 +5,11 @@ const Aside = () => {
   return (
     <>
       <aside>
+        <h1>
+          <Link to="/">
+            <img src="/images/logo.png"/>
+          </Link>
+        </h1>
         <div class="sideBar">
           <div>
             <Link to="/">DashBoard</Link>

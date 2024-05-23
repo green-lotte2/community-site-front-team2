@@ -7,14 +7,18 @@ import Contents from '../components/main/Contents'
 const DefaultLayout = ({ children }) => {
   return (
     <div>
-        <Header/>
-        <main>
-            <Aside/>
-            <contents>
-                {children}
-            </contents>
-        </main>
-        <Footer/>
+        <div className='wrap'>
+          <Aside/>
+          <div className='cont'>
+            <Header/>
+            <main>
+              <contents>
+                  {children}
+              </contents>
+            </main> 
+            <Footer/>
+          </div>    
+        </div>  
     </div>
   )
 }
