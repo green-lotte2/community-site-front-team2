@@ -58,6 +58,14 @@ function CalendarComponent() {
       useDetailPopup: true,
     });
 
+    calendar.on('beforeCreateEvent', (eventObj) => {
+      calendar.createEvents([
+        {
+          ...eventObj
+        },
+      ]);
+    });
+
     calendar.on('beforeUpdateEvent', ({ event, change }) => {
       calendar.updateEvent(event.id, event.calendarId, change);
     });
