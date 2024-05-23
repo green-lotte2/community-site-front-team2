@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../slices/authSlice";
 
 const Login = () => {
@@ -40,50 +40,52 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
-      <h1>LOGIN</h1>
+    <div className="Login">
+      <div className="container">
+        <h1>LOGIN</h1>
 
-      <ul className="links">
-        <li>
-          <a href="#" id="signin">
-            SIGN IN
-          </a>
-        </li>
-        <li>
-          <a href="#" id="signup">
-            SIGN UP
-          </a>
-        </li>
-      </ul>
+        <ul className="links">
+          <li>
+            <a href="#" id="signin">
+              SIGN IN
+            </a>
+          </li>
+          <li>
+            <Link to="/user/register" id="signup">
+              SIGN UP
+            </Link>
+          </li>
+        </ul>
 
-      <form onSubmit={submitHandler}>
-        <div className="first-input input__block first-input__block">
-          <input
-            type="text"
-            placeholder="id"
-            name="uid"
-            value={user.uid}
-            onChange={changeHandler}
-          />
+        <form onSubmit={submitHandler}>
+          <div className="first-input input__block first-input__block">
+            <input
+              type="text"
+              placeholder="id"
+              name="uid"
+              value={user.uid}
+              onChange={changeHandler}
+            />
+          </div>
+          <div className="input__block">
+            <input
+              type="password"
+              placeholder="password"
+              name="pass"
+              value={user.pass}
+              onChange={changeHandler}
+            />
+          </div>
+          <input type="submit" value="Sign in" className="btnLogin" />
+        </form>
+        <div className="separator">
+          <p>OR</p>
         </div>
-        <div className="input__block">
-          <input
-            type="password"
-            placeholder="password"
-            name="pass"
-            value={user.pass}
-            onChange={changeHandler}
-          />
-        </div>
-        <input type="submit" value="Sign in" className="btnLogin" />
-      </form>
-      <div className="separator">
-        <p>OR</p>
+        <button className="google__btn">
+          <i className="fa fa-google"></i>
+          Sign in with Google
+        </button>
       </div>
-      <button className="google__btn">
-        <i className="fa fa-google"></i>
-        Sign in with Google
-      </button>
     </div>
   );
 };
