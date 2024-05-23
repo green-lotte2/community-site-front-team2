@@ -1,7 +1,6 @@
 import React from "react";
 import DefaultLayout from "../../layouts/DefaultLayout";
-import "../../styles/style.scss";
-import "../../styles/loginstyle.scss";
+import "../../styles/register.scss";
 import Register from "../../components/user/Register";
 
 const RegisterPage = () => {
