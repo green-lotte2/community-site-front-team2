@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import DefaultLayout from '../../layouts/DefaultLayout';
-import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import "../../styles/calendar.scss";
+import CalendarComponent from '../../components/calendar/CalendarComponent';
 
 
 const CalendarPage = () => {
@@ -16,7 +16,7 @@ const CalendarPage = () => {
 
         var result = [];
         var curDate = new Date(startDate);
-        while(curDate <= new Date(lastDate)) {
+        while (curDate <= new Date(lastDate)) {
             result.push(curDate.toISOString().split("T")[0]);
             console.log(curDate.getDate());
             curDate.setDate(curDate.getDate() + 1);
@@ -24,9 +24,9 @@ const CalendarPage = () => {
         return result;
     }
 
-    const clickButton = () =>{
+    const clickButton = () => {
 
-        
+
 
         const dateRange = getDatesStartToLast(moment(startDate).format('YYYY-MM-DD'), moment(endDate).format('DD-MM-YYYY'));
         alert(dateRange);
@@ -44,47 +44,16 @@ const CalendarPage = () => {
         // 여행 시작일자와 마치는일자의 값이 변할 때마다 값을 다시 세팅해줌
         setStartDate(startDateFormat);
         setEndDate(endDateFormat);
-        
+
     };
-    
+
     return (
         <DefaultLayout>
             <h4 >Test</h4>
-            <Calendar
-                onChange={changeDate}
-                selectRange={true} // 적용된 부분
-                
-                formatDay={(locale, date) => moment(date).format("DD")}
-                tileClassName={({date, view})=>{
-                    if(mark.find(x => x === moment(date).format('DD-MM-YYYY'))){
-                        return 'highlight'
-                    }
-                }}
-            />
-            <div className='textBox'>
-                <input
-                    type="text"
-                    className="w-full p-2 text-sm border-b-2 border-green1 outline-none opacity-70 my-5 bg-transparent"
-                    placeholder="시작 날짜를 입력해주세요"
-                    value={startDate || ""}
-                    disabled
-                />
-                <br/>
-                <input
-                    type="text"
-                    className="w-full p-2 text-sm border-b-2 border-green1 outline-none opacity-70 bg-transparent"
-                    placeholder="종료 날짜를 입력해주세요"
-                    value={endDate || ""}
-                    disabled
-                />
-                <br/>
-                <input type='text'/>
-                <br/>
-                <button
-                type='submit'
-                onClick={clickButton}
-                >dd</button>
+            <div className='calendar'>
+                <CalendarComponent />
             </div>
+
 
         </DefaultLayout>
     )
