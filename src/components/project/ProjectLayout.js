@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const ProjectLayout = () => {
   return (
     <div id="Project">
-        <h2 class="title" className="title"> Project </h2>
+        <h2 className="title"> Project </h2>
         <div class="Project">
             <ul>
                 <li><Link to='/project/overview'>Overview</Link></li>

@@ -1,0 +1,246 @@
+.ProjectList{
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        display: flex;
+        width: 1200px;
+        margin: 0 auto;
+    }
+    nav {
+        background-color: gray;
+        flex: 0.2; /* 네비게이션 영역이 늘어날 수 있도록 */
+        padding: 10px;
+        text-align: center; /* 텍스트 가운데 정렬 */
+    }
+    nav button {
+        vertical-align: middle; /* 버튼의 텍스트와 이모지를 수직으로 가운데 정렬 */
+        line-height: 1; /* 텍스트와 이모지를 수직으로 가운데 정렬하기 위해 */
+    }
+    nav p {
+        margin: 0; /* 문단의 기본 마진 제거 */
+        color: white; /* 텍스트 색상 설정 */
+    }
+    nav2 {
+        background-color:  rgb(202, 202, 202);
+        flex: 0.5; /* 네비게이션 영역이 늘어날 수 있도록 */
+        padding: 10px;
+        color:  black
+    }
+    #content {
+        border: 1px solid black;
+        flex: 2; /* 콘텐츠 영역이 늘어날 수 있도록 */
+        min-height: 1000px; /* 임의의 높이 설정 */
+        padding: 10px;
+
+    }
+    #chatting{
+        display: flex;
+        flex-direction: column-reverse;
+        height: 800px;
+    }
+    header {
+        margin: 0 auto;
+        border: 1px solid black;
+        width: 1200px;
+        padding: 10px;
+        box-sizing: border-box; 
+    }
+
+    footer {
+        margin: 0 auto;
+        border: 1px solid black;
+        width: 1200px;
+        padding: 10px;
+        box-sizing: border-box; 
+    }
+    .flex-container {
+        display: flex;
+        align-items: center;
+        border:  1px solid gray;
+    }
+    .flex-container p {
+        margin: 0;
+        color: rgb(0, 0, 0);
+    }
+    .home{
+    background-color:gray;
+    border: none;
+    text-align: center;
+    padding: 3px 3px;
+    border-radius: 10px;
+    font-size: 45px;
+    margin-bottom: 2px;
+    }
+
+
+    .home3{
+    color: white;
+    }
+
+    .homeOn{
+        background-color:  rgb(202, 202, 202);
+    }
+
+    .title{
+        margin-left: 10px;
+    }
+
+    .Project ul {
+        padding-left: 0;
+        display: flex;
+        border-bottom: 1px solid grey;
+    }
+
+    .Project ul > li {
+        list-style: none;
+        padding-right: 60px;
+        padding-bottom: 10px;
+        padding-left: l;
+    }
+
+
+
+    .Project {
+        margin-left: 10px;
+        align-items: center;
+    }
+
+    /*searchBox.css*/
+    .search-box {
+        height: 15px;
+        width: 98%;
+        background: white;
+        border-radius: 40px;
+        padding: 10px;
+        border: 1px solid #797979;
+    }
+
+    .search-txt {
+        border: none;
+        background: none;
+        outline: none;
+        float: left;
+        padding: 0px;
+        color: #797979;
+        font-size: 16px;
+        line-height: 0px;
+        width: 90%;
+    }
+
+    .search-btn {
+        color: #797979;
+        float: right;
+        width: 40px;
+        height: 100%;
+        border-radius: 50%;
+        background: white;
+        border: none;
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    /*마일스톤 타이틀 */
+
+    .timeline-title ul {
+        padding-left: 0;
+        display: flex;
+        
+    }
+
+    /*마일스톤 오브젝트*/
+    .mileStone {
+        border: 1px solid blue;
+        padding: 10px; /* 내부 여백 추가 */
+        box-sizing: border-box;
+    }
+
+    .mileStoneLayout {
+        display: flex;
+        position: relative;
+        border: 1px solid red;
+        justify-content: space-between;
+        width: 100%;
+        gap: 10px;
+        box-sizing: border-box;
+    }
+
+    .mileStoneLayout div {
+        flex-grow: 1;
+        width: calc(33.33% - 10px);
+        box-sizing: border-box;
+    }
+
+    .Ready {
+        border: #2cbe4e solid 3px;
+        height: auto;
+
+        display: flex;
+        align-items: center;
+        
+    }
+
+    .Ready > i {
+        padding: 10px;
+        padding-right: 5px;
+    }
+
+    .Ready > h4 {
+        color: green;
+
+        margin: 0; 
+        margin-right: 5px; 
+        
+    }
+
+    .InPrograss {
+        border: #1e90ff solid 3px;
+        height: auto;
+        
+        display: flex;
+        align-items: center;
+    }
+
+    .InPrograss > i {
+        padding: 10px;
+        padding-right: 5px;
+    }
+
+    .InPrograss > h4{
+        color: blue;
+    }
+
+    .Completed {
+        border: #cb2431 solid 3px;
+        height: auto;
+
+        display: flex;
+        align-items: center;
+    }
+
+    .Completed > i{
+        padding: 10px;
+        padding-right: 5px;
+    }
+
+    .Completed > h4 {
+        color: red;
+    }
+
+
+    .ReadyContent {
+        border: 1px solid black;
+        height: 50px;
+        display: block;
+        border-radius: 20px;
+    }
+
+    .Project ul > li > a {
+        color : black;
+        
+    }
+}
