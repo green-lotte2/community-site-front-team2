@@ -1,20 +1,18 @@
 import React, { useState } from 'react'
 import DefaultLayout from '../../layouts/DefaultLayout'
-import ProjectList from '../../components/project/ProjectList'
 import ProjectLayout from '../../components/project/ProjectLayout'
 import SearchBar from '../../components/project/SearchBar'
+import DragAndDrop from '../../components/project/DragAndDrop';
+import "../../styles/projectList.scss";
 
 
 const ListPage = () => {
-
-  const {tasks, setTasks} = useState([]);
-
   return (
     <div>
         <DefaultLayout>
           <ProjectLayout/>
               <SearchBar/>
-
+                <DragAndDrop/>
         </DefaultLayout>
     </div>
   )
