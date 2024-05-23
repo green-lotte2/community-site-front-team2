@@ -1,5 +1,4 @@
 import React from "react";
-import "./board.css";
 
 const List = () => {
   return (

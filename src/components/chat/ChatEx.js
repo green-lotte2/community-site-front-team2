@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../../styles/chatEx.css';
+
 
 const ChatEx = () => {
     const [userName, setUserName] = useState('');
@@ -34,6 +34,7 @@ const ChatEx = () => {
     };
 
     return (
+        <div className='chatEx'>
         <div className="container">
             <h1>채팅</h1>
             <div className="chating">
@@ -90,6 +91,7 @@ const ChatEx = () => {
                     </table>
                 </div>
         
+        </div>
         </div>
     );
 };

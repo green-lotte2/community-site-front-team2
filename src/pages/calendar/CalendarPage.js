@@ -3,7 +3,8 @@ import moment from 'moment';
 import DefaultLayout from '../../layouts/DefaultLayout';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import "./calendar.css";
+import "../../styles/calendar.scss";
+
 
 const CalendarPage = () => {
     const [startDate, setStartDate] = useState();
@@ -48,6 +49,7 @@ const CalendarPage = () => {
     
     return (
         <DefaultLayout>
+            <h4 >Test</h4>
             <Calendar
                 onChange={changeDate}
                 selectRange={true} // 적용된 부분

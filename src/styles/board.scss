@@ -1,0 +1,42 @@
+.Board{
+  .freeBoard {
+    padding: 15px;
+  }
+
+  .freeBoard h2 {
+    font-size: 20px;
+  }
+
+  .freeBoard .select div select {
+    width: 150px;
+    height: 30px;
+    margin-bottom: 10px;
+  }
+
+  .freeBoard .table {
+    border: 1px solid #333;
+    width: 600px;
+    min-height: 600px;
+  }
+
+  .freeBoard .table form {
+    width: 100%;
+  }
+
+  .freeBoard .table form table {
+    width: 100%;
+  }
+
+  .freeBoard .table .tableTitle {
+    width: 100%;
+    border-bottom: 1px solid #333;
+  }
+
+  .freeBoard .table .tableTitle tr > td {
+    width: 100%;
+  }
+
+  .freeBoard .table tr > td {
+    text-align: center;
+  }
+}

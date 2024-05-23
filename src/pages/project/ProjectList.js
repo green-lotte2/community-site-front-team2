@@ -3,7 +3,7 @@ import DefaultLayout from '../../layouts/DefaultLayout'
 import ProjectList from '../../components/project/ProjectList'
 import ProjectLayout from '../../components/project/ProjectLayout'
 import SearchBar from '../../components/project/SearchBar'
-import KanbanBoard from '../../components/project/KanbanBoard'
+
 
 const ListPage = () => {
 
@@ -14,9 +14,7 @@ const ListPage = () => {
         <DefaultLayout>
           <ProjectLayout/>
               <SearchBar/>
-                <KanbanBoard>
-                
-                </KanbanBoard>
+
         </DefaultLayout>
     </div>
   )
