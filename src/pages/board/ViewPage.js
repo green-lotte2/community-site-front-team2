@@ -1,5 +1,6 @@
 import React from "react";
 import DefaultLayout from "../../layouts/DefaultLayout";
+import "../../styles/board.scss";
 
 const ViewPage = () => {
   return (
