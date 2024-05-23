@@ -5,6 +5,10 @@ body {
   box-sizing: border-box;
 }
 
+main {
+  padding: 1%;
+}
+
 a {
   text-decoration: none;
   color: inherit;
@@ -87,10 +91,6 @@ a {
   position: relative;
 }
 
-.wrap > .cont > main {
-  display: flex;
-  width: 85%;
-}
 
 .wrap > .cont > main > aside .sideBar {
   text-align: center;
