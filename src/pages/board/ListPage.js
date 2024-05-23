@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import DefaultLayout from "../../layouts/DefaultLayout";
 import List from "../../components/board/List";
@@ -12,3 +13,4 @@ const ListPage = () => {
 };
 
 export default ListPage;
+*/
