@@ -1,42 +1,42 @@
-.Board{
-  .freeBoard {
-    padding: 15px;
-  }
+.Board {
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  padding: 20px;
 
-  .freeBoard h2 {
+  h1 {
     font-size: 20px;
   }
 
-  .freeBoard .select div select {
-    width: 150px;
+  .btn {
+    text-align: end;
+    margin-top: 10px;
+  }
+
+  .btn .cancelBtn {
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    line-height: 20px;
+    background-color: #ff7979;
+    color: #fff;
+    padding: 5px;
+    position: relative;
+    top: 2px;
+    margin-right: 5px;
+    border-radius: 4px;
+  }
+
+  .btn .submitBtn {
+    width: 50px;
     height: 30px;
-    margin-bottom: 10px;
-  }
-
-  .freeBoard .table {
-    border: 1px solid #333;
-    width: 600px;
-    min-height: 600px;
-  }
-
-  .freeBoard .table form {
-    width: 100%;
-  }
-
-  .freeBoard .table form table {
-    width: 100%;
-  }
-
-  .freeBoard .table .tableTitle {
-    width: 100%;
-    border-bottom: 1px solid #333;
-  }
-
-  .freeBoard .table .tableTitle tr > td {
-    width: 100%;
-  }
-
-  .freeBoard .table tr > td {
-    text-align: center;
+    line-height: 30px;
+    padding: 0;
+    background-color: #666;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
   }
 }
