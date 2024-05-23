@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const ProjectLayout = () => {
   return (
-    <div id="Project">
+    <div className='ProjectList'>
         <h2 className="title"> Project </h2>
         <div class="Project">
             <ul>
