@@ -6,20 +6,23 @@ import ChatSubAside from '../components/chat/ChatSubAside'
 import ChatAside from '../components/chat/ChatAside'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
+import '../styles/style.scss'
+import '../styles/chat.scss'
 
 const DefaultLayout = ({ children }) => {
 
   return (
     <div>
-        <Header/>
-        <main>
+       <div className="wrap">
             <ChatAside/>
-            <ChatSubAside/>
-            <contents>
-                {children}
-            </contents>
-        </main>
-        <Footer/>
+            <div className="cont">
+            <Header/>
+            <main>
+            <contents>{children}</contents>
+                </main>
+                <Footer/>
+            </div>
+        </div>
     </div>
   )
 }

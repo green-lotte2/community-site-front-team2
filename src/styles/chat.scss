@@ -1,17 +1,18 @@
-.Chat{
+
     #content {
-        border: 1px solid black;
+        
         flex: 2; /* 콘텐츠 영역이 늘어날 수 있도록 */
-        min-height: 1100px; /* 임의의 높이 설정 */
+        height: auto; /* 임의의 높이 설정 */
         padding: 10px;
+        width: 1000px;
 
     }
 
     #chatting{
         display: flex;
-        width: 820px;
+        width: 1000px;
         flex-direction: column-reverse;
-        height: 900px;
+        height: 800px;
         overflow: auto;
     }
 
@@ -90,19 +91,40 @@
     margin: 0 10px;
     }
 
-    .btn-attachment,
-    .btn-send {
+    .chat-btn-attachment,
+    .chat-btn-send {
     background: none;
     border: none;
     font-size: 18px;
     cursor: pointer;
-    }
-
-    .btn-send {
     color: #007BFF;
     }
 
-    .btn-attachment {
+
+    .chat-btn-attachment {
     font-size: 24px;
     }
-}
+    
+    .chatLink{
+        padding: 0px;
+    }
+
+    .chatLarge{
+        font-size: 20px;
+    }
+
+   .chatSelect{
+        height: 500px;
+        text-align: center;
+        margin-top: 30%;
+    }
+
+    .chatMember{
+        font-size: 17px;
+        border: 1px solid rgb(184, 184, 184);
+        padding: 3px;
+        margin-right: 3px;
+    }
+    .chatBlank{
+        margin-left: 600px;
+    }
