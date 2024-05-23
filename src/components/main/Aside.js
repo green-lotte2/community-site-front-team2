@@ -24,7 +24,7 @@ const Aside = () => {
             <a href="/project">Project</a>
           </div>
           <div>
-            <a href="#">Chat</a>
+            <a href="/chat">Chat</a>
           </div>
           <div>
             <a href="#">Calendar</a>
