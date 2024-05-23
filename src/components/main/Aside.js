@@ -7,7 +7,7 @@ const Aside = () => {
       <aside>
         <h1>
           <Link to="/">
-            <img src="/images/logo.png" />
+            <img src="/images/logo2.png" />
           </Link>
         </h1>
         <div class="sideBar">
