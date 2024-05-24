@@ -23,7 +23,16 @@ function CalendarComponent() {
         ],
       },
       calendars: [
-
+        {
+          id: 'cal1',
+          name: '개인',
+          backgroundColor: '#03bd9e',
+        },
+        {
+          id: 'cal2',
+          name: '직장',
+          backgroundColor: '#00a9ff',
+        },
       ],
     };
     const calendar = new Calendar(container, options);
@@ -67,7 +76,14 @@ function CalendarComponent() {
       ]);
     });
 
+    calendar.on('beforeDeleteEvent', (event)=>{
+      console.log('aa');
+      calendar.deleteEvent(event.id, event.calendarId);
+    });
+
     calendar.on('beforeUpdateEvent', ({ event, change }) => {
+      console.log('aa');
+      console.log(change);
       calendar.updateEvent(event.id, event.calendarId, change);
     });
 
