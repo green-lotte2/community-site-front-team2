@@ -87,7 +87,7 @@ const ChatContent = () => {
     console.log('useEffect - isConnected');
 
     if (isConnected) {
-      ws.current = new WebSocket('ws://15.165.171.40:8080/community/chattings');
+      ws.current = new WebSocket('wss://15.165.171.40:8080/community/chattings');
       console.log("소켓몇번?")
       
       ws.current.onopen = () => {
