@@ -38,5 +38,36 @@
     border: none;
     border-radius: 4px;
     font-size: 15px;
+
+    
   }
+
+  //List
+  .boardList h4 {
+    border-bottom: 1px solid black;
+    font-size: 30px;
+    margin-top: 0;
+  }
+  .freeBoard {
+    width: 100%;
+  }
+  .freeBoard thead {
+    display: block;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    
+    
+    width: 100%;
+
+  }
+  .freeBoard tbody {
+    display: block;
+   
+   
+    width: 100%;
+
+  }
+
+
+
 }

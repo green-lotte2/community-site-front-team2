@@ -15,16 +15,16 @@ import ChatRegisterPage from "../pages/chat/ChatRegisterPage";
 //router 생성
 const root = createBrowserRouter([
   { path: "/", element: <MainPage /> },
-  { path: "/chat", element: <ChatPage /> },
-  { path: "/board/list", element: <ListPage /> },
-  { path: "/board/modify", element: <ModifyPage /> },
-  { path: "/board/view", element: <ViewPage /> },
-  { path: "/board/write", element: <WritePage /> },
-  { path: "/calendar", element: <CalendarPage /> },
-  { path: "/project", element: <ProjectList /> },
-  { path: "/user/login", element: <LoginPage /> },
-  { path: "/user/register", element: <RegisterPage /> },
-  { path: "/chatRegister", element: <ChatRegisterPage /> },
+  { path: "/chat", element: <ChatPage /> }, //채팅
+  { path: "/board/list", element: <ListPage /> }, //게시판 리스트
+  { path: "/board/modify", element: <ModifyPage /> }, //게시판 수정
+  { path: "/board/view", element: <ViewPage /> }, //게시판 뷰
+  { path: "/board/write", element: <WritePage /> }, //게시판 작성
+  { path: "/calendar", element: <CalendarPage /> }, //캘린더
+  { path: "/project", element: <ProjectList /> }, //프로젝트 마일스톤
+  { path: "/user/login", element: <LoginPage /> }, //로그인 페이지
+  { path: "/user/register", element: <RegisterPage /> }, //회원가입
+  { path: "/chatRegister", element: <ChatRegisterPage /> }, //
   { path: "/user/terms", element: <TermsPage /> },
 ]);
 

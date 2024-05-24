@@ -8,11 +8,11 @@ const ProjectLayout = () => {
         <div class="Project">
             <ul>
                 <li><Link to='/project/overview'>Overview</Link></li>
-                <li><a href='/project/Tasks'>Tasks</a></li>
-                <li><a href='/project/Documents'>Documents</a></li>
-                <li><a href='/project/Team'>Team</a></li>
-                <li><a href='/project/Report'>Report</a></li>
-                <li><a href='/project/Admin'>Admin</a></li>
+                <li><Link to='/project/Tasks'>Tasks</Link></li>
+                <li><Link to='/project/Documents'>Documents</Link></li>
+                <li><Link to='/project/Team'>Team</Link></li>
+                <li><Link to='/project/Report'>Report</Link></li>
+                <li><Link to='/project/Admin'>Admin</Link></li>
             </ul>
         </div>
     </div>
