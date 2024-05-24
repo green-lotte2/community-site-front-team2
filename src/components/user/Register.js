@@ -1,13 +1,23 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useDaumPostcodePopup } from "react-daum-postcode";
+import { postcodeScriptUrl } from "react-daum-postcode/lib/loadPostcode";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [id, setId] = useState("");
+  const [pass, setPass] = useState();
+  const [pass2, setPass2] = useState();
+  const [name, setName] = useState();
+  const [nick, setNick] = useState();
+  const [email, setEmail] = useState();
+  const [hp, setHp] = useState();
 
   const [user, setUser] = useState({
     uid: "",
     pass: "",
+    pass2: "",
     name: "",
     nick: "",
     email: "",
@@ -15,6 +25,8 @@ const Register = () => {
     zip: "",
     addr1: "",
     addr2: "",
+    role: "USER",
+    grade: "BASIC",
   });
 
   const submitHandler = (e) => {
@@ -38,6 +50,71 @@ const Register = () => {
   const changeHandler = (e) => {
     e.preventDefault();
     setUser({ ...user, [e.target.name]: e.target.value });
+
+    const uidPattern = /^[a-zA-Z0-9_]{4,20}$/;
+    if (!uidPattern.test(user.uid)) {
+      setId("영문, 숫자로 4~20자까지 설정해 주세요.");
+      return;
+    } else {
+      setId("");
+    }
+
+    const passPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    if (!passPattern.test(user.pass)) {
+      setPass("영문, 숫자, 특수문자를 조합하여 8자 이상으로 설정해 주세요.");
+      return;
+    } else {
+      setPass("");
+    }
+    if (user.pass !== user.pass2) {
+      setPass2("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      return;
+    } else {
+      setPass2("");
+    }
+
+    if (!user.name) {
+      setName("이름은 필수입력 사항입니다.");
+      return;
+    } else {
+      setName("");
+    }
+
+    if (!user.nick) {
+      setNick("별명은 필수입력 사항입니다.");
+      return;
+    } else {
+      setNick("");
+    }
+
+    const emailPattern =
+      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    if (!emailPattern.test(user.email)) {
+      setEmail("올바른 이메일 주소를 입력해주세요.");
+      return;
+    } else {
+      setEmail("");
+    }
+
+    const hpPattern = /^\d{3}-\d{3,4}-\d{4}$/;
+    if (!hpPattern.test(user.hp)) {
+      setHp("올바른 휴대폰번호 형식을 입력해주세요.");
+      return;
+    } else {
+      setHp("");
+    }
+  };
+
+  //검색버튼을 클릭하면 주소창 팝업
+  const openDaumPostcode = useDaumPostcodePopup();
+
+  //우편주소
+  const handlePostcode = () => {
+    openDaumPostcode({
+      onComplete: (data) => {
+        setUser({ ...user, zip: data.zonecode, addr1: data.address });
+      },
+    });
   };
 
   return (
@@ -51,7 +128,7 @@ const Register = () => {
               <td>
                 <label>아이디</label>
               </td>
-              <td>
+              <td className="uid">
                 <input
                   type="text"
                   placeholder="아이디 입력"
@@ -60,7 +137,7 @@ const Register = () => {
                   value={user.uid}
                   onChange={changeHandler}
                 />
-                <span class="resultId"></span>
+                <span class="resultId">{id}</span>
               </td>
             </tr>
           </div>
@@ -75,10 +152,11 @@ const Register = () => {
                   type="password"
                   placeholder="패스워드 입력"
                   className="input"
-                  name="pass1"
+                  name="pass"
                   value={user.pass}
                   onChange={changeHandler}
                 />
+                <span class="resultPass">{pass}</span>
               </td>
             </tr>
           </div>
@@ -96,7 +174,7 @@ const Register = () => {
                   name="pass2"
                   onChange={changeHandler}
                 />
-                <span class="resultPass"></span>
+                <span class="resultPass2">{pass2}</span>
               </td>
             </tr>
           </div>
@@ -115,6 +193,7 @@ const Register = () => {
                   value={user.name}
                   onChange={changeHandler}
                 />
+                <span class="resultName">{name}</span>
               </td>
             </tr>
           </div>
@@ -133,7 +212,7 @@ const Register = () => {
                   value={user.nick}
                   onChange={changeHandler}
                 />
-                <span class="resultNick"></span>
+                <span class="resultNick">{nick}</span>
               </td>
             </tr>
           </div>
@@ -144,15 +223,20 @@ const Register = () => {
                 <label>이메일</label>
               </td>
               <td>
-                <input
-                  type="email"
-                  placeholder="이메일 입력"
-                  className="input"
-                  name="email"
-                  value={user.email}
-                  onChange={changeHandler}
-                />
-                <span class="resultEmail"></span>
+                <div className="zipNum">
+                  <input
+                    type="email"
+                    placeholder="이메일 입력"
+                    className="zip"
+                    name="email"
+                    value={user.email}
+                    onChange={changeHandler}
+                  />
+                  <button type="button" className="btnEmail">
+                    인증
+                  </button>
+                </div>
+                <span class="resultEmail">{email}</span>
               </td>
             </tr>
           </div>
@@ -173,7 +257,7 @@ const Register = () => {
                   value={user.hp}
                   onChange={changeHandler}
                 />
-                <span class="resultHp"></span>
+                <span class="resultHp">{hp}</span>
               </td>
             </tr>
           </div>
@@ -194,7 +278,11 @@ const Register = () => {
                     value={user.zip}
                     onChange={changeHandler}
                   />
-                  <button type="button" className="btnZip">
+                  <button
+                    type="button"
+                    className="btnZip"
+                    onClick={handlePostcode}
+                  >
                     우편번호 찾기
                   </button>
                 </div>
