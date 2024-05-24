@@ -9,6 +9,7 @@ import CalendarPage from "../pages/calendar/CalendarPage";
 import ProjectList from "../pages/project/ProjectList";
 import LoginPage from "../pages/user/LoginPage";
 import RegisterPage from "../pages/user/RegisterPage";
+import TermsPage from "../pages/user/TermsPage";
 import ChatRegisterPage from "../pages/chat/ChatRegisterPage";
 
 //router 생성
@@ -24,6 +25,7 @@ const root = createBrowserRouter([
   { path: "/user/login", element: <LoginPage /> },
   { path: "/user/register", element: <RegisterPage /> },
   { path: "/chatRegister", element: <ChatRegisterPage /> },
+  { path: "/user/terms", element: <TermsPage /> },
 ]);
 
 // router 내보내기
