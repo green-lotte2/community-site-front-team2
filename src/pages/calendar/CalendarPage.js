@@ -9,9 +9,9 @@ const CalendarPage = () => {
 
     return (
         <DefaultLayout>
-            <div className='calendar'>
-                <CalendarComponent />
-            </div>
+            
+            <CalendarComponent />
+            
         </DefaultLayout>
     )
 }

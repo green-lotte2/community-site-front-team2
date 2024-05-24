@@ -27,7 +27,7 @@ const Aside = () => {
             <a href="/chat">Chat</a>
           </div>
           <div>
-            <a href="#">Calendar</a>
+            <a href="/calendar">Calendar</a>
           </div>
         </div>
       </aside>
