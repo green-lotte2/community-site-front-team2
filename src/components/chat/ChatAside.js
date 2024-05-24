@@ -10,7 +10,7 @@ const ChatAside = () => {
 
   useEffect(() => {
 
-      fetch('http://localhost:8080/community/chattingRoom?userName='+authSlice.username)
+      fetch('http://15.165.171.40:8080/community/chattingRoom?userName='+authSlice.username)
           .then(response => response.json())
           .then(data =>   {
             console.log(data.result);
@@ -38,7 +38,8 @@ const ChatAside = () => {
           <br/>
           <br/>
           <div>
-            <Link  className='chatLarge'>채널 <span> <Link to="/chatRegister">+</Link> </span></Link><br/>
+
+           <p style={{textDecoration: 'underLine'}}> <Link  className='chatLarge'>채널 <span> <Link to="/chatRegister" > +</Link> </span></Link><br/> </p>
             {userRooms.map(room => (
            <Link  to={`/chat?room=${room.chatRoomPk}`} key={room.chatRoomPk}>
           {room.roomName}<br/>
