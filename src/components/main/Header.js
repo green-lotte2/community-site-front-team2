@@ -8,10 +8,10 @@ const Header = () => {
         <div>
           <div className="navRight">
             <Link to="/">
-              <img src="/images/bell-50.png" alt="bell" />
+              <img src="/images/alarm-40.png" alt="bell" />
             </Link>
-            <Link to="/">
-              <img src="/images/user-50.png" alt="user" />
+            <Link to="/user/login">
+              <img src="/images/user-40.png" alt="user" />
             </Link>
           </div>
         </div>
