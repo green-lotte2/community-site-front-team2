@@ -8,7 +8,6 @@ import WritePage from "../pages/board/WritePage";
 import CalendarPage from "../pages/calendar/CalendarPage";
 import ProjectList from "../pages/project/ProjectList";
 import LoginPage from "../pages/user/LoginPage";
-import ChatExPage from "../pages/chat/ChatExPage";
 import RegisterPage from "../pages/user/RegisterPage";
 import TermsPage from "../pages/user/TermsPage";
 import ChatRegisterPage from "../pages/chat/ChatRegisterPage";
@@ -25,7 +24,6 @@ const root = createBrowserRouter([
   { path: "/project", element: <ProjectList /> },
   { path: "/user/login", element: <LoginPage /> },
   { path: "/user/register", element: <RegisterPage /> },
-  { path: "/chatEx", element: <ChatExPage /> },
   { path: "/chatRegister", element: <ChatRegisterPage /> },
   { path: "/user/terms", element: <TermsPage /> },
 ]);
