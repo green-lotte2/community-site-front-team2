@@ -28,12 +28,13 @@ const Footer = () => {
   return (
     <>
       <footer>
-        <p>(주)일름보</p>
-        <div>
-             <ul>
-                <li>부산시 해운대구 반여1동</li>
-                <li>대표이사 : 김준형</li>
-                <li>SNAP-SHOT: {process.env.REACT_APP_VERSION}</li>
+        <div className="footer">
+             <ul className="footerContent">
+                <p>(주)일름보</p>
+                <p>부산시 해운대구 반여1동</p>
+                <p>대표이사 : 김준형</p>
+                <p>임원진 : 조영흥, 이예나, 이승윤, 이가희</p>
+                <p>SNAP-SHOT: {process.env.REACT_APP_VERSION}</p>
              </ul>
         </div>
       </footer>
