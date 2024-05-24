@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
 
     axios
-      .post("http://localhost:8080/community/user/login", user)
+      .post("//15.165.171.40:8080//community/user/login", user)
       .then((resp) => {
         console.log(resp.data);
 
