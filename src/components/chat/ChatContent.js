@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import Modal from 'react-modal';
+import { FAILSAFE_SCHEMA } from 'js-yaml';
 
 const ChatContent = () => {
 
@@ -11,6 +13,27 @@ const ChatContent = () => {
   const [isConnected, setIsConnected] = useState(false);
   const ws = useRef(null);
 
+  const [inviteEmail , setInviteEmail] = useState('');
+
+  const inviteInputHandler = (e)=>{
+    e.preventDefault();
+    setInviteEmail(e.target.value);
+  }
+
+  //찐초대 핸들러
+  const inviteSendHandler = (e)=>{
+    e.preventDefault();
+    fetch('http://localhost:8080/community/chatSearchUser?userEmail='+inviteEmail+'&room='+r)
+    .then(response => response.json())
+    .then(data => {if(data.result==0){
+        alert('해당 사용자가 없습니다.')
+    }else{
+      alert('초대 되었습니다.')
+      setModalIsOpen(false);
+    }})
+    .catch(error => console.error('Error fetching user rooms:', error));
+  }
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const r = searchParams.get('room'); 
@@ -19,14 +42,22 @@ const ChatContent = () => {
 
   const [beforeChat, setBeforeChat] = useState([]);
 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+
+  const inviteHandler = (e) => {
+    e.preventDefault();
+    setModalIsOpen(true); // Open modal on invite button click
+  }
+
   useEffect(() => {
     if (r != null) {
-      fetch('http://localhost:8080/community/myRoom?room='+r)
+      fetch('http://15.165.171.40:8080/community/myRoom?room='+r)
         .then(response => response.json())
         .then(data => setRoom(data.result))
         .catch(error => console.error('Error fetching user rooms:', error));
 
-        fetch('http://localhost:8080/community/beforeChat?room='+r)
+        fetch('http://15.165.171.40:8080/community/beforeChat?room='+r)
         .then(response => response.json())
         .then(data => setBeforeChat(data.result))
         .catch(error => console.error('Error fetching user rooms:', error));
@@ -52,8 +83,12 @@ const ChatContent = () => {
   };
 
   useEffect(() => {
+
+    console.log('useEffect - isConnected');
+
     if (isConnected) {
-      ws.current = new WebSocket('ws://localhost:8080/community/chattings');
+      ws.current = new WebSocket('ws://15.165.171.40:8080/community/chattings');
+      console.log("소켓몇번?")
       
       ws.current.onopen = () => {
         console.log('WebSocket connection established');
@@ -86,6 +121,36 @@ const ChatContent = () => {
     setIsConnected(true);
   }, [authSlice.username]);
 
+//멤버보기 기능
+
+
+const [memberModalIsOpen, setMemberModalIsOpen] = useState(false);
+const [members, setMembers] = useState([]);
+
+const openMemberHandler = (e)=>{
+  e.preventDefault();
+
+  fetch('http://localhost:8080/community/chatMembers?room='+r)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data.result)
+    setMembers(data.result);
+    setMemberModalIsOpen(true);
+})
+  .catch(error => console.error('Error fetching user rooms:', error));
+
+}
+
+  const customStyles = {
+    content: {
+      top: '40%',
+      left: '53%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  };
   return (
     <>
       {r === null ? (
@@ -100,8 +165,8 @@ const ChatContent = () => {
             <>
               <h2 className="title"> {room.roomName} 
               <span className='chatBlank'></span>
-              <span className='chatMember'> 멤버 보기</span> 
-              <span className='chatMember'> 멤버 초대</span>
+              <span className='chatMember' onClick={openMemberHandler}> 멤버 보기</span> 
+              <span className='chatMember' onClick={inviteHandler}> 멤버 초대</span>
               <span className='chatMember'> 채팅방 나가기</span>
               </h2>
 
@@ -168,6 +233,42 @@ const ChatContent = () => {
           )}
         </div>
       )}
+
+      
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={customStyles}
+        contentLabel="Invite Modal"
+      >
+        <h2>멤버 초대   <button  style={{marginLeft: '170px', border: 'none', fontSize: '20px'}} onClick={() => setModalIsOpen(false) }>X</button></h2>
+        <br/>
+        <form onSubmit={inviteSendHandler}>
+          <label>
+            <input type="text" onChange={inviteInputHandler} style={{width: '100%', height: '50px'}} placeholder='사용자 이메일 입력'/>
+          </label>
+          <br/>
+          <br/>
+          <br/>
+          <button type="submit" className='chatButtonp'  style={{marginLeft: '130px'} }>초대</button>
+        </form>
+      </Modal>
+
+
+      <Modal
+        isOpen={memberModalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={customStyles}
+        contentLabel="Invite Modal"
+      >
+        <h2>현재 멤버   <button  style={{marginLeft: '170px', border: 'none', fontSize: '20px'}} onClick={() => setMemberModalIsOpen(false) }>X</button></h2>
+        <br/>
+        {members.map((user, index) => (
+            <p key={index}>{user.name}</p>
+          ))}
+   
+      </Modal>
+
     </>
   );
 };

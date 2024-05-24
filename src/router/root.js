@@ -8,8 +8,8 @@ import WritePage from "../pages/board/WritePage";
 import CalendarPage from "../pages/calendar/CalendarPage";
 import ProjectList from "../pages/project/ProjectList";
 import LoginPage from "../pages/user/LoginPage";
-import ChatExPage from "../pages/chat/ChatExPage";
 import RegisterPage from "../pages/user/RegisterPage";
+import TermsPage from "../pages/user/TermsPage";
 import ChatRegisterPage from "../pages/chat/ChatRegisterPage";
 
 //router 생성
@@ -24,8 +24,8 @@ const root = createBrowserRouter([
   { path: "/project", element: <ProjectList /> }, //프로젝트 마일스톤
   { path: "/user/login", element: <LoginPage /> }, //로그인 페이지
   { path: "/user/register", element: <RegisterPage /> }, //회원가입
-  { path: "/chatEx", element: <ChatExPage /> }, //
   { path: "/chatRegister", element: <ChatRegisterPage /> }, //
+  { path: "/user/terms", element: <TermsPage /> },
 ]);
 
 // router 내보내기
