@@ -169,7 +169,7 @@ const Register = () => {
               <td>
                 <input
                   type="password"
-                  placeholder="패스워드 확인 입력"
+                  placeholder="패스워드 입력 확인"
                   className="input"
                   name="pass2"
                   onChange={changeHandler}
@@ -223,11 +223,11 @@ const Register = () => {
                 <label>이메일</label>
               </td>
               <td>
-                <div className="zipNum">
+                <div className="emailNum">
                   <input
                     type="email"
                     placeholder="이메일 입력"
-                    className="zip"
+                    className="email"
                     name="email"
                     value={user.email}
                     onChange={changeHandler}
@@ -311,6 +311,9 @@ const Register = () => {
 
           <input type="submit" value="Sign up" className="btnRegister" />
         </form>
+      </div>
+      <div className="registerImg">
+        <img src="../images/login.png" alt="" />
       </div>
     </div>
   );

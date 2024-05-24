@@ -1,8 +1,10 @@
 .Login {
+  height: 100%;
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
 
   body {
     font-family: "Montserrat", sans-serif;
@@ -14,8 +16,15 @@
 
   .container {
     display: block;
-    width: 80%;
-    margin: 120px auto;
+    width: 600px;
+    height: 100%;
+  }
+  .loginLogo {
+    text-align: center;
+    margin-top: 50px;
+  }
+  .loginLogo img {
+    width: 200px;
   }
 
   h1 {
@@ -45,7 +54,16 @@
       }
       &:nth-child(3) {
         opacity: 0.6;
-        float: right;
+        position: relative;
+        left: 192px;
+        &:hover {
+          opacity: 1;
+        }
+      }
+      &:nth-child(4) {
+        opacity: 0.6;
+        position: relative;
+        left: 191px;
         &:hover {
           opacity: 1;
         }
@@ -235,32 +253,9 @@
     }
   }
 
-  footer {
-    p {
-      text-align: center;
-      .fa {
-        color: #e91e63;
-      }
-      a {
-        text-decoration: none;
-        font-size: 17px;
-        margin: 0 5px;
-        .fa-facebook {
-          color: #3b5998;
-        }
-        .fa-twitter {
-          color: #1da1f2;
-        }
-        .fa-instagram {
-          color: #f77737;
-        }
-        .fa-linkedin {
-          color: #0077b5;
-        }
-        .fa-behance {
-          color: #1769ff;
-        }
-      }
-    }
+  .loginImg img {
+    width: 900px;
+    height: 100%;
+    object-fit: cover;
   }
 }
