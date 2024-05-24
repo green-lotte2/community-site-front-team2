@@ -4,11 +4,7 @@ import "../../styles/register.scss";
 import Register from "../../components/user/Register";
 
 const RegisterPage = () => {
-  return (
-    <DefaultLayout>
-      <Register />
-    </DefaultLayout>
-  );
+  return <Register />;
 };
 
 export default RegisterPage;
