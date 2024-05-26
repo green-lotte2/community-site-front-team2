@@ -6,7 +6,6 @@ import Contents from "../components/main/Contents";
 
 const DefaultLayout = ({ children }) => {
   return (
-    <div>
       <div className="wrap">
         <Aside />
         <div className="cont">
@@ -17,7 +16,6 @@ const DefaultLayout = ({ children }) => {
           <Footer />
         </div>
       </div>
-    </div>
   );
 };
 
