@@ -42,6 +42,9 @@ const Login = () => {
   return (
     <div className="Login">
       <div className="container">
+        <div className="loginLogo">
+          <img src="../images/logo.png" alt="" />
+        </div>
         <h1>LOGIN</h1>
 
         <ul className="links">
@@ -53,6 +56,16 @@ const Login = () => {
           <li>
             <Link to="/user/register" id="signup">
               SIGN UP
+            </Link>
+          </li>
+          <li>
+            <Link to="/user/findid" id="findId">
+              ID
+            </Link>
+          </li>
+          <li>
+            <Link to="/user/findpw" id="findPw">
+              PASSWORD
             </Link>
           </li>
         </ul>
@@ -85,6 +98,9 @@ const Login = () => {
           <i className="fa fa-google"></i>
           Sign in with Google
         </button>
+      </div>
+      <div className="loginImg">
+        <img src="../images/login.png" alt="" />
       </div>
     </div>
   );

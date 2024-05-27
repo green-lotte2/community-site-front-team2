@@ -25,21 +25,24 @@ const ChatAside = () => {
       <aside>
         <h1>
           <Link to="/">
-            <img src="/images/logo2.png" />
+            <img src="/images/logo.png" />
           </Link>
         </h1>
 
-        <div >
+        <div className='chatMenu'>
           <br/>
           <br/>
           <div>
-            <Link className='chatLarge' to="/">DashBoard</Link>
+            <Link className='chatLarge' to="/main">
+              <img src="/images/dashboard_50.png"></img>DashBoard
+            </Link>
           </div>
           <br/>
           <br/>
           <div>
 
-           <p style={{textDecoration: 'underLine'}}> <Link  className='chatLarge'>채널 <span> <Link to="/chatRegister" > +</Link> </span></Link><br/> </p>
+           <Link  className='chatLarge'>
+            <img src='/images/channel_50.png'></img>채널 <span> <Link to="/chatRegister" > +</Link> </span></Link><br/>
             {userRooms.map(room => (
            <Link  to={`/chat?room=${room.chatRoomPk}`} key={room.chatRoomPk}>
           {room.roomName}<br/>
@@ -50,7 +53,7 @@ const ChatAside = () => {
           <br/>
           <br/>
           <div>
-            <Link  className='chatLarge'>DM <span>+</span></Link>
+            <Link  className='chatLarge'><img src='/images/dm_50.png'></img>DM <span>+</span></Link>
           </div>
     
         </div>

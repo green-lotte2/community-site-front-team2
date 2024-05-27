@@ -4,11 +4,7 @@ import "../../styles/login.scss";
 import Login from "../../components/user/Login";
 
 const LoginPage = () => {
-  return (
-    <DefaultLayout>
-      <Login />
-    </DefaultLayout>
-  );
+  return <Login />;
 };
 
 export default LoginPage;

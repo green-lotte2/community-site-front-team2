@@ -23,7 +23,7 @@ const ChatContent = () => {
   //찐초대 핸들러
   const inviteSendHandler = (e)=>{
     e.preventDefault();
-    fetch('http://localhost:8080/community/chatSearchUser?userEmail='+inviteEmail+'&room='+r)
+    fetch('http://15.165.171.40:8080/community/chatSearchUser?userEmail='+inviteEmail+'&room='+r)
     .then(response => response.json())
     .then(data => {if(data.result==0){
         alert('해당 사용자가 없습니다.')
@@ -87,7 +87,7 @@ const ChatContent = () => {
     console.log('useEffect - isConnected');
 
     if (isConnected) {
-      ws.current = new WebSocket('ws://15.165.171.40:8080/community/chattings');
+      ws.current = new WebSocket('wss://15.165.171.40:8080/community/chattings');
       console.log("소켓몇번?")
       
       ws.current.onopen = () => {
@@ -130,7 +130,7 @@ const [members, setMembers] = useState([]);
 const openMemberHandler = (e)=>{
   e.preventDefault();
 
-  fetch('http://localhost:8080/community/chatMembers?room='+r)
+  fetch('http://15.165.171.40:8080/community/chatMembers?room='+r)
   .then(response => response.json())
   .then(data => {
     console.log(data.result)

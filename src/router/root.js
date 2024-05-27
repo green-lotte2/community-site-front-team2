@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import HomePage from "../pages/home/HomePage";
 import MainPage from "../pages/main/MainPage";
 import ChatPage from "../pages/chat/ChatPage";
 import ListPage from "../pages/board/ListPage";
@@ -14,7 +15,8 @@ import ChatRegisterPage from "../pages/chat/ChatRegisterPage";
 
 //router 생성
 const root = createBrowserRouter([
-  { path: "/", element: <MainPage /> },
+  { path: "/", element: <HomePage /> }, // 홈 화면
+  { path: "/main", element: <MainPage /> }, // 대시보드
   { path: "/chat", element: <ChatPage /> }, //채팅
   { path: "/board/list", element: <ListPage /> }, //게시판 리스트
   { path: "/board/modify", element: <ModifyPage /> }, //게시판 수정

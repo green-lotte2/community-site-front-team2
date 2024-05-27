@@ -30,12 +30,12 @@ const Footer = () => {
       <footer>
         <div className="footer">
              <ul className="footerContent">
-                <p>(주)일름보</p>
-                <p>부산시 해운대구 반여1동</p>
-                <p>대표이사 : 김준형</p>
-                <p>임원진 : 조영흥, 이예나, 이승윤, 이가희</p>
-                <p>SNAP-SHOT: {process.env.REACT_APP_VERSION}</p>
-                <p>서버받기: {data}</p>
+                <li>(주)일름보</li>&nbsp;&nbsp;
+                <li>부산시 해운대구 반여1동</li><br/>
+                <li>대표이사 : 김준형</li>&nbsp;&nbsp;&nbsp;
+                <li>임원진 : 조영흥, 이예나, 이승윤, 이가희</li><br/>
+                <li>SNAP-SHOT: {process.env.REACT_APP_VERSION}</li>
+                <li>서버받기: {data}</li>
                 
              </ul>
         </div>
