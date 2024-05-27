@@ -7,27 +7,39 @@ const Aside = () => {
       <aside>
         <h1>
           <Link to="/">
-            <img src="/images/logo2.png" />
+            <img src="/images/logo.png" />
           </Link>
         </h1>
         <div class="sideBar">
           <div>
-            <Link to="/">DashBoard</Link>
+            <Link to="/main">
+              <img src="/images/dashboard_50.png"></img>DashBoard
+            </Link>
           </div>
           <div>
-            <Link to="/board/list">자유 게시판</Link>
+            <Link to="/board/list">
+              <img src="/images/board_50.png"></img>Community
+            </Link>
           </div>
           <div>
-            <Link to="/page/list">Page</Link>
+            <Link to="/page/list">  
+              <img src="/images/page_50.png"></img>Page
+            </Link>
           </div>
           <div>
-            <a href="/project">Project</a>
+            <Link to="/project">
+              <img src="/images/project_50.png"></img>Project
+            </Link>
           </div>
           <div>
-            <a href="/chat">Chat</a>
+            <Link to="/chat">
+              <img src="/images/chat_white.png"></img>Chat
+            </Link>
           </div>
           <div>
-            <a href="/calendar">Calendar</a>
+            <Link to="/calendar">
+              <img src="/images/calendar_50.png"></img>Calendar
+            </Link>
           </div>
         </div>
       </aside>

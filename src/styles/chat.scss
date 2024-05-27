@@ -113,6 +113,8 @@
         font-size: 20px;
     }
 
+ 
+
    .chatSelect{
         height: 500px;
         text-align: center;
@@ -134,4 +136,26 @@
         border: none;
         padding: 10px;
         color: #fff;
+    }
+
+    .chatMenu {
+        margin-top: 50px;
+    }
+
+
+    .chatMenu div > a {
+        display: block;
+        padding: 20px 10px;
+        font-size: 17px;
+    }
+
+    .chatMenu div a:hover {
+        background-color: #adadad46;
+    }
+
+    .chatMenu div a > img {
+        width: 30px;
+        vertical-align: middle;
+        padding-right: 10px;
+        padding-left: 20px;
     }

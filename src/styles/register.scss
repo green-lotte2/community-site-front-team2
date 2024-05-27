@@ -139,6 +139,7 @@
       button.btnZip {
         background: rgb(85 85 85);
         color: white;
+        width: 103px;
         display: block;
         margin-left: 50px;
         border-radius: 8px;
@@ -158,9 +159,11 @@
       background: #e91e63;
       color: white;
       display: block;
-      width: 250px;
+      width: 386px;
       max-width: 680px;
       height: 50px;
+      position: relative;
+      left: 64px;
       border-radius: 8px;
       margin: 0 auto;
       border: none;
@@ -177,7 +180,6 @@
 
   .registerImg img {
     width: 900px;
-    height: 100%;
     object-fit: cover;
   }
 }
