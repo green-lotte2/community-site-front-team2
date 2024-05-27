@@ -35,22 +35,8 @@ const ChatAside = () => {
       transform: "translate(-50%, -50%)",
     },
   };
-  const openMemberHandler = (e) => {
-    e.preventDefault();
 
 
- //모달
- const [modalIsOpen, setModalIsOpen] = useState(false);
- const customStyles = {
-  content: {
-    top: '40%',
-    left: '53%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
 const openMemberHandler = (e)=>{
   e.preventDefault();
   setModalIsOpen(true);
@@ -102,7 +88,7 @@ const makeDmHandler = (e)=>{
         console.log(data.result);
       })
       .catch((error) => console.error("Error fetching user rooms:", error));
-  };
+
 
   return (
     <>
