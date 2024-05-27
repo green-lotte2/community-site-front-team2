@@ -99,6 +99,11 @@ const Login = () => {
           <i className="fa fa-google"></i>
           Sign in with Google
         </button>
+
+        <div>
+        <p style={{textAlign: "center", color: "gray"}}>SNAP-SHOT: {process.env.REACT_APP_VERSION}</p>
+        </div>
+
       </div>
       <div className="loginImg">
         <img src="../images/login.png" alt="" />
