@@ -84,24 +84,7 @@ const openMemberHandler = (e)=>{
         </div>
       </aside>
 
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        style={customStyles}
-        contentLabel="Invite Modal"
-      >
-        <h2>멤버 초대   <button  style={{marginLeft: '170px', border: 'none', fontSize: '20px'}} onClick={() => setModalIsOpen(false) }>X</button></h2>
-        <br/>
-        <form onSubmit={inviteSendHandler}>
-          <label>
-            <input type="text" onChange={inviteInputHandler} style={{width: '100%', height: '50px'}} placeholder='사용자 이메일 입력'/>
-          </label>
-          <br/>
-          <br/>
-          <br/>
-          <button type="submit" className='chatButtonp'  style={{marginLeft: '130px'} }>초대</button>
-        </form>
-      </Modal>
+    
 
     </>
   );
