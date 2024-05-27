@@ -1,7 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom'
 
 const HomeComponent = () => {
+  const authSlice = useSelector((state) => state.authSlice);
+  const navigate = useNavigate();
+
+  if(authSlice.username != null){
+    navigate(`/main`)
+  }
   return (
    <div className='Home' >
       <div className='first_div'>
@@ -11,7 +18,8 @@ const HomeComponent = () => {
         </div>
         
         <div className='txt_link'>
-          <Link to="/user/login">로그인</Link>
+          {!authSlice.username ? ( <>  <Link to="/user/login">로그인</Link></>) : 
+          (<><Link to="/user/logout">로그아웃</Link></> )}
           <Link to="/user/register">일름보 멤버되기</Link>
         </div>
       </div>
