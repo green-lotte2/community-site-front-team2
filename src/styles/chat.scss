@@ -56,6 +56,15 @@
         display: flex;
         width: 100%;
     }
+    .chatdays{
+        text-align: center;
+        margin-left: 30%;
+    }
+    .chat-unreadItem {
+        display: flex;
+        width: 100%;
+        background-color: rgb(224, 223, 223);
+    }
     .chat-image {
         flex: 1; /* 이미지 영역이 1 부분 차지 */
         padding: 10px;
@@ -122,13 +131,13 @@
     }
 
     .chatMember{
+        margin-right: 4px;
         font-size: 17px;
         border: 1px solid rgb(184, 184, 184);
         padding: 3px;
-        margin-right: 3px;
     }
     .chatBlank{
-        margin-left: 600px;
+        margin-left: 18px;
     }
 
     .chatButtonp{

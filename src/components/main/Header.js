@@ -1,10 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import authSlice from "../../slices/authSlice";
 import { useSelector } from "react-redux";
+import url from "../../config/url";
 
 const Header = () => {
   const authSlice = useSelector((state) => state.authSlice);
+
+  useEffect(() => {
+
+    fetch(`${url.backendUrl}/chatAlarm?userName=`+authSlice.username)
+        .then(response => response.json())
+        .then(data =>   {
+          console.log(data.result);
+          document.getElementById('chatchat').textContent = data.result;
+        })
+        .catch(error => console.error('Error fetching user rooms:', error));
+}, []);
+
   return (
     <>
       <header>
@@ -16,7 +29,7 @@ const Header = () => {
             </Link>
             <Link to="/">
               <img src="/images/alarm_40.png" alt="bell" />
-              <p className="alert">10</p>
+              <p className="alert" id="chatchat"></p>
             </Link>
         
             {!authSlice.username ? ( <>  <Link to="/user/login"><img src="/images/user_50.png" alt="user" /><p>로그인</p></Link></>) : 
