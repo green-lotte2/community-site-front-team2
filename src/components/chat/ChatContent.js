@@ -4,9 +4,10 @@ import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
 import { FAILSAFE_SCHEMA } from 'js-yaml';
+import url from '../../config/url';
 
 const ChatContent = () => {
-
+  console.log(`${url.backendUrl}+???`)
   const [userName, setUserName] = useState('');
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
@@ -23,7 +24,7 @@ const ChatContent = () => {
   //찐초대 핸들러
   const inviteSendHandler = (e)=>{
     e.preventDefault();
-    fetch('http://15.165.171.40:8080/community/chatSearchUser?userEmail='+inviteEmail+'&room='+r)
+    fetch(`${url.backendUrl}/chatSearchUser?userEmail=`+inviteEmail+'&room='+r)
     .then(response => response.json())
     .then(data => {if(data.result==0){
         alert('해당 사용자가 없습니다.')
@@ -52,12 +53,12 @@ const ChatContent = () => {
 
   useEffect(() => {
     if (r != null) {
-      fetch('http://15.165.171.40:8080/community/myRoom?room='+r)
+      fetch(`${url.backendUrl}/myRoom?room=`+r)
         .then(response => response.json())
         .then(data => setRoom(data.result))
         .catch(error => console.error('Error fetching user rooms:', error));
 
-        fetch('http://15.165.171.40:8080/community/beforeChat?room='+r)
+        fetch(`${url.backendUrl}/beforeChat?room=`+r)
         .then(response => response.json())
         .then(data => setBeforeChat(data.result))
         .catch(error => console.error('Error fetching user rooms:', error));
@@ -87,7 +88,7 @@ const ChatContent = () => {
     console.log('useEffect - isConnected');
 
     if (isConnected) {
-      ws.current = new WebSocket('wss://15.165.171.40:8080/community/chattings');
+      ws.current = new WebSocket(`ws://localhost:8080/community/chattings`);
       console.log("소켓몇번?")
       
       ws.current.onopen = () => {
@@ -130,7 +131,7 @@ const [members, setMembers] = useState([]);
 const openMemberHandler = (e)=>{
   e.preventDefault();
 
-  fetch('http://15.165.171.40:8080/community/chatMembers?room='+r)
+  fetch(`${url.backendUrl}/chatMembers?room=`+r)
   .then(response => response.json())
   .then(data => {
     console.log(data.result)

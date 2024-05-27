@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../slices/authSlice";
+import url from '../../config/url';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,9 +16,9 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
+    console.log(`${url.backendUrl}`)
     axios
-      .post("//15.165.171.40:8080//community/user/login", user)
+      .post(`${url.backendUrl}/user/login`, user)
       .then((resp) => {
         console.log(resp.data);
 
