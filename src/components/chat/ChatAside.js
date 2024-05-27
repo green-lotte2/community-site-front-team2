@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import url from '../../config/url';
 
 const ChatAside = () => {
   const dispatch = useDispatch();
@@ -10,7 +11,7 @@ const ChatAside = () => {
 
   useEffect(() => {
 
-      fetch('http://15.165.171.40:8080/community/chattingRoom?userName='+authSlice.username)
+      fetch(`${url.backendUrl}/chattingRoom?userName=`+authSlice.username)
           .then(response => response.json())
           .then(data =>   {
             console.log(data.result);
