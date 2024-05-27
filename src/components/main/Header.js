@@ -4,7 +4,6 @@ import authSlice from "../../slices/authSlice";
 import { useSelector } from "react-redux";
 import url from "../../config/url";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logout } from "../../slices/authSlice";
 
