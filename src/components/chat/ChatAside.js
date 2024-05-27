@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import url from '../../config/url';
+import Modal from 'react-modal';
 
 const ChatAside = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,30 @@ const ChatAside = () => {
           .catch(error => console.error('Error fetching user rooms:', error));
   }, []); 
 
+ //모달
+ const [modalIsOpen, setModalIsOpen] = useState(false);
+ const customStyles = {
+  content: {
+    top: '40%',
+    left: '53%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+const openMemberHandler = (e)=>{
+  e.preventDefault();
 
+  fetch(`${url.backendUrl}/chatMembers?room=`)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data.result)
+
+})
+  .catch(error => console.error('Error fetching user rooms:', error));
+
+}
   return (
     <>
       <aside>
@@ -42,8 +66,8 @@ const ChatAside = () => {
           <br/>
           <div>
 
-           <Link  className='chatLarge'>
-            <img src='/images/channel_50.png'></img>채널 <span> <Link to="/chatRegister" > +</Link> </span></Link><br/>
+           <Link to="/chatRegister"  className='chatLarge'>
+            <img src='/images/channel_50.png'></img>채널 <span>  + </span></Link><br/>
             {userRooms.map(room => (
            <Link  to={`/chat?room=${room.chatRoomPk}`} key={room.chatRoomPk}>
           {room.roomName}<br/>
@@ -59,6 +83,26 @@ const ChatAside = () => {
     
         </div>
       </aside>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={customStyles}
+        contentLabel="Invite Modal"
+      >
+        <h2>멤버 초대   <button  style={{marginLeft: '170px', border: 'none', fontSize: '20px'}} onClick={() => setModalIsOpen(false) }>X</button></h2>
+        <br/>
+        <form onSubmit={inviteSendHandler}>
+          <label>
+            <input type="text" onChange={inviteInputHandler} style={{width: '100%', height: '50px'}} placeholder='사용자 이메일 입력'/>
+          </label>
+          <br/>
+          <br/>
+          <br/>
+          <button type="submit" className='chatButtonp'  style={{marginLeft: '130px'} }>초대</button>
+        </form>
+      </Modal>
+
     </>
   );
 };
