@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import authSlice from "../../slices/authSlice";
@@ -6,7 +5,8 @@ import { useSelector } from "react-redux";
 import url from "../../config/url";
 import createWebSocket from "../../config/createWebSocket";
 
-const Header = (props) => {
+const Header = () => {
+  const dispatch = useDispatch();
   const authSlice = useSelector((state) => state.authSlice);
 
   //알림
@@ -52,17 +52,15 @@ useEffect(() => {
   }
 }, [ws]);
 
-
   useEffect(() => {
-
-    fetch(`${url.backendUrl}/chatAlarm?userName=`+authSlice.username)
-        .then(response => response.json())
-        .then(data =>   {
-          console.log(data.result);
-          document.getElementById('chatchat').textContent = data.result;
-        })
-        .catch(error => console.error('Error fetching user rooms:', error));
-}, []);
+    fetch(`${url.backendUrl}/chatAlarm?userName=` + authSlice.username)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.result);
+        document.getElementById("chatchat").textContent = data.result;
+      })
+      .catch((error) => console.error("Error fetching user rooms:", error));
+  }, []);
 
   const navigate = useNavigate();
 
@@ -70,7 +68,6 @@ useEffect(() => {
     dispatch(logout());
     navigate("/main");
   };
-
 
   return (
     <>

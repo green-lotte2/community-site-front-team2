@@ -10,8 +10,12 @@ const Register = () => {
   const [pass2, setPass2] = useState();
   const [name, setName] = useState();
   const [nick, setNick] = useState();
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
   const [hp, setHp] = useState();
+  const [showEmailCode, setShowEmailCode] = useState(false);
+  const [emailCode, setEmailCode] = useState("");
+  const [emailCodeMessage, setEmailCodeMessage] = useState("");
+  const [savedCode, setSavedCode] = useState(null);
 
   const [user, setUser] = useState({
     uid: "",
@@ -114,6 +118,58 @@ const Register = () => {
         setUser({ ...user, zip: data.zonecode, addr1: data.address });
       },
     });
+  };
+
+  const handleSendEmail = (e) => {
+    e.preventDefault();
+
+    if (!user.email) {
+      alert("이메일을 입력하세요.");
+      return;
+    }
+
+    axios
+      .get(`http://localhost:8080/community/checkEmail?email=${user.email}`)
+      .then((response) => {
+        const result = response.data.result;
+        const receivedCode = response.data.savedCode;
+        setEmail(result);
+        setSavedCode(receivedCode);
+
+        if (result === "이메일 전송에 성공하였습니다.") {
+          alert("이메일이 성공적으로 전송되었습니다.");
+          console.log("시스템 생성 code : " + receivedCode);
+          setShowEmailCode(true);
+        } else {
+          alert("이미 가입된 이메일 주소입니다.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleEmailCode = (e) => {
+    console.log("저장된 코드 : " + savedCode);
+
+    e.preventDefault();
+
+    axios
+      .get(`http://localhost:8080/community/checkEmailCode`, {
+        params: {
+          email: user.email,
+          code: emailCode,
+          scode: savedCode,
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
+        const result = response.data.result;
+        setEmailCodeMessage(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -226,12 +282,17 @@ const Register = () => {
                   <input
                     type="email"
                     placeholder="이메일 입력"
+                    id="email"
                     className="email"
                     name="email"
                     value={user.email}
                     onChange={changeHandler}
                   />
-                  <button type="button" className="btnEmail">
+                  <button
+                    type="button"
+                    className="btnEmail"
+                    onClick={handleSendEmail}
+                  >
                     인증
                   </button>
                 </div>
@@ -239,6 +300,36 @@ const Register = () => {
               </td>
             </tr>
           </div>
+
+          {showEmailCode && (
+            <div className="input_block">
+              <tr>
+                <td>
+                  <label>인증 코드</label>
+                </td>
+                <td>
+                  <div className="emailNum">
+                    <input
+                      type="text"
+                      placeholder="인증코드 입력"
+                      className="email"
+                      name="emailCode"
+                      value={emailCode}
+                      onChange={(e) => setEmailCode(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="btnEmail"
+                      onClick={handleEmailCode}
+                    >
+                      확인
+                    </button>
+                  </div>
+                  <span class="resultEmailCode">{emailCodeMessage}</span>
+                </td>
+              </tr>
+            </div>
+          )}
 
           <div className="input_block">
             <tr>
