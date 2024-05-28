@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
 
 * {
   font-family: "Noto Sans KR", sans-serif;
@@ -10,7 +9,8 @@
   padding: 0;
 }
 
-html,body {
+html,
+body {
   height: 100%;
 }
 
@@ -53,8 +53,8 @@ a {
 .wrap > aside > h1 img {
   width: 80px;
   transform: rotateZ(-10deg);
+  margin-top: 20px;
 }
-
 
 .wrap > aside > .sideBar {
   margin-top: 50px;
@@ -69,7 +69,6 @@ a {
   padding-right: 10px;
   padding-left: 20px;
   vertical-align: middle;
-
 }
 .wrap > aside > .sideBar div a {
   display: block;
@@ -121,7 +120,6 @@ a {
   color: #fff;
 }
 
-
 .wrap > .cont > header .navRight > a .alert {
   background-color: #ff551c;
   color: #fff;
@@ -132,7 +130,7 @@ a {
   text-align: center;
   line-height: 20px;
   position: relative;
-  z-index: 9999;
+  z-index: 100;
   top: -8px;
   left: -12px;
 }
@@ -168,7 +166,6 @@ a {
 .chatside {
   background-color: rgb(214, 214, 214);
 }
-
 
 .wrap > .cont > footer {
   width: 100%;

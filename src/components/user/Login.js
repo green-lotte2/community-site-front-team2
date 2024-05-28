@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../slices/authSlice";
-import url from '../../config/url';
+import url from "../../config/url";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(`${url.backendUrl}`)
+    console.log(`${url.backendUrl}`);
     axios
       .post(`${url.backendUrl}/user/login`, user)
       .then((resp) => {
@@ -26,7 +26,7 @@ const Login = () => {
         dispatch(login(resp.data));
 
         // 메인 전환
-        navigate("/");
+        navigate("/main");
       })
       .catch((err) => {
         console.log(err);
@@ -99,6 +99,11 @@ const Login = () => {
           <i className="fa fa-google"></i>
           Sign in with Google
         </button>
+
+        <div>
+        <p style={{textAlign: "center", color: "gray"}}>SNAP-SHOT: {process.env.REACT_APP_VERSION}</p>
+        </div>
+
       </div>
       <div className="loginImg">
         <img src="../images/login.png" alt="" />

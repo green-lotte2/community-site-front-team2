@@ -1,7 +1,6 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
-import { postcodeScriptUrl } from "react-daum-postcode/lib/loadPostcode";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {

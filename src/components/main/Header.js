@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import authSlice from "../../slices/authSlice";
@@ -63,12 +64,20 @@ useEffect(() => {
         .catch(error => console.error('Error fetching user rooms:', error));
 }, []);
 
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    navigate("/main");
+  };
+
+
   return (
     <>
       <header>
         <div>
           <div className="navRight">
-          <Link to="/chat">
+            <Link to="/chat">
               <img src="/images/chat_50.png" alt="bell" />
               <p>채팅</p>
             </Link>
@@ -76,9 +85,22 @@ useEffect(() => {
               <img src="/images/alarm_40.png" alt="bell" />
               <p className="alert" id="chatchat"></p>
             </Link>
-        
-            {!authSlice.username ? ( <>  <Link to="/user/login"><img src="/images/user_50.png" alt="user" /><p>로그인</p></Link></>) : 
-          (<><Link to="/user/logout"><img src="/images/user_50.png" alt="user" /><p>로그아웃</p></Link></> )}
+
+            {!authSlice.username ? (
+              <>
+                <Link to="/user/login">
+                  <img src="/images/user_50.png" alt="user" />
+                  <p>로그인</p>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/user/logout" onClick={logoutHandler}>
+                  <img src="/images/user_50.png" alt="user" />
+                  <p>로그아웃</p>
+                </Link>
+              </>
+            )}
             <Link to="/user/register">
               <img src="/images/join_50.png" alt="user" />
               <p>회원가입</p>
