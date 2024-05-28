@@ -6,6 +6,8 @@ import url from '../../config/url';
 import Modal from 'react-modal';
 
 const ChatAside = (props) => {
+  console.log(props.ws+"이거는 되나???")
+
   const dispatch = useDispatch();
   const authSlice = useSelector((state) => state.authSlice);
   const [userRooms, setUserRooms] = useState([]);
@@ -15,12 +17,13 @@ const ChatAside = (props) => {
 
 const searchParams = new URLSearchParams(location.search);
 var r = searchParams.get('room'); 
-console.log(r+"이거 룸 확인!")
 if(r == null){
   r=-1;
 }
 
+
 const ws =  props.ws;
+
 const chatAll = props.chat;
 
 

@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 
 
 const ChatContent = ( props ) => {
+
   console.log(`${url.backendUrl}+???`)
   const [userName, setUserName] = useState('');
   const [message, setMessage] = useState('');
@@ -127,7 +128,12 @@ const ChatContent = ( props ) => {
   useEffect(() => {
     if ( ws.onopen ) { 
       console.log('이건 왜 되고!')
-      setChat(chatAll)
+      if (chatAll.length > 0) {
+        const [nickname, time, roomNumber, text] = chatAll[chatAll.length - 1].split('*');
+        if(roomNumber.trim() === r){
+          setChat(prevChat => [...prevChat, chatAll[chatAll.length - 1]]);
+        }
+      }
     }
   }, [ ws , chatAll ]);
 
@@ -266,7 +272,7 @@ const openMemberHandler = (e)=>{
                             <> <span>{date.trim()}</span></>
                           )}
                           <p className="chat-textarea">
-                            {text.trim()}
+                            {text.trim()} 
                           </p>
                         </div>
                       </div>
