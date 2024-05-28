@@ -6,7 +6,7 @@ const Aside = () => {
     <>
       <aside>
         <h1>
-          <Link to="/main">
+          <Link to="/">
             <img src="/images/logo3.png" />
           </Link>
         </h1>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import authSlice from "../../slices/authSlice";
 import { useSelector } from "react-redux";
 import url from "../../config/url";
 import createWebSocket from "../../config/createWebSocket";
@@ -12,16 +13,13 @@ const Header = (props) => {
   const authSlice = useSelector((state) => state.authSlice);
 
   //알림
-
-   const location = useLocation();
+  const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   var r = searchParams.get('room'); 
   if(r == null){
     r=-1;
   }
-
-
- console.log(props.ws +"이거를 보자 해더")
+ 
   var ws = props.ws;
   var [chatAll, setChatAll] = useState([]);
   if(ws != null){
@@ -32,53 +30,33 @@ const Header = (props) => {
     if (ws == null) {
       console.log('되나..?')
       ws = createWebSocket();
-      
     }
     ws.onmessage = (event) => {
-      r = searchParams.get('room'); 
       const message = event.data;
-      console.log(message + "이거되나요??/!");
+      console.log(message + "이거되나요/!");
       setChatAll(prevChat => [...prevChat, message]);
-
-      console.log(chatAll.length)
-
     };
   }, [ws]);
-
-  useEffect(() => {
-    console.log(chatAll.length+"야호오")
-    console.log(r);
-    if (chatAll.length > 0) {
-      const [nickname, time, roomNumber, text] = chatAll[chatAll.length - 1].split('*');
-      if(roomNumber.trim() != r){
-        fetch(`${url.backendUrl}/chatAlarm?userName=`+authSlice.username +'&r='+r)
-        .then(response => response.json())
-        .then(data =>   {
-          console.log(data.result);
-          document.getElementById('chatchat').textContent = data.result;
-        })
-        .catch(error => console.error('Error fetching user rooms:', error));
-      }
   
+
+useEffect(() => {
+  if (chatAll.length > 0) {
+    const [nickname, time, roomNumber, text] = chatAll[chatAll.length - 1].split('*');
+    if(roomNumber.trim() != r){
+      fetch(`${url.backendUrl}/chatAlarm?userName=`+authSlice.username)
+      .then(response => response.json())
+      .then(data =>   {
+        console.log(data.result);
+        document.getElementById('chatchat').textContent = data.result;
+      })
+      .catch(error => console.error('Error fetching user rooms:', error));
     }
 
-  }, [chatAll ]);
- 
-
-
-  useEffect(() => {
-    fetch(`${url.backendUrl}/chatAlarm?userName=` + authSlice.username+'&r='+r)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.result);
-        document.getElementById("chatchat").textContent = data.result;
-      })
-      .catch((error) => console.error("Error fetching user rooms:", error));
-  }, [r])
-
+  }
+}, [ws]);
 
   useEffect(() => {
-    fetch(`${url.backendUrl}/chatAlarm?userName=` + authSlice.username +'&r='+r)
+    fetch(`${url.backendUrl}/chatAlarm?userName=` + authSlice.username)
       .then((response) => response.json())
       .then((data) => {
         console.log(data.result);
@@ -86,10 +64,6 @@ const Header = (props) => {
       })
       .catch((error) => console.error("Error fetching user rooms:", error));
   }, []);
-
-
-
-
 
   const navigate = useNavigate();
 

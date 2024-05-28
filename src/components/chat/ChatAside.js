@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -6,8 +7,6 @@ import url from '../../config/url';
 import Modal from 'react-modal';
 
 const ChatAside = (props) => {
-  console.log(props.ws+"이거는 되나???")
-
   const dispatch = useDispatch();
   const authSlice = useSelector((state) => state.authSlice);
   const [userRooms, setUserRooms] = useState([]);
@@ -17,13 +16,12 @@ const ChatAside = (props) => {
 
 const searchParams = new URLSearchParams(location.search);
 var r = searchParams.get('room'); 
+console.log(r+"이거 룸 확인!")
 if(r == null){
   r=-1;
 }
 
-
 const ws =  props.ws;
-
 const chatAll = props.chat;
 
 
@@ -66,6 +64,7 @@ useEffect(() => {
     transform: 'translate(-50%, -50%)',
   },
 };
+
 const openMemberHandler = (e)=>{
   e.preventDefault();
   setModalIsOpen(true);
@@ -115,26 +114,36 @@ const makeDmHandler = (e)=>{
           
 }
 
+
+    fetch(`${url.backendUrl}/chatMembers?room=`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.result);
+      })
+      .catch((error) => console.error("Error fetching user rooms:", error));
+
+
   return (
     <>
       <aside>
         <h1>
           <Link to="/">
-            <img src="/images/logo.png" />
+            <img src="/images/logo3.png" />
           </Link>
         </h1>
 
-        <div className='chatMenu'>
-          <br/>
-          <br/>
+        <div className="chatMenu">
+          <br />
+          <br />
           <div>
-            <Link className='chatLarge' to="/main">
+            <Link className="chatLarge" to="/main">
               <img src="/images/dashboard_50.png"></img>DashBoard
             </Link>
           </div>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <div>
+
 
            <Link to="/chatRegister"  className='chatLarge'>
             <img src='/images/channel_50.png'></img>채널 <span>  + </span></Link><br/>
@@ -147,10 +156,12 @@ const makeDmHandler = (e)=>{
        
           ))}
 
+
           </div>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <div>
+
             <Link  className='chatLarge' onClick={openMemberHandler}><img src='/images/dm_50.png'></img>DM <span>+</span></Link>
             {userRooms.map(room => (
               <>
@@ -160,8 +171,8 @@ const makeDmHandler = (e)=>{
               </>
        
           ))}
-          </div>
 
+          </div>
         </div>
       </aside>
 
@@ -190,6 +201,7 @@ const makeDmHandler = (e)=>{
           <button type="submit" className='chatButtonp' onClick={makeDmHandler}  style={{marginLeft: '110px'} }>대화시작</button>
         </form>
       </Modal>
+
 
     </>
   );
