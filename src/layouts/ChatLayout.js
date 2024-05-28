@@ -9,16 +9,16 @@ import { useSelector } from 'react-redux'
 import '../styles/style.scss'
 import '../styles/chat.scss'
 
-const DefaultLayout = ({ children }) => {
 
+const DefaultLayout = ({ children, ws , chat } ) => {
   return (
-    <div>
+    <div >
        <div className="wrap">
-            <ChatAside/>
+            <ChatAside ws={ws} chat={chat}/>
             <div className="cont">
-            <Header/>
+            <Header ws={ws} chat={chat}/>
             <main>
-            <contents>{children}</contents>
+            <contents>{children }</contents>
                 </main>
                 <Footer/>
             </div>
