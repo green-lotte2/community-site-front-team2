@@ -1,48 +1,81 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'tui-date-picker/dist/tui-date-picker.css';
-import Calendar from '@toast-ui/calendar';
 import 'tui-time-picker/dist/tui-time-picker.css';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css'; // Calendar 스타일
 import 'tui-date-picker/dist/tui-date-picker.css';
 import 'tui-time-picker/dist/tui-time-picker.css';
+import Calendar from '@toast-ui/calendar';
+import moment from 'moment/moment';
+import Test from './Test';
 
 function CalendarComponent() {
   const calendarRef = useRef(null);
   const [year, setYear] = useState(0);
   const [month, setMonth] = useState(0);
+  const [targetEvent, setTargetEvent] = useState([]);
+  const [rightSideBar, setRightSideBar] = useState(false);
+  const [scheduleInfo, setScheduleInfo] = useState({
+    "scheduleTitle": "bb",
+    "scheduleId": "aa",
+    "start": '2024-05-07T09:00:00',
+    "end": '2024-05-07T10:00:00',
+  });
 
   const event = [];
   const calendarObj = useRef(null);
 
-  function settingDate(calendar){
+
+
+
+  const rightSideHandler = () => {
+    return setRightSideBar(true);
+  }
+  const rightSideHandlerClose = (event) => {
+    const scheduleBox = document.getElementsByClassName("scheduleBox")[0];
+    if (event.target === scheduleBox) {
+      return setRightSideBar(false);
+
+    }
+  }
+
+
+
+  function settingDate(calendar) {
     setYear(calendar.getDate().getFullYear());
     setMonth(calendar.getDate().getMonth() + 1);
   }
 
-  function remotePrevDate(){
+  function remotePrevDate() {
     calendarObj.current.prev();
     settingDate(calendarObj.current);
   }
 
-  function remoteNextDate(){
+  function remoteNextDate() {
     calendarObj.current.next();
     settingDate(calendarObj.current);
   }
 
-  function btnToday(){
+  function btnToday() {
     calendarObj.current.today();
     settingDate(calendarObj.current);
   }
 
-  function getValue(start, end){
-    for(let i = 0; i < event.length; i++){
+  function getValue(start, end) {
+    let eventList = [];
+    for (let i = 0; i < event.length; i++) {
       const eventStart = event[i]['start'];
       const eventEnd = event[i]['end'];
+      if (start == end) {
+        end = moment(end).add(1, "d").format();
+        end = moment(end).add(-1, "s").format();
+      }
 
-      if(end >= eventStart){
+      if (end >= eventStart && start < eventEnd) {
         console.log(event[i]['title']);
+        eventList.push(event[i]);
       }
     }
+    return eventList;
   }
 
   useEffect(() => {
@@ -62,7 +95,7 @@ function CalendarComponent() {
         {
           id: 'cal1',
           name: '개인',
-          
+
           backgroundColor: '#03bd9e',
         },
         {
@@ -92,7 +125,7 @@ function CalendarComponent() {
         id: 'event3',
         calendarId: 'cal2',
         title: '휴가',
-        start: '2024-05-08',
+        start: '2024-05-08T13:00:00',
         end: '2024-05-10T13:00:00',
         isAllday: true,
         category: 'allday',
@@ -109,10 +142,10 @@ function CalendarComponent() {
     calendar.on('beforeCreateEvent', (eventObj) => {
       event.push({
         title: eventObj.title,
-        start: eventObj.start.toDate().toISOString(),
-        end: eventObj.end.toDate().toISOString(),
+        start: moment(eventObj.start.toDate()).format(),
+        end: moment(eventObj.end.toDate()).format(),
       });
-      
+
       calendar.createEvents([
         {
           ...eventObj
@@ -124,18 +157,22 @@ function CalendarComponent() {
       calendar.deleteEvent(event.id, event.calendarId);
     });
 
-    calendar.on('beforeUpdateEvent', ({ event, change }) => {
-      
-      console.log(change);
-      calendar.updateEvent(event.id, event.calendarId, change);
+    calendar.on('beforeUpdateEvent', ({ event, changes }) => {
+      calendar.updateEvent(event.id, event.calendarId, changes);
     });
 
     calendar.on('selectDateTime', (event) => {
-      //console.log(event);
+      console.log("dd");
       const { start, end, isAllDay } = event;
-      // 선택한 날짜에 대한 정보를 이용하여 원하는 작업 수행
-      //console.log('선택한 날짜 정보:', start, end, isAllDay);
-      getValue(start.toISOString(), end.toISOString());
+
+      setScheduleInfo({
+        "scheduleTitle": "bb",
+        "scheduleId": "aa",
+        "start": start.toString(),
+        "end": end.toString(),
+      });
+      setTargetEvent(getValue(moment(start).format(), moment(end).format()));
+      setRightSideBar(true);
     });
 
     const handleWheel = (event) => {
@@ -158,14 +195,16 @@ function CalendarComponent() {
   }, []);
 
   return (
-    <div>
+    <div className='calendar'>
       <button onClick={remotePrevDate}>&lt;</button>
       {year}년{month}월
       <button onClick={remoteNextDate}> &gt;</button>
       <button onClick={btnToday}>오늘</button>
       <div ref={calendarRef} style={{ width: '100%', height: '600px' }}>
-      </div>
     </div>
-    );
+    {rightSideBar && <Test rightSideHandlerClose={rightSideHandlerClose} targetEvent={targetEvent} scheduleInfo={scheduleInfo}></Test>}
+
+    </div>
+  );
 }
 export default CalendarComponent;
