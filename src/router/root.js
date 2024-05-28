@@ -27,7 +27,7 @@ const root = createBrowserRouter([
   { path: "/user/login", element: <LoginPage /> }, //로그인 페이지
   { path: "/user/register", element: <RegisterPage /> }, //회원가입
   { path: "/chatRegister", element: <ChatRegisterPage /> }, //
-  { path: "/user/terms", element: <TermsPage /> },
+  { path: "/user/terms", element: <TermsPage /> }, // 약관
 ]);
 
 // router 내보내기

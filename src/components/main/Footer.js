@@ -5,6 +5,7 @@ const Footer = () => {
 
   const baseUrl = "//localhost:8080/community";
 
+
   //백엔드 요청
   const [ data, setData ] = useState('');
 

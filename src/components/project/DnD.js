@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ProjectInfo from "./ProjectInfo";
 import axios from 'axios';
@@ -30,10 +30,10 @@ const DragAndDrop = () => {
 
 
 // 아이템 생성
-  const addItem = async (setItems, title1, setTitle1, setAddItemStatus) => {
+  const addItem = (setItems) => {
 
     if (!title1.trim()) return;
-    const newItem = await insertTitle(title1);
+    const newItem = { id: ItemId(), title1, content, status, member };
     setItems((prevItems) => [...prevItems, newItem]);
     setTitle1("");
     setContent("");
@@ -138,24 +138,8 @@ const DragAndDrop = () => {
   }
 
   ////// 백엔드 요청 ///////
-  
- 
 
-    async function insertTitle() {
-      await axios
-      .get("http://localhost:8080/community/project/inserttitle")
-      .then((res)=>{
-        console.log(res);
-        setTitle1(res.title1);
-      })
-      .catch((err)=>{
-        console.loge(err);
-      })
-    }
 
-    useEffect(() => {
-      insertTitle();
-    }, [])
 
 
   return (
