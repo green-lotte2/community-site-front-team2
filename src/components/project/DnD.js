@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Test from "./Test";
+import ProjectInfo from "./ProjectInfo";
+import axios from 'axios';
 
 // 초기 아이템을 빈 배열로 설정합니다.
 const initialItems1 = [];
@@ -19,7 +20,10 @@ const DragAndDrop = () => {
 
   // 새 아이템의 고유 ID를 생성하는 함수입니다.
   const ItemId = () => `item-${new Date().getTime()}`; //Date - 타임스탬프를 얻음
-  const [title, setTitle] = useState(""); //입력한 제목 상태 저장
+  const [title1, setTitle1] = useState(""); //입력한 제목 상태 저장
+  const [title2, setTitle2] = useState(""); //입력한 제목 상태 저장
+  const [title3, setTitle3] = useState(""); //입력한 제목 상태 저장
+
   const [content, setContent] = useState("");
   const [status, setStatus] = useState("");
   const [member, setMember] = useState("");
@@ -27,10 +31,11 @@ const DragAndDrop = () => {
 
 // 아이템 생성
   const addItem = (setItems) => {
-    if (!title.trim()) return;
-    const newItem = { id: ItemId(), title, content, status, member };
+
+    if (!title1.trim()) return;
+    const newItem = { id: ItemId(), title1, content, status, member };
     setItems((prevItems) => [...prevItems, newItem]);
-    setTitle("");
+    setTitle1("");
     setContent("");
     setStatus("");
     setMember("");
@@ -38,10 +43,10 @@ const DragAndDrop = () => {
   };
 
   const addItem2 = (setItems) => {
-    if (!title.trim()) return;
-    const newItem = { id: ItemId(), title, content, status, member };
+    if (!title2.trim()) return;
+    const newItem = { id: ItemId(), title2, content, status, member };
     setItems((prevItems) => [...prevItems, newItem]);
-    setTitle("");
+    setTitle2("");
     setContent("");
     setStatus("");
     setMember("");
@@ -49,10 +54,10 @@ const DragAndDrop = () => {
   };
 
   const addItem3 = (setItems) => {
-    if (!title.trim()) return;
-    const newItem = { id: ItemId(), title, content, status, member };
+    if (!title3.trim()) return;
+    const newItem = { id: ItemId(), title3, content, status, member };
     setItems((prevItems) => [...prevItems, newItem]);
-    setTitle("");
+    setTitle3("");
     setContent("");
     setStatus("");
     setMember("");
@@ -112,25 +117,30 @@ const DragAndDrop = () => {
     }
   };
 
-  ////// 테스트 ///////
+  ////// ProjectInfo ///////
 
   const [projectInfo, setProjectInfo] = useState({
-    "projectName" : "프로젝트1",
-    "projectContent" : "첫번쨰 프로젝트 입니다."
+    "projectName" : "오늘 할일",
+    "projectContent" : "예나씨 놀리기"
   })
 
   const [rightSideBar, setRightSideBar] = useState(false);
 
-  const rightSideHandler = () => {
+  const rightProjectInfo = () => {
     return setRightSideBar(true);
   }
   const rightSideHandlerClose = (event) => {
-    const testBox = document.getElementsByClassName("testBox")[0];
+    const testBox = document.getElementsByClassName("projectBox")[0];
     if (event.target === testBox){
         return setRightSideBar(false);
 
     }
   }
+
+  ////// 백엔드 요청 ///////
+
+
+
 
   return (
     <div className="ProjectList">
@@ -146,14 +156,14 @@ const DragAndDrop = () => {
                   <h3>Ready</h3>
                   {!AddItemStatus1 && <button onClick={() => setAddItemStatus1(true)}>Add Item</button>}
                   {AddItemStatus1 && (
-                    <div>
+                    <div className="addItemBar">
                       <input
                         type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={title1}
+                        onChange={(e) => setTitle1(e.target.value)}
                         placeholder="Enter title"
                       />
-                      <button onClick={() => addItem(setItems1, title, setTitle)}>Add</button>
+                      <button onClick={() => addItem(setItems1, title1, setTitle1, setAddItemStatus1(false))}>Add</button>
                     </div>
                   )}
                   {items1.map((item1, index) => (
@@ -164,8 +174,12 @@ const DragAndDrop = () => {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           className={`draggable ${snapshot.isDragging ? "is-dragging" : ""}`}
+                          onClick={rightProjectInfo}
                         >
-                          <h4>{item1.title}</h4>
+                          <h4>{item1.title1}</h4>
+                          <h4>{item1.title2}</h4>
+                          <h4>{item1.title3}</h4>
+
                         </div>
                       )}
                     </Draggable>
@@ -189,11 +203,11 @@ const DragAndDrop = () => {
                     <div>
                       <input
                         type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={title2}
+                        onChange={(e) => setTitle2(e.target.value)}
                         placeholder="Enter title"
                       />
-                      <button onClick={() => addItem2(setItems2, title, setTitle)}>Add</button>
+                      <button onClick={() => addItem2(setItems2, title2, setTitle2, setAddItemStatus2(false))}>Add</button>
                     </div>
                   )}
                   {items2.map((item2, index) => (
@@ -204,8 +218,12 @@ const DragAndDrop = () => {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           className={`draggable ${snapshot.isDragging ? "is-dragging" : ""}`}
+                          onClick={rightProjectInfo}
                         >
-                          <h4>{item2.title}</h4>
+                          <h4>{item2.title1}</h4>
+                          <h4>{item2.title2}</h4>
+                          <h4>{item2.title3}</h4>
+                          
                         </div>
                       )}
                     </Draggable>
@@ -227,11 +245,11 @@ const DragAndDrop = () => {
                     <div>
                       <input
                         type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={title3}
+                        onChange={(e) => setTitle3(e.target.value)}
                         placeholder="Enter title"
                       />
-                      <button onClick={() => addItem3(setItems3, title, setTitle)}>Add</button>
+                      <button onClick={() => addItem3(setItems3, title3, setTitle3, setAddItemStatus3(false))}>Add</button>
                     </div>
                   )}
                   {items3.map((item3, index) => (
@@ -242,8 +260,11 @@ const DragAndDrop = () => {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           className={`draggable ${snapshot.isDragging ? "is-dragging" : ""}`}
+                          onClick={rightProjectInfo}
                         >
-                          <h4>{item3.title}</h4>
+                          <h4>{item3.title1}</h4>
+                          <h4>{item3.title2}</h4>
+                          <h4>{item3.title3}</h4>
                         </div>
                       )}
                     </Draggable>
@@ -260,11 +281,8 @@ const DragAndDrop = () => {
         </DragDropContext>
 
       </div>
-      <button onClick={rightSideHandler}>하이</button>
-
-      {rightSideBar && <Test rightSideHandlerClose={rightSideHandlerClose} projectInfo={projectInfo}></Test>}
-      
-      
+    
+      {rightSideBar && <ProjectInfo rightSideHandlerClose={rightSideHandlerClose} projectInfo={projectInfo}></ProjectInfo>}
 
     </div>
   );
