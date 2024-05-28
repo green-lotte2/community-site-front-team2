@@ -7,13 +7,13 @@ import { FAILSAFE_SCHEMA } from 'js-yaml';
 import url from '../../config/url';
 import { format } from 'date-fns';
 
-const ChatContent = () => {
+
+const ChatContent = ( props ) => {
   console.log(`${url.backendUrl}+???`)
   const [userName, setUserName] = useState('');
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
-  const [isConnected, setIsConnected] = useState(false);
-  const ws = useRef(null);
+
 
   const [inviteEmail , setInviteEmail] = useState('');
 
@@ -55,7 +55,7 @@ const ChatContent = () => {
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const r = searchParams.get('room'); 
+  var r = searchParams.get('room'); 
 
   const [room , setRoom] = useState({});
 
@@ -80,7 +80,7 @@ const ChatContent = () => {
 
         fetch(`${url.backendUrl}/beforeChat?room=`+r+'&userId='+authSlice.username)
         .then(response => response.json())
-        .then(data => {setBeforeChat(data.result); console.log(data.result+"이거시를 확인!")
+        .then(data => {setBeforeChat(data.result);
         fetch(`${url.backendUrl}/beforeChatRead?room=`+r+'&userId='+authSlice.username);}
       )
         .catch(error => console.error('Error fetching user rooms:', error));
@@ -107,44 +107,37 @@ const ChatContent = () => {
     return `${year}-${month}-${day}`;
   };
 
-  useEffect(() => {
 
-    console.log('useEffect - isConnected');
-
-    if (isConnected) {
-      ws.current = new WebSocket(`ws://localhost:8080/community/chattings`);
-      console.log("소켓몇번?")
-      
-      ws.current.onopen = () => {
-        console.log('WebSocket connection established');
-      };
-      
-      ws.current.onmessage = (event) => {
-        setChat(prevChat => [...prevChat, event.data]);
-      };
-      
-      return () => {
-        ws.current.close();
-      };
-    }
-  }, [isConnected]);
-
-  const handleSend = () => {
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      const time = getCurrentTime();
-      console.log(time);
-      ws.current.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
-      setMessage('');
-    }
-  };
 
   const dispatch = useDispatch();
   const authSlice = useSelector((state) => state.authSlice);
+  const [isConnected, setIsConnected] = useState(false);
 
+
+  
   useEffect(() => {
     setUserName(authSlice.username);
     setIsConnected(true);
   }, [authSlice.username]);
+
+  const ws =  props.ws;
+  const chatAll = props.chat;
+
+
+  useEffect(() => {
+    if ( ws.onopen ) { 
+      console.log('이건 왜 되고!')
+      setChat(chatAll)
+    }
+  }, [ ws , chatAll ]);
+
+  const handleSend = () => {
+    if (ws.onopen) {
+      const time = getCurrentTime();
+      ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
+      setMessage('');
+    }
+  };
 
 //멤버보기 기능
 

@@ -6,36 +6,64 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import url from '../../config/url';
 import Modal from 'react-modal';
 
-
-const ChatAside = () => {
+const ChatAside = (props) => {
   const dispatch = useDispatch();
   const authSlice = useSelector((state) => state.authSlice);
   const [userRooms, setUserRooms] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+//socket으로 처리해보자 가보자고
+
+const searchParams = new URLSearchParams(location.search);
+var r = searchParams.get('room'); 
+console.log(r+"이거 룸 확인!")
+if(r == null){
+  r=-1;
+}
+
+const ws =  props.ws;
+const chatAll = props.chat;
+
+
+useEffect(() => {
+  if (chatAll.length > 0) {
+  const [nickname, time, roomNumber, text] = chatAll[chatAll.length - 1].split('*');
+  if (roomNumber.trim() != r ) { 
+    fetch(`${url.backendUrl}/chattingRoom?userName=`+authSlice.username+'&room='+r)
+    .then(response => response.json())
+    .then(data =>   {
+      console.log(data.result);
+      setUserRooms(data.result);
+    })
+    .catch(error => console.error('Error fetching user rooms:', error));
+  }
+}
+}, [ ws , chatAll]);
+
 
   useEffect(() => {
-    fetch(`${url.backendUrl}/chattingRoom?userName=` + authSlice.username)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.result);
-        setUserRooms(data.result);
-      })
-      .catch((error) => console.error("Error fetching user rooms:", error));
-  }, []);
+    console.log('너는 언제 실행되니?')
+      fetch(`${url.backendUrl}/chattingRoom?userName=`+authSlice.username+'&room='+r)
+          .then(response => response.json())
+          .then(data =>   {
+            console.log(data.result);
+            setUserRooms(data.result);
+          })
+          .catch(error => console.error('Error fetching user rooms:', error));
+  }, [r]); 
 
-  //모달
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const customStyles = {
-    content: {
-      top: "40%",
-      left: "53%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-    },
-  };
-
+ //모달
+ const [modalIsOpen, setModalIsOpen] = useState(false);
+ const customStyles = {
+  content: {
+    top: '40%',
+    left: '53%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
 const openMemberHandler = (e)=>{
   e.preventDefault();
@@ -60,10 +88,12 @@ const selectDmHandler = (e)=>{
   console.log(e.target.textContent)
   document.getElementById('insertDM').value = e.target.textContent;
 }
-const location = useLocation();
+
 //dm 만들기 핸들러
 const makeDmHandler = (e)=>{
   e.preventDefault();
+
+
   fetch(`${url.backendUrl}/makeDm?email=`+document.getElementById('insertDM').value+'&user='+authSlice.username)
           .then(response => response.json())
           .then(data =>   {
@@ -79,6 +109,9 @@ const makeDmHandler = (e)=>{
             }
           })
           .catch(error => console.error('Error fetching user rooms:', error));
+
+  
+          
 }
 
 

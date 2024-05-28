@@ -9,9 +9,7 @@ const CalendarPage = () => {
 
     return (
         <DefaultLayout>
-            
             <CalendarComponent />
-            
         </DefaultLayout>
     )
 }
