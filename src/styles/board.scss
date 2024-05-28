@@ -151,7 +151,7 @@
     width: 21px;
   }
 
-  .freeBoard form .thead {
+  .freeBoard .table .thead {
     display: flex;
     justify-content: space-between;
     border-top: 1px solid #c9c9c9;
@@ -161,19 +161,19 @@
     border-top: 1px solid rgba(52, 103, 255, 0.8117647059);
   }
 
-  .freeBoard form .tr {
+  .freeBoard .table .tr {
     display: flex;
     justify-content: space-between;
     padding: 8px;
     border-bottom: 1px solid #c9c9c9;
   }
 
-  .freeBoard form .tr:hover {
+  .freeBoard .table .tr:hover {
     background-color: #c9c9c92f;
     cursor: pointer;
   }
 
-  .freeBoard form .tr .td {
+  .freeBoard .table .tr .td {
     text-align: center;
     padding: 0 10px;
   }

@@ -1,7 +1,43 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import useCates from "../../hooks/useCates";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import Page from "./Page";
+
+const initState = {
+  dtoList: [],
+  cate: "",
+  pg: 0,
+  size: 0,
+  total: 0,
+  start: 0,
+  end: 0,
+  prev: false,
+  next: false,
+};
 
 const List = () => {
+  const [cate1, cate2] = useCates();
+  const authSlice = useSelector((state) => state.authSlice);
+  const [searchParams] = useSearchParams();
+  const pg = searchParams.get("pg") || 1;
+  const [serverData, setServerData] = useState(initState);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/board?cate=${cate2}&pg=${pg}`, {
+        headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+      })
+      .then((resp) => {
+        console.log(resp.data);
+        setServerData(resp.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [pg]); // pg값이 변경이 되면 useEffect가 실행
+
   return (
     <>
       <div className="Board">
@@ -40,7 +76,7 @@ const List = () => {
             </div>
           </div>
 
-          <form>
+          <div className="table">
             <div className="thead">
               <div>번호</div>
               <div>제목</div>
@@ -48,99 +84,25 @@ const List = () => {
               <div>작성일</div>
               <div>조회</div>
             </div>
-            <div className="tr">
-              <div className="td">1</div>
-              <div className="td">신고합니다</div>
-              <div className="td">홍길동</div>
-              <div className="td">2024.05.24</div>
-              <div className="td">17</div>
-            </div>
-            <div className="tr">
-              <div className="td">1</div>
-              <div className="td">신고합니다</div>
-              <div className="td">홍길동</div>
-              <div className="td">2024.05.24</div>
-              <div className="td">17</div>
-            </div>
-            <div className="tr">
-              <div className="td">1</div>
-              <div className="td">신고합니다</div>
-              <div className="td">홍길동</div>
-              <div className="td">2024.05.24</div>
-              <div className="td">17</div>
-            </div>
-            <div className="tr">
-              <div className="td">1</div>
-              <div className="td">신고합니다</div>
-              <div className="td">홍길동</div>
-              <div className="td">2024.05.24</div>
-              <div className="td">17</div>
-            </div>
-            <div className="tr">
-              <div className="td">1</div>
-              <div className="td">신고합니다</div>
-              <div className="td">홍길동</div>
-              <div className="td">2024.05.24</div>
-              <div className="td">17</div>
-            </div>
-            <div className="tr">
-              <div className="td">1</div>
-              <div className="td">신고합니다</div>
-              <div className="td">홍길동</div>
-              <div className="td">2024.05.24</div>
-              <div className="td">17</div>
-            </div>
-            <div className="tr">
-              <div className="td">1</div>
-              <div className="td">신고합니다</div>
-              <div className="td">홍길동</div>
-              <div className="td">2024.05.24</div>
-              <div className="td">17</div>
-            </div>
-            <div className="tr">
-              <div className="td">1</div>
-              <div className="td">신고합니다</div>
-              <div className="td">홍길동</div>
-              <div className="td">2024.05.24</div>
-              <div className="td">17</div>
-            </div>
-            <div className="tr">
-              <div className="td">1</div>
-              <div className="td">신고합니다</div>
-              <div className="td">홍길동</div>
-              <div className="td">2024.05.24</div>
-              <div className="td">17</div>
-            </div>
-            <div className="tr">
-              <div className="td">1</div>
-              <div className="td">신고합니다</div>
-              <div className="td">홍길동</div>
-              <div className="td">2024.05.24</div>
-              <div className="td">17</div>
-            </div>
-          </form>
+
+            {serverData.dtoList.map((board, index) => (
+              <div key={index} className="tr">
+                <div className="td">{serverData.startNo - index}</div>
+                <div className="td">{board.title}</div>
+                <div className="td">{board.writer}</div>
+                <div className="td">{board.rdate}</div>
+                <div className="td">{board.hit}</div>
+              </div>
+            ))}
+          </div>
         </div>
+        {/*table end */}
         <div className="writeBtn">
           <Link to="/board/write">글쓰기</Link>
         </div>
+
+        <Page serverData={serverData} cate1={cate1} cate2={cate2} />
         {/*freeboard end */}
-        <ul className="pagination">
-          <li>
-            <Link to="#">이전</Link>
-          </li>
-          <li>
-            <Link to="#">1</Link>
-          </li>
-          <li>
-            <Link to="#">2</Link>
-          </li>
-          <li>
-            <Link to="#">3</Link>
-          </li>
-          <li>
-            <Link to="#">다음</Link>
-          </li>
-        </ul>
       </div>
     </>
   );
