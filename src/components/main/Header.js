@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import authSlice from "../../slices/authSlice";
 import { useSelector } from "react-redux";
@@ -7,22 +6,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../slices/authSlice";
 
-
 const Header = () => {
   const dispatch = useDispatch();
   const authSlice = useSelector((state) => state.authSlice);
 
-
   useEffect(() => {
-
-    fetch(`${url.backendUrl}/chatAlarm?userName=`+authSlice.username)
-        .then(response => response.json())
-        .then(data =>   {
-          console.log(data.result);
-          document.getElementById('chatchat').textContent = data.result;
-        })
-        .catch(error => console.error('Error fetching user rooms:', error));
-}, []);
+    fetch(`${url.backendUrl}/chatAlarm?userName=` + authSlice.username)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.result);
+        document.getElementById("chatchat").textContent = data.result;
+      })
+      .catch((error) => console.error("Error fetching user rooms:", error));
+  }, []);
 
   const navigate = useNavigate();
 
@@ -30,7 +26,6 @@ const Header = () => {
     dispatch(logout());
     navigate("/main");
   };
-
 
   return (
     <>
