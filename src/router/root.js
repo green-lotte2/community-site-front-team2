@@ -12,16 +12,26 @@ import LoginPage from "../pages/user/LoginPage";
 import RegisterPage from "../pages/user/RegisterPage";
 import TermsPage from "../pages/user/TermsPage";
 import ChatRegisterPage from "../pages/chat/ChatRegisterPage";
+import NoticePage from "../pages/community/NoticePage";
+import DailyPage from "../pages/community/DailyPage";
+import ReportPage from "../pages/community/ReportPage";
 
 //router 생성
 const root = createBrowserRouter([
   { path: "/", element: <HomePage /> }, // 홈 화면
   { path: "/main", element: <MainPage /> }, // 대시보드
   { path: "/chat", element: <ChatPage /> }, //채팅
+
+  //community
+  { path: "/community/notice", element: <NoticePage /> },
+  { path: "/community/daily", element: <DailyPage /> },
+  { path: "/community/report", element: <ReportPage /> },
+  //board
   { path: "/board/list", element: <ListPage /> }, //게시판 리스트
   { path: "/board/modify", element: <ModifyPage /> }, //게시판 수정
   { path: "/board/view", element: <ViewPage /> }, //게시판 뷰
   { path: "/board/write", element: <WritePage /> }, //게시판 작성
+
   { path: "/calendar", element: <CalendarPage /> }, //캘린더
   { path: "/project", element: <ProjectList /> }, //프로젝트 마일스톤
   { path: "/user/login", element: <LoginPage /> }, //로그인 페이지
