@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import authSlice from "../../slices/authSlice";
 import { useSelector } from "react-redux";
 import url from "../../config/url";
 import createWebSocket from "../../config/createWebSocket";
+import { useDispatch } from "react-redux";
+import { logout } from "../../slices/authSlice";
 
-const Header = () => {
+
+const Header = (props) => {
   const dispatch = useDispatch();
   const authSlice = useSelector((state) => state.authSlice);
 
