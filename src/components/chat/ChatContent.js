@@ -64,7 +64,7 @@ const ChatContent = ( props ) => {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-
+  const [uploadStatus, setUploadStatus] = useState(0);
   const inviteHandler = (e) => {
     e.preventDefault();
     setModalIsOpen(true); // Open modal on invite button click
@@ -72,17 +72,23 @@ const ChatContent = ( props ) => {
 
   useEffect(() => {
     if (r != null) {
-      fetch(`${url.backendUrl}/myRoom?room=`+r+'&userId='+authSlice.username)
+      setUploadStatus(0)
+     fetch(`${url.backendUrl}/myRoom?room=`+r+'&userId='+authSlice.username)
         .then(response => response.json())
         .then(data => {setRoom(data.result)
           console.log(data.result + "룸 설정!");
         })
         .catch(error => console.error('Error fetching user rooms:', error));
 
+
         fetch(`${url.backendUrl}/beforeChat?room=`+r+'&userId='+authSlice.username)
         .then(response => response.json())
         .then(data => {setBeforeChat(data.result);
-        fetch(`${url.backendUrl}/beforeChatRead?room=`+r+'&userId='+authSlice.username);}
+        fetch(`${url.backendUrl}/beforeChatRead?room=`+r+'&userId='+authSlice.username)
+        .then(response => response.json())
+        .then(data => {setUploadStatus(1); console.log(uploadStatus+"업로드 스테터스")})
+      }
+
       )
         .catch(error => console.error('Error fetching user rooms:', error));
     }
@@ -206,7 +212,7 @@ const openMemberHandler = (e)=>{
         </div>
       ) : (
         <div id="content">
-          {room.roomName ? (
+          {room.roomName && uploadStatus == 1 ? (
             <>
             <div className='chatTitle'>
               <h2 className="title"> {room.roomName} 

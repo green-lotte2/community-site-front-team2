@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const Aside = () => {
   const authSlice = useSelector((state) => state.authSlice);
   const chatHandler = (e)=>{
-    alert('클릭!')
     if(!authSlice.username){
       e.preventDefault();
       if(window.confirm('로그인 후 이용할 수 있습니다. 로그인 페이지로 이동하시겠습니까?')){
