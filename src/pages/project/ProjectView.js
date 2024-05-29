@@ -5,17 +5,18 @@ import SearchBar from '../../components/project/SearchBar'
 import DnD from '../../components/project/DnD'
 import DragAndDrop from '../../components/project/DragAndDrop';
 import "../../styles/projectList.scss";
-import ProjectCreat from '../../components/project/ProjectCreat'
 
 
-const ListPage = () => {
+const ProjectView = () => {
   return (
     <div>
         <DefaultLayout>
-            <ProjectCreat/>
+          <ProjectLayout/>
+              <SearchBar/>
+                <DnD/>
         </DefaultLayout>
     </div>
   )
 }
 
-export default ListPage
+export default ProjectView
