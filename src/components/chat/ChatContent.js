@@ -138,7 +138,9 @@ const ChatContent = ( props ) => {
   }, [ ws , chatAll ]);
 
   const handleSend = () => {
+    console.log('이거 눌러는 지나? 대체 왜이럼?')
     if (ws.onopen) {
+      console.log('이거 눌러는 지나? 대체 왜이럼?222')
       const time = getCurrentTime();
       ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
       setMessage('');
