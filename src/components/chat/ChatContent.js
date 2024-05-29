@@ -64,7 +64,7 @@ const ChatContent = ( props ) => {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-
+  const [uploadStatus, setUploadStatus] = useState(0);
   const inviteHandler = (e) => {
     e.preventDefault();
     setModalIsOpen(true); // Open modal on invite button click
@@ -72,17 +72,23 @@ const ChatContent = ( props ) => {
 
   useEffect(() => {
     if (r != null) {
-      fetch(`${url.backendUrl}/myRoom?room=`+r+'&userId='+authSlice.username)
+      setUploadStatus(0)
+     fetch(`${url.backendUrl}/myRoom?room=`+r+'&userId='+authSlice.username)
         .then(response => response.json())
         .then(data => {setRoom(data.result)
           console.log(data.result + "룸 설정!");
         })
         .catch(error => console.error('Error fetching user rooms:', error));
 
+
         fetch(`${url.backendUrl}/beforeChat?room=`+r+'&userId='+authSlice.username)
         .then(response => response.json())
         .then(data => {setBeforeChat(data.result);
-        fetch(`${url.backendUrl}/beforeChatRead?room=`+r+'&userId='+authSlice.username);}
+        fetch(`${url.backendUrl}/beforeChatRead?room=`+r+'&userId='+authSlice.username)
+        .then(response => response.json())
+        .then(data => {setUploadStatus(1); console.log(uploadStatus+"업로드 스테터스")})
+      }
+
       )
         .catch(error => console.error('Error fetching user rooms:', error));
     }
@@ -138,7 +144,9 @@ const ChatContent = ( props ) => {
   }, [ ws , chatAll ]);
 
   const handleSend = () => {
+    console.log('이거 눌러는 지나? 대체 왜이럼?')
     if (ws.onopen) {
+      console.log('이거 눌러는 지나? 대체 왜이럼?222')
       const time = getCurrentTime();
       ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
       setMessage('');
@@ -193,6 +201,60 @@ const openMemberHandler = (e)=>{
     }
   }
 
+  //멤버 초대
+  const [inviteModalIsOpen, setInviteModalIsOpen ] = useState(false);
+  
+  const styles = {
+    container: {
+      maxWidth: '400px',
+      margin: '10px auto',
+      padding: '20px',
+      border: '1px solid #ccc',
+      borderRadius: '5px',
+    },
+    form: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    input: {
+      padding: '10px',
+      marginBottom: '50px',
+      border: '1px solid #ccc',
+      borderRadius: '5px',
+    },
+    button: {
+      padding: '13px',
+      backgroundColor: '#007bff',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+    },
+  };
+
+  const [roomName, setRoomName] = useState('');
+
+  const handleInputChange = (e) => {
+    setRoomName(e.target.value);}
+
+  const submitHandler = (e)=>{
+      e.preventDefault();
+      if(window.confirm(`${roomName} 으로 생성하시겠습니까?`)){
+        fetch('http://localhost:8080/community/chatRegister?userId='+authSlice.username+'&chatName='+roomName)
+        .then(response => response.json())
+        .then(data =>   {
+          console.log(data.result);
+         if(data.result != null){
+            alert('생성되었습니다.')
+            navigate(`/chat?room=${data.result}`)
+         }
+        })
+        .catch(error => console.error('Error fetching user rooms:', error));
+      }
+     
+  }
+
+
   return (
    
     <>
@@ -204,7 +266,7 @@ const openMemberHandler = (e)=>{
         </div>
       ) : (
         <div id="content">
-          {room.roomName ? (
+          {room.roomName && uploadStatus == 1 ? (
             <>
             <div className='chatTitle'>
               <h2 className="title"> {room.roomName} 
@@ -337,6 +399,30 @@ const openMemberHandler = (e)=>{
             <p key={index}>{user.name}</p>
           ))}
    
+      </Modal>
+
+      <Modal
+       isOpen={inviteModalIsOpen}
+       onRequestClose={() => setInviteModalIsOpen(false)}
+       >
+      <div id='content'> 
+    <br/>
+    <br/>
+    <br/>
+    <div style={styles.container}>
+      <h2>채팅방 만들기</h2>
+      <form style={styles.form} onSubmit={submitHandler}>
+      <br/>
+      <br/>
+        <label htmlFor="roomName">채팅방 이름:</label>
+        <input type="text" id="roomName" name="roomName"   onChange={handleInputChange}  style={styles.input} />
+        <button type="submit" style={styles.button}>채팅방 생성</button>
+      </form>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    </div>
       </Modal>
 
     </>

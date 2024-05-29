@@ -15,6 +15,7 @@ import ChatRegisterPage from "../pages/chat/ChatRegisterPage";
 import NoticePage from "../pages/community/NoticePage";
 import DailyPage from "../pages/community/DailyPage";
 import ReportPage from "../pages/community/ReportPage";
+import ProjectView from "../pages/project/ProjectView";
 
 //router 생성
 const root = createBrowserRouter([
@@ -33,7 +34,11 @@ const root = createBrowserRouter([
   { path: "/board/write", element: <WritePage /> }, //게시판 작성
 
   { path: "/calendar", element: <CalendarPage /> }, //캘린더
+
+  //project
   { path: "/project", element: <ProjectList /> }, //프로젝트 마일스톤
+  { path: "/projectview", element: <ProjectView /> }, //프로젝트 마일스톤
+
   { path: "/user/login", element: <LoginPage /> }, //로그인 페이지
   { path: "/user/register", element: <RegisterPage /> }, //회원가입
   { path: "/chatRegister", element: <ChatRegisterPage /> }, //

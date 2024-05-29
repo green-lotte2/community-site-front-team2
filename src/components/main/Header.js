@@ -11,7 +11,6 @@ const Header = (props) => {
   const authSlice = useSelector((state) => state.authSlice);
 
   //알림
-
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   var r = searchParams.get("room");
@@ -28,17 +27,22 @@ const Header = (props) => {
 
   useEffect(() => {
     if (ws == null) {
-      console.log("되나..?");
-      ws = createWebSocket();
+      console.log('되나..?')
+      if(authSlice.username){
+        ws = createWebSocket();
+      }
+     
     }
-    ws.onmessage = (event) => {
-      r = searchParams.get("room");
-      const message = event.data;
-      console.log(message + "이거되나요??/!");
-      setChatAll((prevChat) => [...prevChat, message]);
+    if(ws != null){
+      ws.onmessage = (event) => {
+        r = searchParams.get('room'); 
+        const message = event.data;
+        console.log(message + "이거되나요??/!");
+        setChatAll(prevChat => [...prevChat, message]);
+        console.log(chatAll.length)
+      };
+    }
 
-      console.log(chatAll.length);
-    };
   }, [ws]);
 
   useEffect(() => {
@@ -91,6 +95,10 @@ const Header = (props) => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
+    if(ws){
+      console.log(ws)
+      ws.close();
+    }
     dispatch(logout());
     navigate("/main");
   };
@@ -106,7 +114,7 @@ const Header = (props) => {
             </Link>
             <Link to="/">
               <img src="/images/alarm_40.png" alt="bell" />
-              <p className="alert" id="chatchat"></p>
+              <p className="alert" id="chatchat">0</p>
             </Link>
 
             {!authSlice.username ? (
