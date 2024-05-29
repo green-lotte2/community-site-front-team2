@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ProjectInfo from "./ProjectInfo";
 import axios from 'axios';
+import { useSelector } from "react-redux";
 
 // 초기 아이템을 빈 배열로 설정합니다.
 const initialItems1 = [];
@@ -9,6 +10,19 @@ const initialItems2 = [];
 const initialItems3 = [];
 
 const DragAndDrop = () => {
+
+  ///선택
+
+  const authSlice = useSelector((state) => state.authSlice);
+
+  if(!authSlice.username){
+    if(window.confirm('로그인 후 이용가능한 페이지입니다. 로그인 페이지로 이동하시겠습니까?')){
+      window.location.href='/user/login'
+    }else{
+      window.location.href='/main'
+    }
+    
+  }
   // 상태로 각 섹션의 아이템을 관리합니다.
   const [items1, setItems1] = useState(initialItems1);
   const [items2, setItems2] = useState(initialItems2);
@@ -28,17 +42,36 @@ const DragAndDrop = () => {
   const [status, setStatus] = useState("");
   const [member, setMember] = useState("");
 
+//Get요청
+  axios.get('http://localhost:8080/community/project/select', { params: {
+      memeber : authSlice.username
+    }}
+    ).then((response) => {
+     console.log("dd") 
+    }).catch(function (error) {
+      console.log(error);
+    });
 
+
+  
 // 아이템 생성
   const addItem = (setItems) => {
 
     if (!title1.trim()) return;
-    const newItem = { id: ItemId(), title1, content, status, member };
+    const newItem = {id: ItemId(), title1 : title1 , member : authSlice.username, status: 'Ready'};
     setItems((prevItems) => [...prevItems, newItem]);
+    
+    console.log(newItem )
+  
+    axios.post('http://localhost:8080/community/project/insert', newItem  )
+    .then(response => {
+      console.log("아아아나");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
     setTitle1("");
-    setContent("");
-    setStatus("");
-    setMember("");
     setAddItemStatus(false);
   };
 
@@ -136,9 +169,6 @@ const DragAndDrop = () => {
 
     }
   }
-
-  ////// 백엔드 요청 ///////
-
 
 
 
