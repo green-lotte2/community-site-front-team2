@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Page = ({ serverData, cate1, cate2 }) => {
+const Page = ({ serverData, cate }) => {
   // 페이지번호 생성 함수
   const makePageNums = () => {
     console.log("makePageNums");
@@ -11,7 +11,7 @@ const Page = ({ serverData, cate1, cate2 }) => {
       nums.push(
         <Link
           key={i}
-          to={`/board/list?cate1=${cate1}&cate2=${cate2}&pg=${i}`}
+          to={`/board/list?cate=${cate}&pg=${i}`}
           className={`num ${serverData.pg === i && "current"}`}
         >
           {i}
@@ -26,7 +26,7 @@ const Page = ({ serverData, cate1, cate2 }) => {
       {/* 이전 */}
       {serverData.prev && (
         <Link
-          to={`/board/list?cate=${cate2}&pg=${serverData.start - 1}`}
+          to={`/board/list?cate=${cate}&pg=${serverData.start - 1}`}
           className="prev"
         >
           이전
@@ -38,9 +38,7 @@ const Page = ({ serverData, cate1, cate2 }) => {
       {/*다음 */}
       {serverData.next && (
         <Link
-          to={`/board/list?cate1=${cate1}&cate2=${cate2}&pg=${
-            serverData.start + 1
-          }`}
+          to={`/board/list?cate=${cate}&pg=${serverData.start + 1}`}
           className="next"
         >
           다음

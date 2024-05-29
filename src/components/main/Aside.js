@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useCates from "../../hooks/useCates";
 
 const Aside = () => {
+  const [board, cate] = useCates();
+
   return (
     <>
       <aside>
@@ -17,7 +20,7 @@ const Aside = () => {
             </Link>
           </div>
           <div>
-            <Link to="/board/list">
+            <Link to="/board/list?cate=all">
               <img src="/images/board_50.png"></img>Community
             </Link>
           </div>

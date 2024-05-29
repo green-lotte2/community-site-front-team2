@@ -1,11 +1,8 @@
-import React from 'react'
+import React from "react";
+import DefaultLayout from "../../layouts/DefaultLayout";
 
 const NoticePage = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <></>;
+};
 
-export default NoticePage
+export default NoticePage;
