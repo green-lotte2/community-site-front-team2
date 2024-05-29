@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
+import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -30,6 +31,7 @@ const Register = () => {
     addr2: "",
     role: "USER",
     grade: "BASIC",
+    profileImg: null,
   });
 
   const submitHandler = (e) => {
@@ -172,12 +174,64 @@ const Register = () => {
       });
   };
 
+  const [profile, setProfile] = useState(null);
+  const [profilePreview, setProfilePreview] = useState(null);
+
+  const handleProfile = (files) => {
+    const selectProfile = files[0];
+    setProfile(selectProfile);
+
+    const preview = URL.createObjectURL(selectProfile);
+    setProfilePreview(preview);
+
+    setUser((updateUser) => ({
+      ...updateUser,
+      profileImg: selectProfile,
+    }));
+  };
+
+  useEffect(() => {
+    console.log("파일 업로드 : ", user.profileImg);
+  }, [user.profileImg, profile]);
+
   return (
     <div className="Register">
       <div className="container">
         <h1>Register</h1>
 
         <form onSubmit={submitHandler}>
+          <div>
+            <div className="profileImage">
+              <Dropzone onDrop={handleProfile}>
+                {({ getRootProps, getInputProps }) => (
+                  <div className="rootProps" {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    {profilePreview ? (
+                      <img
+                        src={profilePreview}
+                        alt="profilePreview"
+                        className="profilePreview"
+                      />
+                    ) : (
+                      <img
+                        src="../images/default_thumbnail.png"
+                        alt="profilePreview"
+                        className="profilePreview"
+                      />
+                    )}
+                  </div>
+                )}
+              </Dropzone>
+              <div>
+                <div className="profileTitle">프로필 이미지</div>
+                <p className="profileText">
+                  프로필 이미지를 업로드 해주세요.
+                  <br />
+                  (사이즈 1:1)
+                </p>
+              </div>
+            </div>
+          </div>
           <div className="input_block">
             <tr>
               <td>

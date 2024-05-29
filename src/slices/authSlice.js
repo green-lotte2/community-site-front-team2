@@ -31,7 +31,8 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       removeCookie("auth");
-      return { ...initState };
+      //return { ...initState };
+      window.location.href = "/main";
     },
   },
 });

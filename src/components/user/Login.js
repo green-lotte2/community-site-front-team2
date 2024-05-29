@@ -16,7 +16,7 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(`${url.backendUrl}`+'이거 확인해봐!!');
+    console.log(`${url.backendUrl}` + "이거 확인해봐!!");
     axios
       .post(`${url.backendUrl}/user/login`, user)
       .then((resp) => {
@@ -55,7 +55,7 @@ const Login = () => {
             </a>
           </li>
           <li>
-            <Link to="/user/register" id="signup">
+            <Link to="/user/terms" id="signup">
               SIGN UP
             </Link>
           </li>
@@ -101,9 +101,10 @@ const Login = () => {
         </button>
 
         <div>
-        <p style={{textAlign: "center", color: "gray"}}>SNAP-SHOT: {process.env.REACT_APP_VERSION}</p>
+          <p style={{ textAlign: "center", color: "gray" }}>
+            SNAP-SHOT: {process.env.REACT_APP_VERSION}
+          </p>
         </div>
-
       </div>
       <div className="loginImg">
         <img src="../images/login.png" alt="" />
