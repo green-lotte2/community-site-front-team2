@@ -4,6 +4,7 @@ import useCates from "../../hooks/useCates";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Page from "./Page";
+import { formatters } from "date-fns";
 
 const initState = {
   dtoList: [],
@@ -18,7 +19,7 @@ const initState = {
 };
 
 const List = () => {
-  const [cate1, cate2] = useCates();
+  const [board, cate] = useCates();
   const authSlice = useSelector((state) => state.authSlice);
   const [searchParams] = useSearchParams();
   const pg = searchParams.get("pg") || 1;
@@ -26,7 +27,7 @@ const List = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/board?cate=${cate2}&pg=${pg}`, {
+      .get(`http://localhost:8080/community/board?cate=${cate}&pg=${pg}`, {
         headers: { Authorization: `Bearer ${authSlice.accessToken}` },
       })
       .then((resp) => {
@@ -36,7 +37,12 @@ const List = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [pg]); // pg값이 변경이 되면 useEffect가 실행
+  }, [cate, pg]); // pg값이나 cate값이 변경이 되면 useEffect가 실행
+
+  useEffect(() => {
+    console.log("board:", board);
+    console.log("cate:", cate);
+  }, [board, cate]);
 
   return (
     <>
@@ -53,10 +59,10 @@ const List = () => {
           </div>
 
           <div className="cate">
-            <Link to="#">전체 ⩗</Link>
-            <Link to="#">공지사항</Link>
-            <Link to="#">일상</Link>
-            <Link to="#">신고합니다</Link>
+            <Link to="/board/list?cate=all">전체 ⩗</Link>
+            <Link to="/board/list?cate=notice">공지사항</Link>
+            <Link to="/board/list?cate=daily">일상</Link>
+            <Link to="/board/list?cate=report">신고합니다</Link>
           </div>
 
           <div className="search">
@@ -78,30 +84,36 @@ const List = () => {
 
           <div className="table">
             <div className="thead">
-              <div>번호</div>
-              <div>제목</div>
-              <div>작성자</div>
-              <div>작성일</div>
-              <div>조회</div>
+              <div className="no">번호</div>
+              <div className="Btitle">제목</div>
+              <div className="writer">작성자</div>
+              <div className="rdate">작성일</div>
+              <div className="hit">조회</div>
             </div>
 
             {serverData.dtoList.map((board, index) => (
               <div key={index} className="tr">
-                <div className="td">{serverData.startNo - index}</div>
-                <div className="td">{board.title}</div>
-                <div className="td">{board.writer}</div>
-                <div className="td">{board.rdate}</div>
-                <div className="td">{board.hit}</div>
+                <div className="td no">{serverData.startNo - index}</div>
+                <div className="td Btitle">
+                  <Link to="#">{board.title}</Link>
+                </div>
+                <div className="td writer">{board.writer}</div>
+                <div className="td rdate">
+                  {board.rdate ? board.rdate.substring(0, 10) : ""}
+                </div>
+                <div className="td hit">{board.hit}</div>
               </div>
             ))}
           </div>
         </div>
         {/*table end */}
         <div className="writeBtn">
-          <Link to="/board/write">글쓰기</Link>
+          <Link to={`/board/write?cate=${cate}`} className="btn btnWrite">
+            글쓰기
+          </Link>
         </div>
 
-        <Page serverData={serverData} cate1={cate1} cate2={cate2} />
+        <Page serverData={serverData} cate={cate} />
         {/*freeboard end */}
       </div>
     </>

@@ -9,16 +9,15 @@ const useCates = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const paths = location.pathname.split("/");
-  let cate1 = paths[1]; // 카테고리
-  let cate2 = paths[2]; // 액션(list, modify, view, write)
+  let board = paths[1];
+  let cate = paths[2];
 
   // 라우팅 주소가 게시판(board)이면
-  if (cate1[1] === "board") {
-    cate1 = searchParams.get("cate1");
-    cate2 = searchParams.get("cate2");
+  if (board === "board") {
+    cate = searchParams.get("cate");
   }
 
-  return [cate1, cate2];
+  return [board, cate];
 };
 
 export default useCates;

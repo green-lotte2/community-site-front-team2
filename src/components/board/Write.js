@@ -3,6 +3,7 @@ import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import CustomToolbar from "./CustomToolbar"; // CustomToolbar 컴포넌트 import
 import { Link } from "react-router-dom";
+import useCates from "../../hooks/useCates";
 
 const Size = Quill.import("formats/size");
 Size.whitelist = ["small", "medium", "large", "huge"];
@@ -43,6 +44,8 @@ Quill.register(italic, true);
 
 export default function Write() {
   const [values, setValues] = useState();
+  // 카테고리
+  const [board, cate] = useCates();
 
   const modules = useMemo(() => {
     return {
@@ -70,8 +73,8 @@ export default function Write() {
         />
       </div>
       <div className="editBtn">
-        <Link to="/board/list">취소</Link>
-        <Link to="/board/list">완료</Link>
+        <Link to={`/board/list?cate=${cate}`}>취소</Link>
+        <Link to={`/board/list?cate=${cate}`}>완료</Link>
       </div>
     </div>
   );

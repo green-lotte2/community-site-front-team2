@@ -1,8 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import useCates from "../../hooks/useCates";
 
 const Aside = () => {
+
+
+  const [board, cate] = useCates();
+
   const authSlice = useSelector((state) => state.authSlice);
   const chatHandler = (e)=>{
     if(!authSlice.username){
@@ -12,6 +17,7 @@ const Aside = () => {
       }
     }
   }
+
   return (
     <>
       <aside>
@@ -27,7 +33,7 @@ const Aside = () => {
             </Link>
           </div>
           <div>
-            <Link to="/board/list">
+            <Link to="/board/list?cate=all">
               <img src="/images/board_50.png"></img>Community
             </Link>
           </div>

@@ -159,6 +159,7 @@
     padding: 8px;
     color: #333;
     border-top: 1px solid rgba(52, 103, 255, 0.8117647059);
+    text-align: center;
   }
 
   .freeBoard .table .tr {
@@ -166,16 +167,33 @@
     justify-content: space-between;
     padding: 8px;
     border-bottom: 1px solid #c9c9c9;
+    align-items: center;
   }
 
-  .freeBoard .table .tr:hover {
+  .freeBoard .table div .no {
+    width: 50px;
+  }
+  .freeBoard .table div .Btitle {
+    width: 300px;
+  }
+  .freeBoard .table div .writer {
+    width: 100px;
+  }
+  .freeBoard .table div .rdate {
+    width: 100px;
+  }
+  .freeBoard .table div .hit {
+    width: 50px;
+  }
+
+  .freeBoard .table tr:hover {
     background-color: #c9c9c92f;
     cursor: pointer;
   }
 
   .freeBoard .table .tr .td {
     text-align: center;
-    padding: 0 10px;
+    padding: 0;
   }
 
   .writeBtn {
@@ -204,23 +222,30 @@
     transition: 0.3s;
   }
 
-  .pagination {
+  .page {
     display: flex;
     justify-content: center;
     margin-top: 70px;
   }
 
-  .pagination li {
+  .page .prev {
     margin-right: 10px;
     padding: 5px 10px;
     border-radius: 5px;
     border: 1px solid #e4e8ec;
   }
 
-  .pagination li:hover {
+  .page .current {
     background-color: #3467ffcf;
     color: #fff;
     font-weight: bold;
+  }
+
+  .page .num {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #e4e8ec;
   }
 
   /*글쓰기*/
