@@ -8,6 +8,70 @@ import Modal from "react-modal";
 const ChatAside = (props) => {
   console.log(props.ws + "이거는 되나???");
 
+    //멤버 초대
+    const [inviteModalIsOpen, setInviteModalIsOpen ] = useState(false);
+    const roomMakeHandler = (e)=>{
+      e.preventDefault();
+      setInviteModalIsOpen(true);
+    }
+
+    const roomDeleteHandler = (e)=>{
+      e.preventDefault();
+      setInviteModalIsOpen(false);
+    }
+    const styles = {
+      container: {
+        maxWidth: '400px',
+        margin: '10px auto',
+        padding: '20px',
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+      },
+      form: {
+        display: 'flex',
+        flexDirection: 'column',
+      },
+      input: {
+        padding: '10px',
+        marginBottom: '50px',
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+      },
+      button: {
+        padding: '13px',
+        backgroundColor: '#007bff',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+      },
+    };
+  
+    const [roomName, setRoomName] = useState('');
+  
+    const handleInputChange = (e) => {
+      setRoomName(e.target.value);}
+  
+    const submitHandler = (e)=>{
+        e.preventDefault();
+        if(window.confirm(`${roomName} 으로 생성하시겠습니까?`)){
+          fetch('http://localhost:8080/community/chatRegister?userId='+authSlice.username+'&chatName='+roomName)
+          .then(response => response.json())
+          .then(data =>   {
+            console.log(data.result);
+           if(data.result != null){
+              alert('생성되었습니다.')
+              setInviteModalIsOpen(false);
+              navigate(`/chat?room=${data.result}`)
+           }
+          })
+          .catch(error => console.error('Error fetching user rooms:', error));
+        }
+       
+    }
+
+  console.log(props.ws+"이거는 되나???")
+  
   const dispatch = useDispatch();
   const authSlice = useSelector((state) => state.authSlice);
   const [userRooms, setUserRooms] = useState([]);
@@ -45,6 +109,7 @@ const ChatAside = (props) => {
       }
     }
   }, [ws, chatAll]);
+
 
   useEffect(() => {
     console.log("너는 언제 실행되니?");
@@ -124,6 +189,7 @@ const ChatAside = (props) => {
       .catch((error) => console.error("Error fetching user rooms:", error));
   };
 
+
   return (
     <>
       <aside>
@@ -144,11 +210,12 @@ const ChatAside = (props) => {
           <br />
           <br />
           <div>
-            <Link to="/chatRegister" className="chatLarge">
-              <img src="/images/channel_50.png"></img>채널 <span> + </span>
-            </Link>
-            <br />
-            {userRooms.map((room) => (
+
+
+           <Link onClick={roomMakeHandler} className='chatLarge'>
+            <img src='/images/channel_50.png'></img>채널 <span>  + </span></Link><br/>
+            {userRooms.map(room => (
+
               <>
                 {room.status === 0 ? (
                   <Link
@@ -247,6 +314,30 @@ const ChatAside = (props) => {
           </button>
         </form>
       </Modal>
+
+
+      <Modal
+       isOpen={inviteModalIsOpen}
+       onRequestClose={() => setInviteModalIsOpen(false)}
+       style={customStyles}
+       >
+     
+ 
+    <div style={styles.container}>
+      <h2>채팅방 만들기 <button  style={{marginLeft: '230px', border: 'none', fontSize: '20px'}} onClick={() => setInviteModalIsOpen(false) }>X</button></h2>
+      <form style={styles.form} onSubmit={submitHandler}>
+      <br/>
+      <br/>
+        <label htmlFor="roomName">채팅방 이름:</label>
+        <input type="text" id="roomName" name="roomName"   onChange={handleInputChange}  style={styles.input} />
+        <button type="submit" style={styles.button}>채팅방 생성</button>
+      </form>
+    </div>
+ 
+ 
+      </Modal>
+
+
     </>
   );
 };

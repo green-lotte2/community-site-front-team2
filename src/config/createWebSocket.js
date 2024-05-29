@@ -1,6 +1,6 @@
 
 const createWebSocket = () => {
-  const ws =  new WebSocket(`ws://localhost:8080/community/chattings`);
+  const ws =  new WebSocket(`wss://api.illrreumbow.store/community/chattings`);
   ws.onopen = () => {
     console.log('WebSocket connection succeed');
   };

@@ -1,14 +1,21 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../slices/authSlice";
 
 const HomeComponent = () => {
   const authSlice = useSelector((state) => state.authSlice);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   if (authSlice.username != null) {
     navigate(`/main`);
   }
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
   return (
     <div className="Home">
       <div className="first_div">
@@ -18,8 +25,14 @@ const HomeComponent = () => {
         </div>
 
         <div className="txt_link">
-          <Link to="/user/login">로그인</Link>
-          <Link to="/user/register">일름보 멤버되기</Link>
+          {!authSlice.username ? (
+            <Link to="/user/login">로그인</Link>
+          ) : (
+            <Link to="/user/logout" onClick={logoutHandler}>
+              로그아웃
+            </Link>
+          )}
+          <Link to="/user/terms">일름보 멤버되기</Link>
         </div>
       </div>
     </div>

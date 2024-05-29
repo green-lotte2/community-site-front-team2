@@ -2,7 +2,7 @@
   #user > .terms {
     width: 600px;
     height: auto;
-    margin: 60px auto;
+    margin: 15px auto;
   }
   #user > .terms > table {
     width: 100%;
@@ -45,5 +45,25 @@
   #user > .terms > div {
     float: right;
     margin-top: 10px;
+  }
+
+  .btnNext {
+    background: #e91e63;
+    color: white;
+    display: block;
+    width: 170px;
+    height: 45px;
+    position: relative;
+    border-radius: 8px;
+    margin: 0 auto;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: "Montserrat", sans-serif;
+    box-shadow: 0 15px 30px rgba(#e91e63, 0.36);
+    transition: 0.2s linear;
+    &:hover {
+      box-shadow: 0 0 0 rgba(#e91e63, 0);
+    }
   }
 }
