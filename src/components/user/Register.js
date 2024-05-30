@@ -34,24 +34,6 @@ const Register = () => {
     profileImg: null,
   });
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-
-    console.log(user);
-
-    axios
-      .post("http://localhost:8080/community/user", user)
-      .then((response) => {
-        console.log(response.data);
-        alert("회원가입 완료!");
-
-        navigate("/user/login");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const changeHandler = (e) => {
     e.preventDefault();
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -86,7 +68,7 @@ const Register = () => {
     }
 
     if (!user.nick) {
-      setNick("별명은 필수입력 사항입니다.");
+      setNick("닉네임은 필수입력 사항입니다.");
       return;
     } else {
       setNick("");
@@ -120,6 +102,31 @@ const Register = () => {
         setUser({ ...user, zip: data.zonecode, addr1: data.address });
       },
     });
+  };
+
+  const handleUid = (e) => {
+    e.preventDefault();
+
+    if (!user.uid) {
+      alert("아이디를 입력하세요.");
+      return;
+    }
+
+    axios
+      .get(`http://localhost:8080/community/checkUid?uid=${user.uid}`)
+      .then((response) => {
+        const result = response.data.result;
+        setId(result);
+
+        if (result === "사용 가능한 아이디 입니다.") {
+          alert("사용 가능한 아이디 입니다.");
+        } else {
+          alert("이미 존재하는 아이디 입니다.");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleSendEmail = (e) => {
@@ -180,14 +187,46 @@ const Register = () => {
   const handleProfile = (files) => {
     const selectProfile = files[0];
     setProfile(selectProfile);
+    console.log("이거 잘 뜨나? : ", selectProfile);
 
+    // 선택한 프로필 사진 미리보기
     const preview = URL.createObjectURL(selectProfile);
     setProfilePreview(preview);
+    console.log("프리뷰 : ", preview);
 
     setUser((updateUser) => ({
       ...updateUser,
       profileImg: selectProfile,
     }));
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    Object.keys(user).forEach((key) => {
+      formData.append(key, user[key]);
+    });
+
+    formData.append("profile", profile);
+    console.log("formData : ", formData);
+    console.log("user", user);
+
+    axios
+      .post("http://localhost:8080/community/uploads", user, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        alert("회원가입 완료!");
+
+        navigate("/user/login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -237,15 +276,20 @@ const Register = () => {
               <td>
                 <label>아이디</label>
               </td>
-              <td className="uid">
-                <input
-                  type="text"
-                  placeholder="아이디 입력"
-                  className="input"
-                  name="uid"
-                  value={user.uid}
-                  onChange={changeHandler}
-                />
+              <td>
+                <div className="uidNum">
+                  <input
+                    type="text"
+                    placeholder="아이디 입력"
+                    className="uid"
+                    name="uid"
+                    value={user.uid}
+                    onChange={changeHandler}
+                  />
+                  <button type="button" className="btnUid" onClick={handleUid}>
+                    중복검색
+                  </button>
+                </div>
                 <span class="resultId">{id}</span>
               </td>
             </tr>
