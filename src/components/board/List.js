@@ -24,6 +24,7 @@ const List = () => {
   const [searchParams] = useSearchParams();
   const pg = searchParams.get("pg") || 1;
   const [serverData, setServerData] = useState(initState);
+  const isAdmin = authSlice.role === "admin"; // 사용자의 권한이 admin인지 확인
 
   useEffect(() => {
     axios
@@ -95,7 +96,9 @@ const List = () => {
               <div key={index} className="tr">
                 <div className="td no">{serverData.startNo - index}</div>
                 <div className="td Btitle">
-                  <Link to="#">{board.title}</Link>
+                  <Link to={`/board/view/${board.cate}/${board.no}`}>
+                    {board.title}
+                  </Link>
                 </div>
                 <div className="td writer">{board.writer}</div>
                 <div className="td rdate">
@@ -107,7 +110,13 @@ const List = () => {
           </div>
         </div>
         {/*table end */}
-        <div className="writeBtn">
+
+        <div
+          className="writeBtn"
+          style={{
+            display: cate === "notice" ? "none" : "block",
+          }}
+        >
           <Link to={`/board/write?cate=${cate}`} className="btn btnWrite">
             글쓰기
           </Link>

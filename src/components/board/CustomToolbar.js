@@ -3,12 +3,11 @@ import React from "react";
 const CustomToolbar = () => (
   <div id="toolbar">
     <span className="ql-formats">
-      <select className="ql-font" defaultValue="arial">
-        <option value="arial">Arial</option>
+      <select className="ql-font">
         <option value="buri">Buri</option>
-        <option value="gangwon">Gangwon</option>
+        <option value="GangwonEduSaeeum">GangwonEduSaeeum</option>
       </select>
-      <select className="ql-header">
+      <select className="ql-header" defaultValue="3">
         <option value="1">Header 1</option>
         <option value="2">Header 2</option>
         <option value="3">Header 3</option>
