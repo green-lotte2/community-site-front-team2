@@ -16,7 +16,6 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(`${url.backendUrl}` + "이거 확인해봐!!");
     axios
       .post(`${url.backendUrl}/user/login`, user)
       .then((resp) => {
