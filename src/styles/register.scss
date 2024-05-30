@@ -105,6 +105,29 @@
         font-size: 12px;
         color: red;
       }
+      .uidNum {
+        display: flex;
+      }
+      .uid {
+        display: block;
+        width: 220px;
+        max-width: 680px;
+        height: 42px;
+        margin: 0 auto;
+        border-radius: 8px;
+        border: none;
+        background: rgba(#0f132a, 0.1);
+        color: rgba(#0f132a, 0.3);
+        padding: 0 0 0 15px;
+        font-size: 14px;
+        font-family: "Montserrat", sans-serif;
+        &:focus,
+        &:active {
+          outline: none;
+          border: none;
+          color: rgba(#0f132a, 1);
+        }
+      }
       .emailNum {
         display: flex;
       }
@@ -149,6 +172,23 @@
           outline: none;
           border: none;
           color: rgba(#0f132a, 1);
+        }
+      }
+      button.btnUid {
+        width: 100px;
+        background: rgb(85 85 85);
+        color: white;
+        display: block;
+        margin-left: 50px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-family: "Montserrat", sans-serif;
+        box-shadow: 0 3px 30px rgb(2 1 2 / 36%);
+        transition: 0.2s linear;
+        &:hover {
+          box-shadow: 0 0 0 rgba(#e91e63, 0);
         }
       }
       button.btnEmail {

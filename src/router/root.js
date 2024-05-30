@@ -16,6 +16,8 @@ import NoticePage from "../pages/community/NoticePage";
 import DailyPage from "../pages/community/DailyPage";
 import ReportPage from "../pages/community/ReportPage";
 import ProjectView from "../pages/project/ProjectView";
+import FindIdPage from "../pages/user/FindIdPage";
+import FindPwPage from "../pages/user/FindPwPage";
 
 //router 생성
 const root = createBrowserRouter([
@@ -39,10 +41,13 @@ const root = createBrowserRouter([
   { path: "/project", element: <ProjectList /> }, //프로젝트 마일스톤
   { path: "/projectview", element: <ProjectView /> }, //프로젝트 마일스톤
 
+  //user
   { path: "/user/login", element: <LoginPage /> }, //로그인 페이지
   { path: "/user/register", element: <RegisterPage /> }, //회원가입
   { path: "/chatRegister", element: <ChatRegisterPage /> }, //
   { path: "/user/terms", element: <TermsPage /> }, // 약관
+  { path: "/user/findId", element: <FindIdPage /> }, // 아이디찾기
+  { path: "/user/findPw", element: <FindPwPage /> }, // 비밀번호찾기
 ]);
 
 // router 내보내기
