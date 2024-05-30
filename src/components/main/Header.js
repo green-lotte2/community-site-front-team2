@@ -18,7 +18,6 @@ const Header = (props) => {
     r = -1;
   }
 
-  console.log(props.ws + "이거를 보자 해더");
   var ws = props.ws;
   var [chatAll, setChatAll] = useState([]);
   if (ws != null) {
@@ -27,7 +26,6 @@ const Header = (props) => {
 
   useEffect(() => {
     if (ws == null) {
-      console.log('되나..?')
       if(authSlice.username){
         ws = createWebSocket();
       }
@@ -37,7 +35,6 @@ const Header = (props) => {
       ws.onmessage = (event) => {
         r = searchParams.get('room'); 
         const message = event.data;
-        console.log(message + "이거되나요??/!");
         setChatAll(prevChat => [...prevChat, message]);
         console.log(chatAll.length)
       };
@@ -46,7 +43,6 @@ const Header = (props) => {
   }, [ws]);
 
   useEffect(() => {
-    console.log(chatAll.length + "야호오");
     console.log(r);
     if (chatAll.length > 0) {
       const [nickname, time, roomNumber, text] =
@@ -103,11 +99,19 @@ const Header = (props) => {
     navigate("/main");
   };
 
+
   return (
     <>
       <header>
         <div>
           <div className="navRight">
+
+        {authSlice.userRole === 'ROLE_ADMIN' ? ( <Link to="/admin?cate=user">
+              <img src="/images/setting_50.png" alt="bell" />
+              <p>관리자</p>
+            </Link>): 
+        ( <></>)}
+    
             <Link to="/chat">
               <img src="/images/chat_50.png" alt="bell" />
               <p>채팅</p>
