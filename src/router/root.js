@@ -16,6 +16,7 @@ import NoticePage from "../pages/community/NoticePage";
 import DailyPage from "../pages/community/DailyPage";
 import ReportPage from "../pages/community/ReportPage";
 import ProjectView from "../pages/project/ProjectView";
+import AdminPage from "../pages/admin/AdminPage";
 
 //router 생성
 const root = createBrowserRouter([
@@ -43,6 +44,9 @@ const root = createBrowserRouter([
   { path: "/user/register", element: <RegisterPage /> }, //회원가입
   { path: "/chatRegister", element: <ChatRegisterPage /> }, //
   { path: "/user/terms", element: <TermsPage /> }, // 약관
+
+  //admin
+  { path: "/admin", element: <AdminPage/> }
 ]);
 
 // router 내보내기

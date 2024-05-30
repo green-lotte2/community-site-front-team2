@@ -240,7 +240,7 @@ const openMemberHandler = (e)=>{
   const submitHandler = (e)=>{
       e.preventDefault();
       if(window.confirm(`${roomName} 으로 생성하시겠습니까?`)){
-        fetch('http://localhost:8080/community/chatRegister?userId='+authSlice.username+'&chatName='+roomName)
+        fetch(`${url.backendUrl}/chatRegister?userId=`+authSlice.username+'&chatName='+roomName)
         .then(response => response.json())
         .then(data =>   {
           console.log(data.result);
@@ -254,7 +254,13 @@ const openMemberHandler = (e)=>{
      
   }
 
+  //파일...ㅋ
+  const fileUploadRef = useRef(document.getElementById('fileUpload'));
+  const fileButtonHandler =()=>{
+    fileUploadRef.current.click();
+  }
 
+  
   return (
    
     <>
@@ -343,7 +349,7 @@ const openMemberHandler = (e)=>{
                 </div>
               </div>
               <div className="chatInsert" style={{ border: "1px solid black", padding: "10px", display: "flex", alignItems: "center" }}>
-                <button className="chat-btn-attachment">+</button>
+                <button className="chat-btn-attachment" onClick={fileButtonHandler}>+</button>
                 <input type="text" className="chat-input" value={message} placeholder="메시지 입력..." onChange={(e) => setMessage(e.target.value)} onKeyPress={(e) => {
                   if (e.key === 'Enter') {
                     handleSend();
@@ -353,6 +359,7 @@ const openMemberHandler = (e)=>{
               </div>
               <br />
               <br />
+              <input type='file' style={{display: 'none'}} id="fileUpload"/>
             </>
           ) : (
             <p>Loading...</p>
