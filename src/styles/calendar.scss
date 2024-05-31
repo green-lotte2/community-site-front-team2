@@ -99,9 +99,14 @@
 
 .calendar .circle-picker{
     position: fixed;
-    top: 150px;
+    bottom: 150px;
     right: -120px;
     
+}
+
+.calendar .colorBtn{
+    border-radius: 50%;
+    border: 0px;
 }
 
 .calendar .circle-picker *{
