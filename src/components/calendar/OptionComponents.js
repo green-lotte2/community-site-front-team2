@@ -3,10 +3,12 @@ import { useSelector } from 'react-redux';
 import { CirclePicker } from 'react-color';
 import url from '../../config/url';
 
-const OptionComponents = ({ rightSideHandlerClose }) => {
+const OptionComponents = ({ rightSideHandlerClose, calendars }) => {
     const authSlice = useSelector((state) => state.authSlice);
-    const [colorBoxState, setColorBoxState] = useState(false)
-    const [color, setColor] = useState('#000');
+    const [colorBoxState, setColorBoxState] = useState(false);
+    const [listColorBoxState, setListColorBoxState] = useState(false);
+    const [color, setColor] = useState('#03bd9e');
+    const [target, setTarget] = useState();
 
     const handleChangeComplete = color => {
         setColor(color.hex);
@@ -18,7 +20,16 @@ const OptionComponents = ({ rightSideHandlerClose }) => {
         setColorBoxState(true);
     }
 
+    const handleListChangeComplete = (color, e) => {
+        console.log(e.target);
+        setColor(color.hex);
+        setListColorBoxState(false);
+        console.log(color.hex);
+    }
 
+    const listColorBoxHandler = () =>{
+        setListColorBoxState(true);
+    }
 
     useEffect(() => {
         const timeoutId2 = setTimeout(() => {
@@ -57,15 +68,24 @@ const OptionComponents = ({ rightSideHandlerClose }) => {
                 <div className='insertForm'>
                     <h2>캘린더 관리</h2>
                     <div className='setCalendar'>
-                        <input type='text' name='calName' />
-                        <button onClick={colorBoxHandler} style={{backgroundColor: color}}>dd</button>
+                        <input type='text' name='calName' placeholder='name' />
+                        <button className='colorBtn' onClick={colorBoxHandler} style={{ width: '25px', height: '25px', backgroundColor: color }}>&nbsp;</button>
                     </div>
+                </div>
+                <div className='calendarList'>
+                    {calendars.map((calendar) => {
+                        return(
+                            <div>
+                                <input type='text' value={calendar.name}/>
+                                <button value={calendar.id} className='colorBtn' onClick={listColorBoxHandler} style={{ width: '25px', height: '25px', backgroundColor: calendar.backgroundColor }}>&nbsp;</button>
+                            </div>
+                        )
+                    })}
                 </div>
 
 
-                {colorBoxState && <CirclePicker
-                    onChangeComplete={handleChangeComplete}
-                />}
+                {colorBoxState && <CirclePicker onChangeComplete={handleChangeComplete} />}
+                {listColorBoxState && <CirclePicker onChangeComplete={handleListChangeComplete} />}
 
             </div>
         </div>

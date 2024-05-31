@@ -10,7 +10,7 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }
   const [target, setTarget] = useState(targetEvent);
   const [inputs, setInputs] = useState({
     uid: authSlice.username,
-    calendarId: 'cal1',
+    calendarId: '1',
     title: '',
     location: '',
     start: moment(scheduleInfo.start).format().split('+')[0],
@@ -40,6 +40,7 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }
 
   const submitHandler = (e) => {
     e.preventDefault();
+    console.log(inputs);
     axios.post(url.backendUrl + '/calendar/insert', inputs)
       .then((Response) => {
         console.log(Response.data);
@@ -137,8 +138,8 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }
           <h2>일정 등록</h2>
           <form onSubmit={submitHandler}>
             <select name='calendarId' onChange={onInputChange}>
-              <option value={'cal1'}>개인</option>
-              <option value={'cal2'}>직장</option>
+              <option value={'1'}>개인</option>
+              <option value={'2'}>직장</option>
             </select>
             <p className='date'>
               <input name='start' onChange={onInputChange} type='datetime-local' defaultValue={moment(scheduleInfo.start).format().split('+')[0]} />
@@ -158,8 +159,8 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }
                 <input name='title' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['title']} />
                 <input name='location' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['location']} />
                 <select name='calendarId' data-name={event.id} onChange={onUpdateChange} defaultValue={event.calendarId}>
-                  <option value={'cal1'}>개인</option>
-                  <option value={'cal2'}>직장</option>
+                  <option value={'1'}>개인</option>
+                  <option value={'2'}>직장</option>
                 </select>
                 <button value={event.id} onClick={deleteBtnHandler}>삭제</button>
                 <button value={event.id} onClick={updateBtnHandler}>수정</button>

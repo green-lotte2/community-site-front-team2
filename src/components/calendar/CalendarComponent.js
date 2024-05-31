@@ -19,6 +19,7 @@ function CalendarComponent() {
   const [targetEvent, setTargetEvent] = useState([]);
   const [rightSideBar, setRightSideBar] = useState(false);
   const [optionBar, setOptionBar] = useState(false);
+  const [calendarList, setCalendarList] = useState([]);
   const [scheduleInfo, setScheduleInfo] = useState({
     "start": '2024-05-07T09:00:00',
     "end": '2024-05-07T10:00:00',
@@ -108,10 +109,9 @@ function CalendarComponent() {
       },
     };
     const calendar = new Calendar(container, options);
-    console.log(calendars);
     
     calendarObj.current = calendar;
-
+    /** 캘린더 리스트 조회 */
     axios.get(url.backendUrl + '/calendar/type')
     .then((Response)=>{
       Response.data.forEach(element => {
@@ -120,11 +120,12 @@ function CalendarComponent() {
           name: element.name,
           backgroundColor: element.backgroundColor,
         }
-        console.log(calendar);
         calendars.push(calendar);
-        
       })
       calendar.setCalendars(calendars);
+      setCalendarList(calendars);
+    }).catch((Error) => {
+      console.log(Error);
     });
 
     
@@ -135,7 +136,7 @@ function CalendarComponent() {
         Response.data.forEach(element => {
           const type = {
             id: element.id.toString(),
-            calendarId: element.calendarId,
+            calendarId: element.calendarId.toString(),
             location: element.location,
             title: element.title,
             start: element.start,
@@ -222,7 +223,7 @@ function CalendarComponent() {
       <div ref={calendarRef} style={{ width: '100%', height: '600px' }}>
       </div>
       {rightSideBar && <SideBar rightSideHandlerClose={rightSideHandlerClose} setEvents={setEvents} targetEvent={targetEvent} scheduleInfo={scheduleInfo}></SideBar>}
-      {optionBar && <OptionComponents rightSideHandlerClose={optionHandlerClose}></OptionComponents>}
+      {optionBar && <OptionComponents calendars={calendarList} rightSideHandlerClose={optionHandlerClose}></OptionComponents>}
     </div>
   );
 }
