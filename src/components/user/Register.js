@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
+import url from "../../config/url";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -113,7 +114,7 @@ const Register = () => {
     }
 
     axios
-      .get(`http://localhost:8080/community/checkUid?uid=${user.uid}`)
+      .get(`${url.backend}/checkUid?uid=${user.uid}`)
       .then((response) => {
         const result = response.data.result;
         setId(result);
@@ -138,7 +139,7 @@ const Register = () => {
     }
 
     axios
-      .get(`http://localhost:8080/community/checkEmail?email=${user.email}`)
+      .get(`${url.backend}/checkEmail?email=${user.email}`)
       .then((response) => {
         const result = response.data.result;
         const receivedCode = response.data.savedCode;
@@ -164,7 +165,7 @@ const Register = () => {
     e.preventDefault();
 
     axios
-      .get(`http://localhost:8080/community/checkEmailCode`, {
+      .get(`${url.backend}/checkEmailCode`, {
         params: {
           email: user.email,
           code: emailCode,
@@ -213,7 +214,7 @@ const Register = () => {
     console.log("user", user);
 
     axios
-      .post("http://localhost:8080/community/uploads", user, {
+      .post(`${url.backend}/uploads`, user, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

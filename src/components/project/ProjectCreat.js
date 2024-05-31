@@ -1,9 +1,24 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import url from '../../config/url';
 import useCates from '../../hooks/useCates';
+import Page from '../project/Page';
+
+const initState = {
+  dtoList: [],
+  cate: "",
+  pg: 0,
+  size: 0,
+  total: 0,
+  start: 0,
+  end: 0,
+  prev: false,
+  next: false,
+};
+
+
 
 const ProjectCreate = () => {
   const authSlice = useSelector((state) => state.authSlice); // 유저 정보 가져오기
@@ -21,53 +36,39 @@ const ProjectCreate = () => {
 
   const [invites, setInvites] = useState([]);
   const projectList = [];
-
-  const initState = {
-    dtoList: [],
-    cate: "",
-    pg: 0,
-    size: 0,
-    total: 0,
-    start: 0,
-    end: 0,
-    prev: false,
-    next: false,
-  };
   
 
-  const [cate1, cate2] = useCates();
   const [searchParams] = useSearchParams();
   const pg = searchParams.get("pg") || 1;
   const [serverData, setServerData] = useState(initState);
+  console.log(serverData +'이거 확인~~')
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/community/project?pg=${pg}`, {
+      .get(`${url.backendUrl}/project?pg=${pg}`, {
         headers: { Authorization: `Bearer ${authSlice.accessToken}` },
       })
       .then((resp) => {
         console.log(resp.data.dtoList);
-        setServerData(resp.data.dtoList);
+       setServerData(resp.data);
+        
       })
       .catch((err) => {
         console.log(err);
       });
   }, [pg]); // pg값이 변경이 되면 useEffect가 실행
-
-  const List = () => {
-
-  };
   
 
   // 새로운 프로젝트 객체 생성
-  const addProject = () => {
+  const addProject = (e) => {
+    e.preventDefault()
     if (!projectTitle.trim()) return;
     const newProject = { projectTitle: projectTitle, projectInfo: projectInfo , userId: authSlice.username, projectStatus : "Proceeding" };
     //setProjects((prevProjects) => [...prevProjects, newProject]);
     console.log(newProject)
     console.log(newProject +"이거확인")
 
-    axios.post(`${url.backendUrl}/community/project/projectinsert`, newProject)
+    axios.post(`${url.backendUrl}/project/projectinsert`, newProject)
     .then(res => {
       console.log("프로젝트 등록");
   
@@ -103,26 +104,22 @@ const ProjectCreate = () => {
   //초대핸들러
   const inviteSendHandler = (e)=>{
     e.preventDefault();
-    console.log(document.getElementById('insertEmail').value+'&projectNo='+document.get('projectNo').value)
-    fetch(`${url.backendUrl}/projectSearchUser?userEmail=`+document.getElementById('insertEmail').value+'&projectNo='+document.getElementsByClassName('projectNo').value)
-    .then(response => response.json())
-    .then(data => {if(data.result==0){
+    fetch(`${url.backendUrl}/projectSearchUser?userEmail=`+document.getElementById('insertEmail').value+'&projectNo='+document.getElementById('projectNo').value)
+      .then(response => response.json())
+      .then(data => {if(data.result==0){
         alert('해당 사용자가 없습니다.')
     }else if(data.result == -1){
       alert('이미 초대된 사용자입니다.')
     }else{
       alert('초대 되었습니다.')
     }setcollaboBar(false);})
-    .catch(error => console.error('Error fetching user rooms:', error));
+      .catch(error => console.error('Error fetching user rooms:', error));
   }
 
-  const selectMemberHandler = (e)=>{
-    document.getElementById('insertEmail').value = e.target.textContent;
-  }
 
-  
   //이메일 입력
   const inserEmailHandler = (e)=>{
+    e.preventDefault()
     console.log(e.target.value+"!")
     fetch(`${url.backendUrl}/searchDm?word=`+e.target.value)
     .then(response => response.json())
@@ -134,6 +131,10 @@ const ProjectCreate = () => {
   }
 
 
+  const selectMemberHandler = (e)=>{
+    e.preventDefault()
+    document.getElementById('insertEmail').value = e.target.textContent;
+  }
 
 
   return (
@@ -164,16 +165,20 @@ const ProjectCreate = () => {
         <div>
           <h4>Projects List</h4>
           <ul>
-          {serverData.map((project, index) => (
-            <li key={index} className='projectList'>
-              <div>{serverData.startNo - index}</div>
-              <h2>Project</h2>
-              <p>{project.projectTitle}</p>
-              <p  value={project.projectNo} >Project Code : {project.projectNo}</p>
-              <p>Project Content : {project.projectInfo}</p>
-              <p>Project Status : {project.projectStatus}</p>
-              <p>Created by: {project.userId}</p>
-              <div>
+            {serverData.dtoList.map((project, index) => (
+
+              <div style={{border : '1px solid black', margin : '5px'}}>
+              <li key={index} className='projectList'>
+                
+                <h2>Project</h2>
+                <p>{project.projectTitle}</p>
+                <p  value={project.projectNo} >Project Code : {project.projectNo}</p>
+                <p>Project Content : {project.projectInfo}</p>
+                <p>Project Status : {project.projectStatus}</p>
+                <p>Created by: {project.userId}</p>
+
+
+               <div>
                 {!collaboBar[project.projectNo] && (
                   <button onClick={() => selectProjectHandler(project.projectNo)}>Collaborators add</button>
                 )}
@@ -182,7 +187,7 @@ const ProjectCreate = () => {
                     {emailLabel[project.projectNo] && (
                       <>
                         <label>
-                          <input type="hidden" id="projectNo" value={project.projectNo} />
+                          <input type="text" id="projectNo" value={project.projectNo} />
                           <input type="text" onChange={inserEmailHandler} id="insertEmail" placeholder="이메일 입력" />
                           <p onClick={() => closeBar(project.projectNo)}>x</p>
                           <div className='inviteDiv' style={{ border: '1px solid gray', width: '100%', maxHeight: '100px', overflow: 'scroll', marginTop: '2px' }}>
@@ -197,14 +202,19 @@ const ProjectCreate = () => {
                   </form>
                 )}
               </div>
-              {/* 참여 멤버 */}
+              
+            {/*  참여 멤버    */}
               {members.map((user, index) => (
                 <p key={index}>{user.name}</p>
               ))}
+           
             </li>
-          ))}
+            </div>
+
+          ))}        
         </ul>
         </div>
+        <Page serverData={serverData}/>        
     </div>
     );
   

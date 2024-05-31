@@ -1,10 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import url from "../../config/url";
 
 const Footer = () => {
-
-  const baseUrl = "//localhost:8080/community";
-
 
   //백엔드 요청
   const [ data, setData ] = useState('');
@@ -15,7 +13,7 @@ const Footer = () => {
     
   async function snpapshot() { 
     await axios
-    .get(baseUrl + "/snapshot") 
+    .get(`${url.backend}/snapshot`) 
     .then((res)=>{
       	console.log(res);
         setData(res.data);

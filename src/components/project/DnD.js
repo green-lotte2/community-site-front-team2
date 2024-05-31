@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ProjectInfo from "./ProjectInfo";
 import axios from 'axios';
 import { useSelector } from "react-redux";
+import url from "../../config/url";
 
 // 초기 아이템을 빈 배열로 설정합니다.
 const initialItems1 = [];
@@ -43,7 +44,7 @@ const DragAndDrop = () => {
   const [member, setMember] = useState("");
 
 //Get요청
-  axios.get('http://localhost:8080/community/project/select', { params: {
+  axios.get(`${url.backend}/project/select`, { params: {
       memeber : authSlice.username
     }}
     ).then((response) => {
@@ -63,7 +64,7 @@ const DragAndDrop = () => {
     
     console.log(newItem )
   
-    axios.post('http://localhost:8080/community/project/insert', newItem  )
+    axios.post(`${url.backend}/project/insert`, newItem  )
     .then(response => {
       console.log("아아아나");
     })
