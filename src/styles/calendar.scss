@@ -28,6 +28,29 @@
 
 }
 
+.calendar .optionBox {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #111;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    background-color: rgba(125, 125, 125, 0.3);
+    transform: translateX("-300px");
+    z-index: 200;
+    justify-content: end;
+}
+
+.calendar .optionContent {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    height: 1000px;
+    background-color: #ffffff;
+
+}
+
 .calendar .insertForm{
     width: 430px;
     height:300px;
@@ -72,4 +95,15 @@
 
 .calendar .eventList .event > h4{
     display: inline-block;
+}
+
+.calendar .circle-picker{
+    position: fixed;
+    top: 150px;
+    right: -120px;
+    
+}
+
+.calendar .circle-picker *{
+    margin: 0 auto;
 }

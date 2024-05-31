@@ -8,6 +8,7 @@ import 'tui-time-picker/dist/tui-time-picker.css';
 import Calendar from '@toast-ui/calendar';
 import moment from 'moment/moment';
 import SideBar from './SideBar';
+import OptionComponents from './OptionComponents';
 import axios from 'axios';
 import url from '../../config/url';
 
@@ -17,26 +18,33 @@ function CalendarComponent() {
   const [date, setDate] = useState('');
   const [targetEvent, setTargetEvent] = useState([]);
   const [rightSideBar, setRightSideBar] = useState(false);
+  const [optionBar, setOptionBar] = useState(false);
   const [scheduleInfo, setScheduleInfo] = useState({
-    "scheduleTitle": "bb",
-    "scheduleId": "aa",
     "start": '2024-05-07T09:00:00',
     "end": '2024-05-07T10:00:00',
   });
 
   const event = [];
+  const calendars = [];
   const calendarObj = useRef(null);
   const authSlice = useSelector((state) => state.authSlice);
 
 
-  const rightSideHandler = () => {
-    return setRightSideBar(true);
+  const optionHandler = () => {
+    return setOptionBar(true);
   }
   const rightSideHandlerClose = (event) => {
     const scheduleBox = document.getElementsByClassName("scheduleBox")[0];
     if (event.target === scheduleBox) {
       return setRightSideBar(false);
 
+    }
+  }
+
+  const optionHandlerClose = (event) => {
+    const optionBox = document.getElementsByClassName("optionBox")[0];
+    if (event.target === optionBox) {
+      return setOptionBar(false);
     }
   }
 
@@ -74,7 +82,6 @@ function CalendarComponent() {
         end = moment(end).add(-1, "s").format();
       }
       if (end >= eventStart && start < eventEnd) {
-        console.log(event[i]['title']);
         eventList.push(event[i]);
       }
     }
@@ -85,6 +92,8 @@ function CalendarComponent() {
     /** 초기값 설정(evets값 변경 감지, 사이드바 제거) */
     setEvents(0);
     setRightSideBar(false);
+
+    
 
     const container = calendarRef.current;
     const options = {
@@ -97,22 +106,29 @@ function CalendarComponent() {
           },
         ],
       },
-      calendars: [
-        {
-          id: 'cal1',
-          name: '개인',
-
-          backgroundColor: '#03bd9e',
-        },
-        {
-          id: 'cal2',
-          name: '직장',
-          backgroundColor: '#00a9ff',
-        },
-      ],
     };
     const calendar = new Calendar(container, options);
+    console.log(calendars);
+    
     calendarObj.current = calendar;
+
+    axios.get(url.backendUrl + '/calendar/type')
+    .then((Response)=>{
+      Response.data.forEach(element => {
+        const calendar = {
+          id: element.id.toString(),
+          name: element.name,
+          backgroundColor: element.backgroundColor,
+        }
+        console.log(calendar);
+        calendars.push(calendar);
+        
+      })
+      calendar.setCalendars(calendars);
+    });
+
+    
+
     /** 스케줄 목록 조회 */
     axios.get(url.backendUrl + '/calendar')
       .then((Response) => {
@@ -120,6 +136,7 @@ function CalendarComponent() {
           const type = {
             id: element.id.toString(),
             calendarId: element.calendarId,
+            location: element.location,
             title: element.title,
             start: element.start,
             end: element.end,
@@ -138,8 +155,6 @@ function CalendarComponent() {
       defaultEnd = moment(end).add(1, "d").format();
       defaultEnd = moment(defaultEnd).add(-1, "s").format();
       setScheduleInfo({
-        "scheduleTitle": "bb",
-        "scheduleId": "aa",
         "start": start.toString(),
         "end": defaultEnd.toString(),
       });
@@ -151,39 +166,31 @@ function CalendarComponent() {
     });
 
     calendar.on('beforeUpdateEvent', ({ event, changes }) => {
-      
+
       calendar.updateEvent(event.id, event.calendarId, changes);
       const keys = Object.keys(changes);
-      console.log(event);
-      keys.forEach((key)=>{
+      keys.forEach((key) => {
 
         event[key] = changes[key];
-
-
-        console.log(key);
-        console.log(changes[key]);
       });
       const schedule = {
         uid: authSlice.username,
         id: event.id,
         calendarId: event.calendarId,
+        location: event.location,
         title: event.title,
-        start: event.start.toDate(),
-        end: event.end.toDate(),
+        start: moment(event.start.toDate()).format('YYYY-MM-DDTHH:MM:SS'),
+        end: moment(event.end.toDate()).format('YYYY-MM-DDTHH:MM:SS'),
       };
-      /*
-        axios.post(url.backendUrl + '/calendar/insert', )
+
+      axios.post(url.backendUrl + '/calendar/insert', schedule)
         .then((Response) => {
           console.log(Response.data);
-          calendarObj(1);
+          setEvents(1);
         }).catch((Error) => {
           console.log(Error);
         });
 
-*/
-      console.log(schedule);
-      console.log(changes)
-      
     });
 
     const handleWheel = (event) => {
@@ -211,10 +218,11 @@ function CalendarComponent() {
       <input type='month' onChange={changeMonthHandler} value={date} />
       <button onClick={remoteNextDate}> &gt;</button>
       <button onClick={btnToday}>오늘</button>
+      <button onClick={optionHandler}>설정</button>
       <div ref={calendarRef} style={{ width: '100%', height: '600px' }}>
       </div>
-      {rightSideBar && <SideBar rightSideHandlerClose={rightSideHandlerClose} calendarObj={setEvents} targetEvent={targetEvent} scheduleInfo={scheduleInfo}></SideBar>}
-
+      {rightSideBar && <SideBar rightSideHandlerClose={rightSideHandlerClose} setEvents={setEvents} targetEvent={targetEvent} scheduleInfo={scheduleInfo}></SideBar>}
+      {optionBar && <OptionComponents rightSideHandlerClose={optionHandlerClose}></OptionComponents>}
     </div>
   );
 }
