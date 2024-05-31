@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import Modal from 'react-modal';
 import { FAILSAFE_SCHEMA } from 'js-yaml';
 import url from '../../config/url';
 import { format } from 'date-fns';
+import { useDropzone } from 'react-dropzone';
 
 
 const ChatContent = ( props ) => {
@@ -133,7 +134,6 @@ const ChatContent = ( props ) => {
 
   useEffect(() => {
     if ( ws.onopen ) { 
-      console.log('이건 왜 되고!')
       if (chatAll.length > 0) {
         const [nickname, time, roomNumber, text] = chatAll[chatAll.length - 1].split('*');
         if(roomNumber.trim() === r){
@@ -144,11 +144,15 @@ const ChatContent = ( props ) => {
   }, [ ws , chatAll ]);
 
   const handleSend = () => {
-    console.log('이거 눌러는 지나? 대체 왜이럼?')
     if (ws.onopen) {
-      console.log('이거 눌러는 지나? 대체 왜이럼?222')
       const time = getCurrentTime();
-      ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
+      if(nowFile != null){
+       //여기서 파일을 보내고 저장하고 다시 전송해주자 아 귀찮아..
+       ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
+      }else{
+        ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
+      }
+      
       setMessage('');
     }
   };
@@ -255,10 +259,33 @@ const openMemberHandler = (e)=>{
   }
 
   //파일...ㅋ
-  const fileUploadRef = useRef(document.getElementById('fileUpload'));
-  const fileButtonHandler =()=>{
-    fileUploadRef.current.click();
-  }
+  const [thumbnail, setThumbnailPreview] = useState(null);
+  const [nowFile , setNowFile] = useState(null);
+    const onDrop = useCallback(acceptedFiles => {
+      // Do something with the files
+      if(acceptedFiles.length > 0 ) {
+        setNowFile(acceptedFiles[0]);
+        const file = acceptedFiles[0];
+        const fileURL = URL.createObjectURL(file);
+        //createObjectURL는 임시로 URL을 저장할수 있는 메서드입니다
+
+        const isImage = file.type.startsWith('image/'); //이미지인지 확인
+        const thumbnailData = {
+          url: isImage ? fileURL : null,
+          name: file.name,
+          size: file.size,
+        };
+        setThumbnailPreview(thumbnailData );
+      }
+console.log(getInputProps)
+
+    }, [])
+    
+    const thumNailHandler = (e)=>{
+      setThumbnailPreview(null);
+    }
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+  
 
   
   return (
@@ -348,22 +375,44 @@ const openMemberHandler = (e)=>{
                   })}
                 </div>
               </div>
+
+              {thumbnail && (
+          <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center' }}>
+            {thumbnail.url != null?  <img src={thumbnail.url} alt={thumbnail.name} style={{ width: '30px', height: 'auto', objectFit: 'cover', marginRight: '10px' }} />
+            : <></>}
+         
+          <span >{thumbnail.name} - {(thumbnail.size / 1024).toFixed(2)} KB</span>
+          <span style={{marginLeft: '20px', fontWeight: 'bold'}} onClick={thumNailHandler} > X</span>
+        </div>
+      )}
+
+
               <div className="chatInsert" style={{ border: "1px solid black", padding: "10px", display: "flex", alignItems: "center" }}>
-                <button className="chat-btn-attachment" onClick={fileButtonHandler}>+</button>
+             <div {...getRootProps()} style={{width: '40px', border: '1px solid gray', textAlign: 'center'}}>    
+             <input {...getInputProps()} />      
+               <button className="chat-btn-attachment">+</button>
+          
+               </div>
+               
                 <input type="text" className="chat-input" value={message} placeholder="메시지 입력..." onChange={(e) => setMessage(e.target.value)} onKeyPress={(e) => {
                   if (e.key === 'Enter') {
                     handleSend();
                   }
                 }} />
+              
                 <button onClick={handleSend} className="chat-btn-send">▶</button>
               </div>
+
+           
+
               <br />
               <br />
-              <input type='file' style={{display: 'none'}} id="fileUpload"/>
+              
             </>
           ) : (
             <p>Loading...</p>
           )}
+          
         </div>
       )}
 
