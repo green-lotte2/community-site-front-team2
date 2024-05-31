@@ -60,6 +60,7 @@ export default function Write() {
     cate: cate1[1],
     title: "",
     content: "",
+    nick: "",
     writer: authSlice.username,
   });
 
@@ -82,7 +83,7 @@ export default function Write() {
 
     axios
       .post(
-        url.backendUrl + `/board`,
+        `http://localhost:8080/community/board`,
         JSON.stringify(updatedBoard), // 데이터를 JSON 문자열로 변환
         {
           headers: {
@@ -163,7 +164,6 @@ export default function Write() {
         <button className="submitBtn" onClick={submitHandler}>
           완료
         </button>
-        {/*<Link to={`/board/list?cate=${cate1[1]}`}>완료</Link> */}
       </div>
     </div>
   );

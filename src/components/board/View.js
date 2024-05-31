@@ -20,7 +20,7 @@ const View = () => {
     console.log(`cate: ${cate}, no: ${no}`);
 
     axios
-      .get(url.backendUrl + `/board/${cate}/${no}`, {
+      .get(`http://localhost:8080/community/board/${cate}/${no}`, {
         headers: { Authorization: `Bearer ${authSlice.accessToken}` },
       })
 
@@ -72,7 +72,10 @@ const View = () => {
       </div>
       {/*view end */}
       <div className="vBtn">
-        <Link to={`/board/list?cate=${cate}`}>글쓰기</Link>
+        <div>
+          <Link to={`/board/list?cate=${cate}`}>글쓰기</Link>
+          <Link to={`/board/modify/${cate}/${no}`}>수정</Link>
+        </div>
         <div>
           <Link to={`/board/list?cate=${cate}`}>목록</Link>
           <Link to="#">Top</Link>
