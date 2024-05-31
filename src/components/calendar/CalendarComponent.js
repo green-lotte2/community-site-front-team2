@@ -93,6 +93,7 @@ function CalendarComponent() {
     setEvents(0);
     setRightSideBar(false);
 
+    
 
     const container = calendarRef.current;
     const options = {
@@ -107,11 +108,12 @@ function CalendarComponent() {
       },
     };
     const calendar = new Calendar(container, options);
+    console.log(calendars);
+    
     calendarObj.current = calendar;
 
     axios.get(url.backendUrl + '/calendar/type')
     .then((Response)=>{
-      console.log(Response.data);
       Response.data.forEach(element => {
         const calendar = {
           id: element.id.toString(),
@@ -120,9 +122,12 @@ function CalendarComponent() {
         }
         console.log(calendar);
         calendars.push(calendar);
+        
       })
       calendar.setCalendars(calendars);
-    })
+    });
+
+    
 
     /** 스케줄 목록 조회 */
     axios.get(url.backendUrl + '/calendar')

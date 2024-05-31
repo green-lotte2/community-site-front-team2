@@ -58,7 +58,7 @@ const OptionComponents = ({ rightSideHandlerClose }) => {
                     <h2>캘린더 관리</h2>
                     <div className='setCalendar'>
                         <input type='text' name='calName' />
-                        <button onClick={colorBoxHandler} style={{backgroundColor: color}}></button>
+                        <button onClick={colorBoxHandler} style={{backgroundColor: color}}>dd</button>
                     </div>
                 </div>
 
