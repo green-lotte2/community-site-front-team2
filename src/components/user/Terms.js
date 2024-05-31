@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import url from "../../config/url";
 
 const Terms = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Terms = () => {
   const [smsContent, setSmsContent] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:8080/community/user/terms").then((response) => {
+    axios.get(`${url.backend}/user/terms`).then((response) => {
       console.log(response.data);
       setTermsContent(response.data.terms);
       setPrivacyContent(response.data.privacy);

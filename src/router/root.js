@@ -40,7 +40,7 @@ const root = createBrowserRouter([
 
   //project
   { path: "/project", element: <ProjectList /> }, //프로젝트 마일스톤
-  { path: "/projectview", element: <ProjectView /> }, //프로젝트 마일스톤
+  { path: "/project/projectview", element: <ProjectView /> }, //프로젝트 마일스톤
 
   //user
   { path: "/user/login", element: <LoginPage /> }, //로그인 페이지

@@ -11,7 +11,7 @@ const Page = ({ serverData }) => {
       nums.push(
         <Link
           key={i}
-          to={`/projectCreate&pg=${i}`}
+          to={`/project?pg=${i}`}
           className={`num ${serverData.pg === i && "current"}`}
         >
           {i}
@@ -26,7 +26,7 @@ const Page = ({ serverData }) => {
       {/* 이전 */}
       {serverData.prev && (
         <Link
-          to={`/projectCreate&pg=${serverData.start - 1}`}
+          to={`/project?pg=${serverData.start - 1}`}
           className="prev"
         >
           이전
@@ -38,7 +38,7 @@ const Page = ({ serverData }) => {
       {/*다음 */}
       {serverData.next && (
         <Link
-          to={`/projectCreate&pg=${
+          to={`/project?pg=${
             serverData.start + 1
           }`}
           className="next"

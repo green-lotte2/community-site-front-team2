@@ -55,7 +55,7 @@ const ChatAside = (props) => {
     const submitHandler = (e)=>{
         e.preventDefault();
         if(window.confirm(`${roomName} 으로 생성하시겠습니까?`)){
-          fetch('http://localhost:8080/community/chatRegister?userId='+authSlice.username+'&chatName='+roomName)
+          fetch(`${url.backendUrl}/chatRegister?userId=`+authSlice.username+'&chatName='+roomName)
           .then(response => response.json())
           .then(data =>   {
             console.log(data.result);
