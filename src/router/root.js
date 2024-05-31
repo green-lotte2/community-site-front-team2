@@ -33,7 +33,7 @@ const root = createBrowserRouter([
   //board
   { path: "/board/list", element: <ListPage /> }, //게시판 리스트
   { path: "/board/modify", element: <ModifyPage /> }, //게시판 수정
-  { path: "/board/view", element: <ViewPage /> }, //게시판 뷰
+  { path: "/board/view/:cate/:no", element: <ViewPage /> }, //게시판 뷰 (카테, 글번호에 따라 동적으로 지정)
   { path: "/board/write", element: <WritePage /> }, //게시판 작성
 
   { path: "/calendar", element: <CalendarPage /> }, //캘린더
@@ -49,10 +49,9 @@ const root = createBrowserRouter([
   { path: "/user/terms", element: <TermsPage /> }, // 약관
   { path: "/user/findId", element: <FindIdPage /> }, // 아이디찾기
   { path: "/user/findPw", element: <FindPwPage /> }, // 비밀번호찾기
-   
-  //admin
-  { path: "/admin", element: <AdminPage/> }
 
+  //admin
+  { path: "/admin", element: <AdminPage /> },
 ]);
 
 // router 내보내기

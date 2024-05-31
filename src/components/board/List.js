@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Page from "./Page";
 import { formatters } from "date-fns";
+import url from "../../config/url";
 
 const initState = {
   dtoList: [],
@@ -28,7 +29,7 @@ const List = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/community/board?cate=${cate}&pg=${pg}`, {
+      .get(url.backendUrl + `/board?cate=${cate}&pg=${pg}`, {
         headers: { Authorization: `Bearer ${authSlice.accessToken}` },
       })
       .then((resp) => {
