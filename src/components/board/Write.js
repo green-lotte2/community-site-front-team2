@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useCates from "../../hooks/useCates";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import url from "../../config/url";
 
 const Size = Quill.import("formats/size");
 Size.whitelist = ["small", "medium", "large", "huge"];
@@ -81,7 +82,7 @@ export default function Write() {
 
     axios
       .post(
-        "http://localhost:8080/community/board",
+        url.backendUrl + `/board`,
         JSON.stringify(updatedBoard), // 데이터를 JSON 문자열로 변환
         {
           headers: {
