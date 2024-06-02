@@ -44,7 +44,10 @@
     "styled-components": "^6.1.11",
     "tui-date-picker": "^4.3.3",
     "tui-time-picker": "^2.1.6",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "react-feather": "^2.0.10",
+    "use-local-storage": "^2.3.6",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

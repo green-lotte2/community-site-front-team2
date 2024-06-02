@@ -8,6 +8,7 @@ import ViewPage from "../pages/board/ViewPage";
 import WritePage from "../pages/board/WritePage";
 import CalendarPage from "../pages/calendar/CalendarPage";
 import ProjectList from "../pages/project/ProjectList";
+import ProjectBoard from "../pages/project/ProjectBoard";
 import LoginPage from "../pages/user/LoginPage";
 import RegisterPage from "../pages/user/RegisterPage";
 import TermsPage from "../pages/user/TermsPage";
@@ -19,6 +20,7 @@ import ProjectView from "../pages/project/ProjectView";
 import FindIdPage from "../pages/user/FindIdPage";
 import FindPwPage from "../pages/user/FindPwPage";
 import AdminPage from "../pages/admin/AdminPage";
+
 
 //router 생성
 const root = createBrowserRouter([
@@ -41,7 +43,7 @@ const root = createBrowserRouter([
   //project
   { path: "/project", element: <ProjectList /> }, //프로젝트 마일스톤
   { path: "/project/projectview", element: <ProjectView /> }, //프로젝트 마일스톤
-
+  { path: "/project/ProjectBoard", element: <ProjectBoard /> }, //프로젝트 칸반보드
   //user
   { path: "/user/login", element: <LoginPage /> }, //로그인 페이지
   { path: "/user/register", element: <RegisterPage /> }, //회원가입

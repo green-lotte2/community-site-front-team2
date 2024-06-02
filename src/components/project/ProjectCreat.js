@@ -45,7 +45,7 @@ const ProjectCreate = () => {
 
   useEffect(() => {
     axios
-      .get(`${url.backendUrl}/project?pg=${pg}`, {
+      .get(`${url.backendUrl}/project?pg=${pg}&userId=${authSlice.username}`, {
         headers: { Authorization: `Bearer ${authSlice.accessToken}` },
       })
       .then((resp) => {
