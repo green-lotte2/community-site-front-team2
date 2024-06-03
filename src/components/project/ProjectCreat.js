@@ -20,6 +20,7 @@ const initState = {
 
 
 
+
 const ProjectCreate = () => {
   const authSlice = useSelector((state) => state.authSlice); // 유저 정보 가져오기
   const location = useLocation();
@@ -56,7 +57,7 @@ const ProjectCreate = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [pg]); // pg값이 변경이 되면 useEffect가 실행
+  }, [pg, projectBar]); // pg값이 변경이 되면 useEffect가 실행
   
 
   // 새로운 프로젝트 객체 생성
@@ -73,6 +74,8 @@ const ProjectCreate = () => {
       console.log("프로젝트 등록");
   
       setProjects(prevProjects => [...prevProjects, res.data]);
+      setProjectTitle(""); 
+      setProjectBar(false);
       console.log(projects);
     })
     .catch(function (error) {
@@ -80,9 +83,8 @@ const ProjectCreate = () => {
     });
 
     //값 초기화
-    setProjectTitle(""); 
-    setProjectBar(false);
-
+    
+    console.log('aa');
   };
 
   // 프로젝트를 클릭할 때마다 해당 프로젝트 번호를 선택하도록 설정
@@ -104,7 +106,8 @@ const ProjectCreate = () => {
   //초대핸들러
   const inviteSendHandler = (e)=>{
     e.preventDefault();
-    fetch(`${url.backendUrl}/projectSearchUser?userEmail=`+document.getElementById('insertEmail').value+'&projectNo='+document.getElementById('projectNo').value)
+    console.log(e.target.id);
+    fetch(`${url.backendUrl}/projectSearchUser?userEmail=`+document.getElementById('insertEmail').value+'&projectNo='+e.target.id)
       .then(response => response.json())
       .then(data => {if(data.result==0){
         alert('해당 사용자가 없습니다.')
@@ -135,7 +138,6 @@ const ProjectCreate = () => {
     e.preventDefault()
     document.getElementById('insertEmail').value = e.target.textContent;
   }
-
 
   return (
     <div id='ProjectList'>
@@ -171,7 +173,7 @@ const ProjectCreate = () => {
               <li key={index} className='projectList'>
                 
                 <h2>Project</h2>
-                <p>{project.projectTitle}</p>
+                <Link to={`/project/projectboard?projectNo=${project.projectNo}`}>{project.projectTitle}</Link>
                 <p  value={project.projectNo} >Project Code : {project.projectNo}</p>
                 <p>Project Content : {project.projectInfo}</p>
                 <p>Project Status : {project.projectStatus}</p>
@@ -183,7 +185,7 @@ const ProjectCreate = () => {
                   <button onClick={() => selectProjectHandler(project.projectNo)}>Collaborators add</button>
                 )}
                 {collaboBar[project.projectNo] && (
-                  <form onSubmit={inviteSendHandler}>
+                  <form id={project.projectNo} onSubmit={inviteSendHandler}>
                     {emailLabel[project.projectNo] && (
                       <>
                         <label>

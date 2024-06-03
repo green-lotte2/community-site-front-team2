@@ -9,8 +9,17 @@ import Editable from "../../components/project/kanban/Editable";
 import useLocalStorage from "use-local-storage";
 
 import DefaultLayout from '../../layouts/DefaultLayout'
+import axios from "axios";
+
+import url from '../../config/url';
+import authSlice from "../../slices/authSlice";
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function ProjectBoard() {
+  
   const [data, setData] = useState(
     localStorage.getItem("kanban-board")
       ? JSON.parse(localStorage.getItem("kanban-board"))
@@ -132,6 +141,8 @@ function ProjectBoard() {
     localStorage.setItem("kanban-board", JSON.stringify(data));
   }, [data]);
 
+
+ 
   return (
     <div>
       <DefaultLayout>
