@@ -21,13 +21,23 @@ const OptionComponents = ({ rightSideHandlerClose, calendars }) => {
     }
 
     const handleListChangeComplete = (color, e) => {
-        console.log(e.target);
-        setColor(color.hex);
-        setListColorBoxState(false);
+        
         console.log(color.hex);
+        calendars.map((calendar) => {
+            if(calendar.id === target){
+                const updateCalendar = {
+                    ...calendar,
+                    ['backgroundColor']: color.hex,
+                };
+                console.log(updateCalendar);
+            }
+        });
+        console.log(calendars);
+        setListColorBoxState(false);
     }
 
-    const listColorBoxHandler = () =>{
+    const listColorBoxHandler = (e) =>{
+        setTarget(e.target.value);
         setListColorBoxState(true);
     }
 
