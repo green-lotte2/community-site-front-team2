@@ -138,6 +138,16 @@ const ChatContent = ( props ) => {
     if ( ws.onopen ) { 
       if (chatAll.length > 0) {
         const [nickname, time, roomNumber, text] = chatAll[chatAll.length - 1].split('*');
+        if(nickname.trim()==='file'){
+          console.log('이거는 되나요? 제발요?')
+          console.log(chatAll[chatAll.length -1]);
+          const [file , oName, sName, nickname , time, room, text] = chatAll[chatAll.length -1].split('*');
+          console.log(room.trim())
+          if(room.trim() === r){
+            console.log('여기까지 됨')
+            setChat(prevChat => [...prevChat, chatAll[chatAll.length - 1]]);
+          }
+        }
         if(roomNumber.trim() === r){
           console.log(chatAll[chatAll.length-1] + 'zzz');
           setChat(prevChat => [...prevChat, chatAll[chatAll.length - 1]]);
@@ -145,9 +155,12 @@ const ChatContent = ( props ) => {
       }
     }
   }, [ ws , chatAll ]);
-
+  const [nowFile , setNowFile] = useState(null);
+  //보냄
   const handleSend = () => {
+    console.log('here..!')
     if (ws.onopen) {
+          console.log('here..22!')
       const time = getCurrentTime();
       if(nowFile != null){
        //여기서 파일을 보내고 저장하고 다시 전송해주자 아 귀찮아..
@@ -159,20 +172,25 @@ const ChatContent = ( props ) => {
        formData.append('message', message);
         var int = 0;
       console.log(formData)
+     
        axios.post(`${url.backendUrl}/chat/fileUpload`, formData, {headers: {
         'Content-Type': 'multipart/form-data'
       }}).then((response)=>{
         console.log(response)
         int = response.data;
+        console.log('sendNowNowNow!!')
+        
+        ws.send(`fileUpload*${int}`);
        }).catch((err)=>{
         console.log(err);
        })
-       console.log('sendNowNowNow!!')
-       ws.send(`fileUpload*${int}`);
+
       }else{
+        console.log('here..22!')
         ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
       }
-      
+      setThumbnailPreview(null);
+      setNowFile(null);
       setMessage('');
     }
   };
@@ -189,7 +207,6 @@ const openMemberHandler = (e)=>{
   fetch(`${url.backendUrl}/chatMembers?room=`+r)
   .then(response => response.json())
   .then(data => {
-    console.log(data.result)
     setMembers(data.result);
     setMemberModalIsOpen(true);
 })
@@ -267,7 +284,6 @@ const openMemberHandler = (e)=>{
         fetch(`${url.backendUrl}/chatRegister?userId=`+authSlice.username+'&chatName='+roomName)
         .then(response => response.json())
         .then(data =>   {
-          console.log(data.result);
          if(data.result != null){
             alert('생성되었습니다.')
             navigate(`/chat?room=${data.result}`)
@@ -280,14 +296,14 @@ const openMemberHandler = (e)=>{
 
   //파일...ㅋ
   const [thumbnail, setThumbnailPreview] = useState(null);
-  const [nowFile , setNowFile] = useState(null);
+
     const onDrop = useCallback(acceptedFiles => {
       // Do something with the files
       if(acceptedFiles.length > 0 ) {
         setNowFile(acceptedFiles[0]);
         const file = acceptedFiles[0];
         const fileURL = URL.createObjectURL(file);
-        //createObjectURL는 임시로 URL을 저장할수 있는 메서드입니다
+    
 
         const isImage = file.type.startsWith('image/'); //이미지인지 확인
         const thumbnailData = {
@@ -297,12 +313,11 @@ const openMemberHandler = (e)=>{
         };
         setThumbnailPreview(thumbnailData );
       }
-console.log(getInputProps)
-
     }, [])
     
     const thumNailHandler = (e)=>{
       setThumbnailPreview(null);
+      setNowFile(null);
     }
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
@@ -339,9 +354,8 @@ console.log(getInputProps)
                         const [date, timePart] = time.trim().split(' ');
                         const text = exChat.message;
                         const oName = exChat.oname;
-                        console.log(exChat.oname)
-                        console.log(exChat)
-                        console.log(exChat+"??")
+
+                        
                         return (
                           <div key={index}   className={exChat.status == 0 ? ('chat-unreadItem') : ('chat-item')}  >           
                             <div>
@@ -371,20 +385,19 @@ console.log(getInputProps)
                       </div>
                     ))}
                   
-                  
-                  
-              
 
 
                   {chat.map((msg, index) => {
                     const [nickname, time, roomNumber, text] = msg.split('*');
                     const [date, timePart] = time.trim().split(' ');
-                    if (roomNumber.trim() !== r) {
-                      return null;
-                    }
                     if(nickname.trim() === "file"){
+                      console.log('here...?')
                       const [file , oName, sName,nickname, time, roomNumber, text] = msg.split('*');
                       const [date, timePart] = time.trim().split(' ');
+                      if(roomNumber.trim () !== r){
+                        return null;
+                      }
+                    
                       return (
                         <div key={index} className="chat-item">
                           <div>
@@ -405,6 +418,11 @@ console.log(getInputProps)
                         </div>
                       );
                     }
+
+                    if (roomNumber.trim() !== r) {
+                      return null;
+                    }
+               
                     return  (
                       <div key={index} className="chat-item">
                         <div>
