@@ -17,7 +17,7 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     axios
-      .post(`${url.backendUrl}/user/login`, user)
+      .post(url.backendUrl + "/user/login", user)
       .then((resp) => {
         console.log(resp.data);
 
@@ -30,7 +30,7 @@ const Login = () => {
       .catch((err) => {
         console.log(err);
         alert("가입된 회원이 아닙니다. 회원가입을 먼저 해주세요.");
-        navigate("/user/register");
+        navigate("/user/terms");
       });
   };
 

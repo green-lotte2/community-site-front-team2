@@ -114,7 +114,7 @@ const Register = () => {
     }
 
     axios
-      .get(`${url.backend}/checkUid?uid=${user.uid}`)
+      .get(url.backendUrl + "/checkUid?uid=" + user.uid)
       .then((response) => {
         const result = response.data.result;
         setId(result);
@@ -139,7 +139,7 @@ const Register = () => {
     }
 
     axios
-      .get(`${url.backend}/checkEmail?email=${user.email}`)
+      .get(url.backendUrl + "/checkEmail?email=" + user.email)
       .then((response) => {
         const result = response.data.result;
         const receivedCode = response.data.savedCode;
@@ -165,7 +165,7 @@ const Register = () => {
     e.preventDefault();
 
     axios
-      .get(`${url.backend}/checkEmailCode`, {
+      .get(url.backendUrl + "/checkEmailCode", {
         params: {
           email: user.email,
           code: emailCode,
@@ -214,7 +214,7 @@ const Register = () => {
     console.log("user", user);
 
     axios
-      .post(`${url.backend}/uploads`, user, {
+      .post(url.backendUrl + "/uploads", user, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
