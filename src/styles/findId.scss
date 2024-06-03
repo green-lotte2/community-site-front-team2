@@ -25,6 +25,7 @@
   }
   .loginLogo img {
     width: 200px;
+    margin-bottom: 25px;
   }
 
   h1 {
@@ -91,10 +92,21 @@
     width: 100%;
     max-width: 520px;
     margin: 40px auto 10px;
+
     .input__block {
       margin: 20px auto;
       display: block;
       position: relative;
+
+      span {
+        color: red;
+        font-size: 12px;
+        margin-left: 18px;
+      }
+      .emailNum {
+        display: flex;
+      }
+
       &.first-input__block {
         &::before {
           content: "";
@@ -127,7 +139,7 @@
           transition: 0.2s linear;
         }
       }
-      input {
+      input.name {
         display: block;
         width: 90%;
         max-width: 680px;
@@ -145,6 +157,37 @@
           outline: none;
           border: none;
           color: rgba(#0f132a, 1);
+        }
+      }
+      input.email {
+        display: block;
+        width: 315px;
+        max-width: 680px;
+        height: 42px;
+        margin-left: 18px;
+        border-radius: 8px;
+        border: none;
+        background: rgba(#0f132a, 0.1);
+        color: rgba(#0f132a, 0.3);
+        padding: 0 0 0 15px;
+        font-size: 14px;
+        font-family: "Montserrat", sans-serif;
+      }
+      .btnEmail {
+        width: 100px;
+        background: rgb(85 85 85);
+        color: white;
+        display: block;
+        margin-left: 50px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-family: "Montserrat", sans-serif;
+        box-shadow: 0 3px 30px rgb(2 1 2 / 36%);
+        transition: 0.2s linear;
+        &:hover {
+          box-shadow: 0 0 0 rgba(#e91e63, 0);
         }
       }
     }
@@ -221,8 +264,14 @@
     }
   }
 
-  .google__btn,
-  .github__btn {
+  .resultId {
+    text-align: center;
+    color: gray;
+    font-size: 25px;
+  }
+
+  .btnFindPw,
+  .btnLogin {
     display: block;
     width: 90%;
     max-width: 500px;
@@ -234,7 +283,7 @@
     border-radius: 8px;
     border: none;
     line-height: 40px;
-    &.google__btn {
+    &.btnFindPw {
       background: #5b90f0;
       color: white;
       box-shadow: 0 15px 30px rgba(#5b90f0, 0.36);
@@ -247,7 +296,7 @@
         box-shadow: 0 0 0 rgba(#5b90f0, 0);
       }
     }
-    &.github__btn {
+    &.btnLogin {
       background: #25282d;
       color: white;
       box-shadow: 0 15px 30px rgba(#25282d, 0.36);

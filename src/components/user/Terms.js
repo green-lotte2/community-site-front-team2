@@ -14,7 +14,8 @@ const Terms = () => {
   const [smsContent, setSmsContent] = useState("");
 
   useEffect(() => {
-    axios.get(`${url.backend}/user/terms`).then((response) => {
+    axios.get(url.backendUrl + "/user/terms").then((response) => {
+      //axios.get("http://localhost:8080/community/user/terms").then((response) => {
       console.log(response.data);
       setTermsContent(response.data.terms);
       setPrivacyContent(response.data.privacy);
