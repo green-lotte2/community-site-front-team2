@@ -2,7 +2,7 @@ import React from "react";
 import DefaultLayout from "../../layouts/DefaultLayout";
 
 const NoticePage = () => {
-  return <></>;
+  return <div></div>;
 };
 
 export default NoticePage;
