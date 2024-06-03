@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import { FAILSAFE_SCHEMA } from 'js-yaml';
 import url from '../../config/url';
 import { format } from 'date-fns';
 import { useDropzone } from 'react-dropzone';
+import axios from 'axios';
+import e from 'cors';
 
 
 const ChatContent = ( props ) => {
@@ -137,6 +139,7 @@ const ChatContent = ( props ) => {
       if (chatAll.length > 0) {
         const [nickname, time, roomNumber, text] = chatAll[chatAll.length - 1].split('*');
         if(roomNumber.trim() === r){
+          console.log(chatAll[chatAll.length-1] + 'zzz');
           setChat(prevChat => [...prevChat, chatAll[chatAll.length - 1]]);
         }
       }
@@ -148,7 +151,24 @@ const ChatContent = ( props ) => {
       const time = getCurrentTime();
       if(nowFile != null){
        //여기서 파일을 보내고 저장하고 다시 전송해주자 아 귀찮아..
-       ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
+       const formData = new FormData();
+       formData.append('file', nowFile);
+       formData.append('userName', userName);
+       formData.append('time', time);
+       formData.append('chatRoomPk', room.chatRoomPk);
+       formData.append('message', message);
+        var int = 0;
+      console.log(formData)
+       axios.post(`${url.backendUrl}/chat/fileUpload`, formData, {headers: {
+        'Content-Type': 'multipart/form-data'
+      }}).then((response)=>{
+        console.log(response)
+        int = response.data;
+       }).catch((err)=>{
+        console.log(err);
+       })
+       console.log('sendNowNowNow!!')
+       ws.send(`fileUpload*${int}`);
       }else{
         ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
       }
@@ -285,7 +305,6 @@ console.log(getInputProps)
       setThumbnailPreview(null);
     }
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-  
 
   
   return (
@@ -319,6 +338,10 @@ console.log(getInputProps)
                         const time =   format(exChat.localDateTime, 'yyyy-MM-dd HH:mm') ;
                         const [date, timePart] = time.trim().split(' ');
                         const text = exChat.message;
+                        const oName = exChat.oname;
+                        console.log(exChat.oname)
+                        console.log(exChat)
+                        console.log(exChat+"??")
                         return (
                           <div key={index}   className={exChat.status == 0 ? ('chat-unreadItem') : ('chat-item')}  >           
                             <div>
@@ -333,6 +356,11 @@ console.log(getInputProps)
                               )}</span>
                               <p className="chat-textarea">
                                 {text.trim()}
+                                <br/>
+
+                                {oName?<Link to={url.backendUrl+'/downloadFile?fileName='+exChat.sname}>{oName}</Link> :<></>
+                                
+                                }
                               </p>
                             </div>
                           </div>
@@ -353,6 +381,29 @@ console.log(getInputProps)
                     const [date, timePart] = time.trim().split(' ');
                     if (roomNumber.trim() !== r) {
                       return null;
+                    }
+                    if(nickname.trim() === "file"){
+                      const [file , oName, sName,nickname, time, roomNumber, text] = msg.split('*');
+                      const [date, timePart] = time.trim().split(' ');
+                      return (
+                        <div key={index} className="chat-item">
+                          <div>
+                            <img className="chat-image" src="/images/logo.png" alt="로고" style={{ marginRight: "10px" }} />
+                          </div>
+                          <div className="chat-text">
+                            <span>{nickname.trim() + ' '}</span>
+                            {date === getCurrentDate() ? (
+                              <>{timePart.trim()}</>
+                            ) : (
+                              <> <span>{date.trim()}</span></>
+                            )}
+                            <p className="chat-textarea">
+                              {text.trim()} <br/>
+                              <Link to={`${url.backendUrl}/downloadFile?fileName=${sName.trim()}`} >{oName.trim()}</Link>
+                            </p>
+                          </div>
+                        </div>
+                      );
                     }
                     return  (
                       <div key={index} className="chat-item">
@@ -407,7 +458,7 @@ console.log(getInputProps)
 
               <br />
               <br />
-              
+        
             </>
           ) : (
             <p>Loading...</p>
@@ -415,8 +466,7 @@ console.log(getInputProps)
           
         </div>
       )}
-
-      
+  
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}

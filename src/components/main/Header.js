@@ -116,7 +116,7 @@ const Header = (props) => {
               <img src="/images/chat_50.png" alt="bell" />
               <p>채팅</p>
             </Link>
-            <Link to="/">
+            <Link to="/chat">
               <img src="/images/alarm_40.png" alt="bell" />
               <p className="alert" id="chatchat">0</p>
             </Link>
