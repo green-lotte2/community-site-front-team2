@@ -34,7 +34,7 @@ const root = createBrowserRouter([
   { path: "/community/report", element: <ReportPage /> },
   //board
   { path: "/board/list", element: <ListPage /> }, //게시판 리스트
-  { path: "/board/modify", element: <ModifyPage /> }, //게시판 수정
+  { path: "/board/modify/:cate/:no", element: <ModifyPage /> }, //게시판 수정 (카테, 글번호에 따라 동적으로 지정)
   { path: "/board/view/:cate/:no", element: <ViewPage /> }, //게시판 뷰 (카테, 글번호에 따라 동적으로 지정)
   { path: "/board/write", element: <WritePage /> }, //게시판 작성
 
