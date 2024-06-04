@@ -5,7 +5,7 @@ import SideBarContents from './SideBarContents';
 import axios from 'axios';
 import url from '../../config/url';
 
-const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }) => {
+const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents, calendars }) => {
   const authSlice = useSelector((state) => state.authSlice);
   const [target, setTarget] = useState(targetEvent);
   const [inputs, setInputs] = useState({
@@ -35,7 +35,7 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }
       ...inputs,
       [name]: value,
     });
-    
+
   }
 
   const submitHandler = (e) => {
@@ -56,7 +56,7 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }
   const onUpdateChange = (e) => {
     const { value, name } = e.target;
     const key = e.target.dataset.name;
-    
+
     target.map((event, index) => {
       if (event.id == key) {
         console.log(event);
@@ -66,7 +66,7 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }
         };
         console.log(event);
       }
-      
+
     });
     setTarget(target);
     console.log(target);
@@ -78,7 +78,6 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }
     target.map((event) => {
       if (event.id == targetId) {
         console.log(event);
-
         updateRef.current = {
           id: event.id,
           calendarId: event.calendarId,
@@ -138,8 +137,13 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }
           <h2>일정 등록</h2>
           <form onSubmit={submitHandler}>
             <select name='calendarId' onChange={onInputChange}>
-              <option value={'1'}>개인</option>
-              <option value={'2'}>직장</option>
+              {
+                calendars.map((calendar) => {
+                  return (
+                    <option value={calendar.id}>{calendar.name}</option>
+                  )
+                })
+              }
             </select>
             <p className='date'>
               <input name='start' onChange={onInputChange} type='datetime-local' defaultValue={moment(scheduleInfo.start).format().split('+')[0]} />
@@ -159,8 +163,13 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents }
                 <input name='title' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['title']} />
                 <input name='location' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['location']} />
                 <select name='calendarId' data-name={event.id} onChange={onUpdateChange} defaultValue={event.calendarId}>
-                  <option value={'1'}>개인</option>
-                  <option value={'2'}>직장</option>
+                  {
+                    calendars.map((calendar) => {
+                      return (
+                        <option value={calendar.id}>{calendar.name}</option>
+                      )
+                    })
+                  }
                 </select>
                 <button value={event.id} onClick={deleteBtnHandler}>삭제</button>
                 <button value={event.id} onClick={updateBtnHandler}>수정</button>
