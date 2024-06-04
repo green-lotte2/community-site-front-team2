@@ -29,7 +29,7 @@ const List = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/community/board?cate=${cate}&pg=${pg}`, {
+      .get(`http://localhost:8080/community/board/list?cate=${cate}&pg=${pg}`, {
         headers: { Authorization: `Bearer ${authSlice.accessToken}` },
       })
       .then((resp) => {
