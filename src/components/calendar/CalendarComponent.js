@@ -95,7 +95,7 @@ function CalendarComponent() {
     setRightSideBar(false);
     setOptionBar(false);
 
-    
+
 
     const container = calendarRef.current;
     const options = {
@@ -110,26 +110,27 @@ function CalendarComponent() {
       },
     };
     const calendar = new Calendar(container, options);
-    
+
     calendarObj.current = calendar;
     /** 캘린더 리스트 조회 */
     axios.get(url.backendUrl + '/calendar/type')
-    .then((Response)=>{
-      Response.data.forEach(element => {
-        const calendar = {
-          id: element.id.toString(),
-          name: element.name,
-          backgroundColor: element.backgroundColor,
-        }
-        calendars.push(calendar);
-      })
-      calendar.setCalendars(calendars);
-      setCalendarList(calendars);
-    }).catch((Error) => {
-      console.log(Error);
-    });
+      .then((Response) => {
+        Response.data.forEach(element => {
+          const calendar = {
+            id: element.id.toString(),
+            name: element.name,
+            color: '#fff',
+            backgroundColor: element.backgroundColor,
+          }
+          calendars.push(calendar);
+        })
+        calendar.setCalendars(calendars);
+        setCalendarList(calendars);
+      }).catch((Error) => {
+        console.log(Error);
+      });
 
-    
+
 
     /** 스케줄 목록 조회 */
     axios.get(url.backendUrl + '/calendar')
@@ -216,13 +217,15 @@ function CalendarComponent() {
 
   return (
     <div className='calendar'>
-      <button onClick={remotePrevDate}>&lt;</button>
+      <div className='calendarOptions'>
       <input type='month' onChange={changeMonthHandler} value={date} />
-      <button onClick={remoteNextDate}> &gt;</button>
-      <button onClick={btnToday}>오늘</button>
-      <button onClick={optionHandler}>설정</button>
-      <div ref={calendarRef} style={{ width: '100%', height: '600px' }}>
+        <button onClick={remotePrevDate}>&lt;</button>
+        <button onClick={btnToday}>오늘</button>
+        <button onClick={remoteNextDate}> &gt;</button>
+        <button className='option' onClick={optionHandler}>설정</button>
       </div>
+
+      <div ref={calendarRef} style={{ width: '100%', height: '700px' }}></div>
       {rightSideBar && <SideBar rightSideHandlerClose={rightSideHandlerClose} calendars={calendarList} setEvents={setEvents} targetEvent={targetEvent} scheduleInfo={scheduleInfo}></SideBar>}
       {optionBar && <OptionComponents rightSideHandlerClose={optionHandlerClose} calendars={calendarList} setEvents={setEvents} ></OptionComponents>}
     </div>
