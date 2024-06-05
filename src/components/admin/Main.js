@@ -204,6 +204,8 @@ const unStopUserHandler = (userId)=>{
           <div className="cate">
             <Link to="/admin?cate=user" className={cate ==='user'? 'backGround' : ''}>악성 유저</Link>
             <Link to="/admin?cate=article" className={cate ==='article'? 'backGround' : ''}>악성 게시물</Link>
+            <Link to="/admin?cate=qna" className={cate ==='article'? 'backGround' : ''}>QnA</Link>
+            <Link to="/admin?cate=faq" className={cate ==='article'? 'backGround' : ''}>FAQ</Link>
 
           </div>
 
@@ -287,6 +289,45 @@ const unStopUserHandler = (userId)=>{
         </tbody>
 
        </table>):(<></>)}
+
+
+                
+          {/*qna*/}
+          {initState.cate === 'qna' ?(     
+        <table style={{borderTop: '1px solid gray', width: '100%', padding: '4px', overflow: 'hidden'}}>
+        <thead  >
+        <tr >
+            <th style={{ width: '10%' }}>번호</th>
+            <th style={{ width: '15%' }}>유형</th>
+            <th style={{ width: '30%' }}>제목 <span>
+            </span>
+            </th>
+
+            <th style={{ width: '20%' }}>작성자
+            </th>
+
+            <th style={{ width: '15%' }}>상태
+            </th>
+        </tr>
+        </thead>
+        <hr style={{width: '1000%', margin: '5px 0px', border: '1px solid 3467ffcf', marginLeft: '0px'}}/>
+        <tbody style={{textAlign: 'center'}}>
+            {serverData.dtoList.map((article, index)=>{
+                return(
+                    <tr key={index}>
+            <td style={{ width: '10%' }}>{serverData.startNo - index}</td>
+            <td style={{ width: '15%' , whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}> {article.cate} </td>
+            <td style={{ width: '30%' }}>   {article.title} </td>
+            <td style={{ width: '20%' }}>   {article.writer} </td>
+            <td style={{ width: '15%' }}> {article.status} </td>
+                    </tr>
+                )
+            })}
+            <hr style={{width: '1000%', margin: '5px 0px', border: '1px solid 3467ffcf', marginLeft: '0px'}}/>
+        </tbody>
+
+       </table>):(<></>)}
+
 
         </div>
 
@@ -379,8 +420,6 @@ const unStopUserHandler = (userId)=>{
         */}
 
     <Page serverData={serverData} cate={cate} />
-
-
       </div>
 
       

@@ -139,12 +139,10 @@ const ChatContent = ( props ) => {
       if (chatAll.length > 0) {
         const [nickname, time, roomNumber, text] = chatAll[chatAll.length - 1].split('*');
         if(nickname.trim()==='file'){
-          console.log('이거는 되나요? 제발요?')
           console.log(chatAll[chatAll.length -1]);
           const [file , oName, sName, nickname , time, room, text] = chatAll[chatAll.length -1].split('*');
           console.log(room.trim())
           if(room.trim() === r){
-            console.log('여기까지 됨')
             setChat(prevChat => [...prevChat, chatAll[chatAll.length - 1]]);
           }
         }
@@ -156,14 +154,11 @@ const ChatContent = ( props ) => {
     }
   }, [ ws , chatAll ]);
   const [nowFile , setNowFile] = useState(null);
-  //보냄
+
   const handleSend = () => {
-    console.log('here..!')
     if (ws.onopen) {
-          console.log('here..22!')
       const time = getCurrentTime();
       if(nowFile != null){
-       //여기서 파일을 보내고 저장하고 다시 전송해주자 아 귀찮아..
        const formData = new FormData();
        formData.append('file', nowFile);
        formData.append('userName', userName);
@@ -391,7 +386,6 @@ const openMemberHandler = (e)=>{
                     const [nickname, time, roomNumber, text] = msg.split('*');
                     const [date, timePart] = time.trim().split(' ');
                     if(nickname.trim() === "file"){
-                      console.log('here...?')
                       const [file , oName, sName,nickname, time, roomNumber, text] = msg.split('*');
                       const [date, timePart] = time.trim().split(' ');
                       if(roomNumber.trim () !== r){

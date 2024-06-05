@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link,  useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useCates from "../../hooks/useCates";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
@@ -17,7 +17,7 @@ const View = () => {
   const navigate = useNavigate();
   const authSlice = useSelector((state) => state.authSlice);
   const [showModal, setShowModal] = useState(false);
-  const [reportReason, setReportReason] = useState("");
+  const [reason, setReason] = useState("");
 
   const openModal = () => {
     setShowModal(true);
@@ -27,11 +27,46 @@ const View = () => {
     setShowModal(false);
   };
 
-  const handleReport = () => {
-    // 여기서 서버로 신고 사유를 보낼 수 있습니다.
-    console.log("신고 사유:", reportReason);
-    // 모달 닫기
-    closeModal();
+  const handleReport = async () => {
+    try {
+      // 신고 시 status 값을 1로 설정하고, report 값을 1 증가시킴
+      const updatedBoard = {
+        ...board,
+        status: 1,
+        report: board.report + 1,
+      };
+
+      const response = await axios.post(
+        `http://localhost:8080/community/board/report`,
+        {
+          no: no, // 게시글 ID (게시글 번호)
+          cate: cate, // 게시글 카테고리
+          reason: reason, // 신고 사유
+          uid: authSlice.userId, // 신고한 사용자 ID
+          status: updatedBoard.status, // 업데이트된 상태 값
+          report: updatedBoard.report, // 업데이트된 신고 횟수
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authSlice.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("신고 사유:", reason);
+      console.log("서버 응답:", response.data);
+      alert("신고가 접수되었습니다.");
+
+      // 상태 업데이트
+      setBoard(updatedBoard);
+    } catch (error) {
+      console.error("신고 중 오류 발생:", error);
+      alert("신고에 실패하였습니다. 다시 시도해 주세요.");
+    } finally {
+      // 모달 닫기
+      closeModal();
+    }
   };
 
   useEffect(() => {
@@ -51,24 +86,25 @@ const View = () => {
       });
   }, [cate, no, authSlice.accessToken]);
 
-
   // 게시글 삭제
   const deleteHandler = async () => {
-    const confirmed = window.confirm('정말 삭제하시겠습니까?');
+    const confirmed = window.confirm("정말 삭제하시겠습니까?");
     if (confirmed) {
       try {
-        await axios.post(`http://localhost:8080/community/board/delete/${cate}/${no}`, {
-          headers: { Authorization: `Bearer ${authSlice.accessToken}` },
-        });
-        alert('게시글이 삭제되었습니다.');
-        navigate(`/board/list?cate=${cate}`); 
+        await axios.post(
+          `http://localhost:8080/community/board/delete/${cate}/${no}`,
+          {
+            headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+          }
+        );
+        alert("게시글이 삭제되었습니다.");
+        navigate(`/board/list?cate=${cate}`);
       } catch (error) {
-        console.error('Failed to delete board:', error);
-        alert('게시글 삭제에 실패하였습니다.');
+        console.error("Failed to delete board:", error);
+        alert("게시글 삭제에 실패하였습니다.");
       }
     }
   };
-
 
   if (!board) {
     return <div>Loading...</div>;
@@ -103,36 +139,53 @@ const View = () => {
         {/*vTitle end */}
         <div className="vContent">
           <ReactQuill value={board.content} readOnly={true} theme={"bubble"} />
-          <button className="reportBtn" onClick={openModal}>🚨신고</button>
-                 {/* 모달 */}
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeModal}>X</span>
-            <h2>게시글 신고하기</h2>
-            <textarea
-              value={reportReason}
-              onChange={(e) => setReportReason(e.target.value)}
-              placeholder="신고 사유를 입력하세요."
-            />
-            <button className="rSubmit" onClick={handleReport}>신고</button>
-          </div>
-        </div>
-      )}{/*모달 end */}
-       
+          <button className="reportBtn" onClick={openModal}>
+            🚨신고
+          </button>
+          {/* 모달 */}
+          {showModal && (
+            <div className="modal">
+              <div className="modal-content">
+                <span className="close" onClick={closeModal}>
+                  X
+                </span>
+                <h2>게시글 신고하기</h2>
+                <input type="hidden" name="report" value={board.report + 1} />
+                <input type="hidden" name="status" value={1} />
+                <textarea
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  placeholder="신고 사유를 입력하세요."
+                />
+                <button className="rSubmit" onClick={handleReport}>
+                  신고
+                </button>
+              </div>
+            </div>
+          )}
+          {/*모달 end */}
         </div>
         {/*vContent end */}
       </div>
       {/*view end */}
       <div className="vBtn">
         <div>
-          <Link to={`/board/write?cate=${cate}`} className="writeBtn2">글쓰기</Link>
+          <Link to={`/board/write?cate=${cate}`} className="writeBtn2">
+            글쓰기
+          </Link>
           <Link to={`/board/modify/${cate}/${no}`}>수정</Link>
-          <input type="submit" value="삭제" onClick={deleteHandler}></input>
+          <input
+            type="submit"
+            value="삭제"
+            onClick={deleteHandler}
+            className="delBtn"
+          ></input>
         </div>
         <div>
-          <Link to={`/board/list?cate=${cate}`} >목록</Link>
-          <Link to="#" className="topBtn">Top</Link>
+          <Link to={`/board/list?cate=${cate}`}>목록</Link>
+          <Link to="#" className="topBtn">
+            Top
+          </Link>
         </div>
       </div>
     </div>
