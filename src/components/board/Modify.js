@@ -17,6 +17,7 @@ const Modify = () => {
   const authSlice = useSelector((state) => state.authSlice);
   const navigate = useNavigate();
   const [values, setValues] = useState("");
+  const [initialTitle, setInitialTitle] = useState(""); // 초기 제목 상태 추가
 
   const modules = useMemo(() => {
     return {
@@ -57,6 +58,7 @@ const Modify = () => {
       .then((response) => {
         console.log("response data:", response.data);
         setBoard(response.data);
+        setTitle(response.data.title); // 제목 초기값 설정
         setContent(response.data.content); // content 초기값 설정
         setLoading(false); // 데이터 로딩 완료
       })
@@ -68,10 +70,7 @@ const Modify = () => {
 
   const handleTitleChange = (e) => {
     const newTitle = e.target.value; // input 요소의 변경된 값
-    setTitle((newTitle) => ({
-      ...newTitle,
-      title: newTitle, // 변경된 제목을 포함하여 이전 상태 복사
-    }));
+    setTitle(newTitle);
   };
 
   const handleContentChange = (value) => {
@@ -131,7 +130,7 @@ const Modify = () => {
           <input
             type="text"
             name="title"
-            value={board.title}
+            value={title || initialTitle} // 새 제목이 없을 경우 초기 제목 표시
             onChange={handleTitleChange}
           ></input>
           <div>
