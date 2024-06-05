@@ -60,6 +60,7 @@ const memberDetailHandler = (index)=>{
 }
 
 
+
 //article Modal..
 const [openArticleModal, setArticleModal] = useState(false);
 var indexUser = 0;
@@ -114,6 +115,8 @@ const unStopArticleHandler = (userId)=>{
 }
 
 
+var type = searchParams.get('type'); 
+initState.type = type;
 
 //컨텐츠
     useEffect(()=>{
@@ -133,7 +136,7 @@ const unStopArticleHandler = (userId)=>{
         }).catch((err)=>{
             console.log(err);
         });
-    },[cate , pg ]);
+    },[cate , pg , type]);
 
 
 
@@ -186,7 +189,75 @@ const unStopUserHandler = (userId)=>{
     });
 
 }
+const [state , setState] = useState(new Array(serverData.dtoList.length).fill(false));
+useEffect(()=>{
+  setState(new Array(serverData.dtoList.length).fill(false));
+  setShow(true)
+  setFaq({title: '', content: '', cate: ''})
+},[type])
+//faq 아코디언
 
+const yameAcoHandler = (index)=>{
+    const newVisibleAnswers = [...state];
+    newVisibleAnswers[index] = !newVisibleAnswers[index];
+    setState(newVisibleAnswers);
+}
+
+//faq + - button
+const [bubutonShow, setShow] = useState(true);
+
+const buttonHandler =()=> {
+  setShow(!bubutonShow);
+}
+
+const faqChangeHandler = (e)=>{
+  setFaq({...faq,[e.target.name] : e.target.value})
+
+}
+
+const faqSubmitHandler = ()=>{
+  faq.cate= type;
+  if(window.confirm('제출하시겠습니까?')){
+    axios.post(`${url.backendUrl}/admin/faqInsert` , faq)
+    .then((rep)=>{
+      const newDto = rep.data;
+      const updatedDtoList = [...serverData.dtoList, newDto];
+      setServerData({
+        ...serverData,
+        dtoList: updatedDtoList
+      });
+      setFaq({title: '', content: '', cate: ''})
+    })
+  }
+}
+
+//faq insert
+const [faq , setFaq]=  useState({title: '', content: '', cate: ''})
+
+//faq delete
+const delteFaqHandler = (no)=>{
+  if(window.confirm('삭제하시겠습니까?')){
+    axios.get(`${url.backendUrl}/admin/deleteFaq?no=`+no).then((rep)=>{
+      const newInt = rep.data; // 서버에서 받은 데이터
+      const updatedDtoList = serverData.dtoList.filter(item => item.no !== newInt); 
+
+      setServerData({
+        ...serverData,
+        dtoList: updatedDtoList
+      });
+    })
+  }
+
+  
+ 
+}
+
+//qna Modal
+const [openQna, setOpenQna] = useState(false);
+
+const openQnaHandler = ()=>{
+  setOpenQna(true);
+}
   return (
     <>
       <div className="Board">
@@ -205,7 +276,7 @@ const unStopUserHandler = (userId)=>{
             <Link to="/admin?cate=user" className={cate ==='user'? 'backGround' : ''}>악성 유저</Link>
             <Link to="/admin?cate=article" className={cate ==='article'? 'backGround' : ''}>악성 게시물</Link>
             <Link to="/admin?cate=qna" className={cate ==='article'? 'backGround' : ''}>QnA</Link>
-            <Link to="/admin?cate=faq" className={cate ==='article'? 'backGround' : ''}>FAQ</Link>
+            <Link to="/admin?cate=faq&type=회원/탈퇴" className={cate ==='article'? 'backGround' : ''}>FAQ</Link>
 
           </div>
 
@@ -252,7 +323,7 @@ const unStopUserHandler = (userId)=>{
           {/*악성게시물 */}
 
           {initState.cate === 'article' ?(     
-        <table style={{borderTop: '1px solid gray', width: '100%', padding: '4px', overflow: 'hidden'}}>
+        <table style={{borderTop: '1px solid gray', width: '100%', padding: '10px', overflow: 'hidden'}}>
         <thead  >
         <tr >
             <th style={{ width: '10%' }}>번호</th>
@@ -294,30 +365,30 @@ const unStopUserHandler = (userId)=>{
                 
           {/*qna*/}
           {initState.cate === 'qna' ?(     
-        <table style={{borderTop: '1px solid gray', width: '100%', padding: '4px', overflow: 'hidden'}}>
+        <table style={{borderTop: '1px solid gray', width: '100%', padding: '10px', overflow: 'hidden'}}>
         <thead  >
         <tr >
-            <th style={{ width: '10%' }}>번호</th>
-            <th style={{ width: '15%' }}>유형</th>
-            <th style={{ width: '30%' }}>제목 <span>
+            <th style={{ width: '10%' , padding: '5px' }}>번호</th>
+            <th style={{ width: '15%' ,  padding: '5px'}}>유형</th>
+            <th style={{ width: '30%', padding: '5px' }}> 제목 <span>
             </span>
             </th>
 
             <th style={{ width: '20%' }}>작성자
             </th>
 
-            <th style={{ width: '15%' }}>상태
+            <th style={{ width: '15%'  }}>상태
             </th>
         </tr>
         </thead>
         <hr style={{width: '1000%', margin: '5px 0px', border: '1px solid 3467ffcf', marginLeft: '0px'}}/>
-        <tbody style={{textAlign: 'center'}}>
+        <tbody style={{textAlign: 'center' }}>
             {serverData.dtoList.map((article, index)=>{
                 return(
                     <tr key={index}>
-            <td style={{ width: '10%' }}>{serverData.startNo - index}</td>
+            <td style={{ width: '10%' ,padding: '6px' }}>{serverData.startNo - index}</td>
             <td style={{ width: '15%' , whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}> {article.cate} </td>
-            <td style={{ width: '30%' }}>   {article.title} </td>
+            <td style={{ width: '30%' }}>  <Link to={`/admin/view?no=${article.qnaPk}`} >{article.title}</Link>  </td>
             <td style={{ width: '20%' }}>   {article.writer} </td>
             <td style={{ width: '15%' }}> {article.status} </td>
                     </tr>
@@ -328,7 +399,52 @@ const unStopUserHandler = (userId)=>{
 
        </table>):(<></>)}
 
+      {/*faq*/}
+      {initState.cate === 'faq' ?(     
+        <>
+<div >
+<Link to="/admin?cate=faq&type=회원/탈퇴" className='myCate' >회원/탈퇴</Link>
+<Link to="/admin?cate=faq&type=채팅"  className='myCate'>채팅</Link>
+<Link to="/admin?cate=faq&type=프로젝트" className='myCate' >프로젝트</Link>
+<Link to="/admin?cate=faq&type=캘린더" className='myCate'>캘린더</Link>
+<Link to="/admin?cate=faq&type=페이지" className='myCate'>페이지</Link>
+<Link to="/admin?cate=faq&type=기타" className='myCate'>기타</Link>
+</div>
+<br/>
+<br/>
+<div>
+{serverData.dtoList.map((data, index)=>{
+    return(
+      <>
+      <p className='qnaTitle' onClick={() => yameAcoHandler(index)}>Q {data.title}  
+      <span className="deleteGahee" onClick={()=>delteFaqHandler(data.no)} style={{cursor: 'pointer'}}> delete</span></p>
+      
+      <p className='qnaAnswer'
+      style={{ display: state[index] ? 'block' : 'none' }}
+       >A {data.content}</p>
+      <br/>
+   
+      </>
+    )
+   
+})}
+ <p className="addBox" style={{display: bubutonShow ? 'block' : 'none'}} onClick={ buttonHandler}>+</p>
+ <p className="addBox"  style={{display: !bubutonShow ? 'block' : 'none'}} onClick={ buttonHandler}>-</p>
+ <br/>
+ <div style={{border: '1px solid #dfdfdf', padding: '14px', display: !bubutonShow ? 'block' : 'none'}}> 
+  <input type="text" className='insertQuestion' placeholder="질문을 작성해주세요"
+   style={{marginBottom: '8px'}} value={faq.title} name="title" onChange={faqChangeHandler} ></input>
+ <input type="text" className='insertQuestion' placeholder="답변을 작성해주세요"
+ value={faq.content} onChange={faqChangeHandler} name="content"></input>
+<br/>
+<br/>
+ <button type="button" className="gaheeButton" onClick={faqSubmitHandler}>완료</button>
+ </div>
 
+</div>
+
+</>
+        ):(<></>)}
         </div>
 
         <Modal
@@ -411,6 +527,10 @@ const unStopUserHandler = (userId)=>{
          
       </Modal>
 
+
+    
+
+
         {/*table end 
         <div className="writeBtn">
           <Link  className="btn btnWrite">
@@ -418,8 +538,8 @@ const unStopUserHandler = (userId)=>{
           </Link>
         </div>
         */}
-
-    <Page serverData={serverData} cate={cate} />
+  {initState.cate != 'faq' ? ( <Page serverData={serverData} cate={cate} />) : (<></>)}
+   
       </div>
 
       

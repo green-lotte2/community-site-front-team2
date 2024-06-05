@@ -25,6 +25,7 @@ import QnAPage from "../pages/qna/QnAPage";
 import WritePage2 from "../pages/qna/WritePage"
 import ModifyPage2 from "../pages/qna/ModifyPage"
 import ViewPage2 from "../pages/qna/ViewPage"
+import AdminView from "../pages/admin/AdminView";
 
 //router 생성
 const root = createBrowserRouter([
@@ -59,6 +60,7 @@ const root = createBrowserRouter([
 
   //admin
   { path: "/admin", element: <AdminPage /> },
+  { path: "/admin/view", element: <AdminView /> },
 
   //qna
   { path: "/qna", element: <QnAPage/> },
