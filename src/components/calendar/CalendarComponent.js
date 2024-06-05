@@ -93,6 +93,7 @@ function CalendarComponent() {
     /** 초기값 설정(evets값 변경 감지, 사이드바 제거) */
     setEvents(0);
     setRightSideBar(false);
+    setOptionBar(false);
 
     
 
@@ -222,8 +223,8 @@ function CalendarComponent() {
       <button onClick={optionHandler}>설정</button>
       <div ref={calendarRef} style={{ width: '100%', height: '600px' }}>
       </div>
-      {rightSideBar && <SideBar rightSideHandlerClose={rightSideHandlerClose} setEvents={setEvents} targetEvent={targetEvent} scheduleInfo={scheduleInfo}></SideBar>}
-      {optionBar && <OptionComponents calendars={calendarList} rightSideHandlerClose={optionHandlerClose}></OptionComponents>}
+      {rightSideBar && <SideBar rightSideHandlerClose={rightSideHandlerClose} calendars={calendarList} setEvents={setEvents} targetEvent={targetEvent} scheduleInfo={scheduleInfo}></SideBar>}
+      {optionBar && <OptionComponents rightSideHandlerClose={optionHandlerClose} calendars={calendarList} setEvents={setEvents} ></OptionComponents>}
     </div>
   );
 }
