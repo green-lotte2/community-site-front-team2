@@ -137,6 +137,41 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents, 
         <div className="insertForm">
           <h2>일정 등록</h2>
           <form onSubmit={submitHandler}>
+            <div className="date">
+              <input
+                className='registDate'
+                name="start"
+                onChange={onInputChange}
+                type="datetime-local"
+                defaultValue={moment(scheduleInfo.start).format().split("+")[0]}
+              />
+              <input
+                className='registDate'
+                name="end"
+                onChange={onInputChange}
+                type="datetime-local"
+                defaultValue={moment(scheduleInfo.end).format().split("+")[0]}
+              />
+            </div>
+            <div className='content'>
+              
+                <input
+                  className='text'
+                  name="title"
+                  type="text"
+                  onChange={onInputChange}
+                  placeholder="&#128197; title"
+                />
+
+                <input
+                  className='text'
+                  name="location"
+                  type="text"
+                  onChange={onInputChange}
+                  placeholder="&#128681; location"
+                />
+              
+            </div>
 
             <select name='calendarId' onChange={onInputChange}>
               {
@@ -148,36 +183,6 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents, 
               }
 
             </select>
-            <p className="date">
-              <input
-                name="start"
-                onChange={onInputChange}
-                type="datetime-local"
-                defaultValue={moment(scheduleInfo.start).format().split("+")[0]}
-              />
-              <input
-                name="end"
-                onChange={onInputChange}
-                type="datetime-local"
-                defaultValue={moment(scheduleInfo.end).format().split("+")[0]}
-              />
-            </p>
-            <p className="text">
-              <input
-                name="title"
-                type="text"
-                onChange={onInputChange}
-                placeholder="&#128221;title"
-              />
-            </p>
-            <p className="text">
-              <input
-                name="location"
-                type="text"
-                onChange={onInputChange}
-                placeholder="&#128681;location"
-              />
-            </p>
             <input type="submit" value={"save"} />
           </form>
         </div>
@@ -188,24 +193,6 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents, 
             return (
 
               <div className='event'>
-                <input name='title' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['title']} />
-                <input name='location' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['location']} />
-                <select name='calendarId' data-name={event.id} onChange={onUpdateChange} defaultValue={event.calendarId}>
-                  {
-                    calendars.map((calendar) => {
-                      return (
-                        <option value={calendar.id}>{calendar.name}</option>
-                      )
-                    })
-                  }
-                  
-                </select>
-                <button value={event.id} onClick={deleteBtnHandler}>
-                  삭제
-                </button>
-                <button value={event.id} onClick={updateBtnHandler}>
-                  수정
-                </button>
                 <p className="date">
                   <input
                     type="datetime-local"
@@ -222,6 +209,32 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents, 
                     defaultValue={moment(event["end"]).format().split("+")[0]}
                   />
                 </p>
+                <p>
+                  &#128197;
+                  <input className='text' name='title' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['title']} />
+                </p>
+                <p>
+                &#128681;
+                  <input className='text' name='location' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['location']} />
+                </p>
+
+                <select name='calendarId' data-name={event.id} onChange={onUpdateChange} defaultValue={event.calendarId}>
+                  {
+                    calendars.map((calendar) => {
+                      return (
+                        <option value={calendar.id}>{calendar.name}</option>
+                      )
+                    })
+                  }
+
+                </select>
+                <button value={event.id} onClick={deleteBtnHandler}>
+                  삭제
+                </button>
+                <button value={event.id} onClick={updateBtnHandler}>
+                  수정
+                </button>
+
               </div>
             );
           })}

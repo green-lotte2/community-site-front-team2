@@ -142,7 +142,7 @@ const OptionComponents = ({ rightSideHandlerClose, calendars, setEvents }) => {
                     {calendarTypes.map((calendar) => {
                         return (
                             <div>
-                                <input type='text' id={calendar.id} defaultValue={calendar.name} onBlur={listNameHandler} />
+                                <input className='text' type='text' id={calendar.id} defaultValue={calendar.name} onBlur={listNameHandler} />
                                 <button value={calendar.id} className='colorBtn' onClick={listColorBoxHandler} style={{ width: '23px', height: '23px', backgroundColor: calendar.backgroundColor }}>&nbsp;</button>
                             </div>
                         )

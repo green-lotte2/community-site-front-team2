@@ -1,15 +1,31 @@
 .calendar{
-    width: 1000px;
-    height: 600px;
     margin: auto;
     text-align: center;
 }
+
+.calendar .calendarOptions{
+    margin-top: 50px;
+    justify-content: start;
+    display: flex;
+    flex-direction: row;
+}
+
+.calendar .calendarOptions > *{
+    border: 0;
+    background-color: #ffffff;
+}
+
+.calendar .calendarOptions :nth-child(2){
+    margin-left: auto;
+}
+
+
 
 .calendar .scheduleBox {
     display: flex;
     width: 100%;
     height: 100%;
-    border: 1px solid #111;
+    
     position: fixed;
     top: 0;
     right: -100%;
@@ -23,7 +39,7 @@
     display: flex;
     flex-direction: column;
     width: 500px;
-    height: 1000px;
+    height: 100%;
     background-color: #ffffff;
 
 }
@@ -46,7 +62,7 @@
     display: flex;
     flex-direction: column;
     width: 500px;
-    height: 1000px;
+    height: 100%;
     background-color: #ffffff;
 
 }
@@ -62,18 +78,40 @@
     padding-top: 20px;
     padding-right: 10px;
     padding-bottom: 20px;
-    background-color: #d1d1d1;
+    text-align: left;
 }
 
-.calendar .insertForm .date > {
+.calendar .insertForm > form{
+    padding-top: 20px;
+}
+
+.calendar .insertForm > form > *{
+    margin-top: 10px;
+}
+
+.calendar .insertForm > form > .date{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.calendar .insertForm > form > .date > *{
+    margin-top: 10px;
+}
+
+.calendar .insertForm .content > *{
     
+    width: 80%;
+    height: 30px;
 }
 
-.calendar .insertForm .text > {
-    width: 80%;
+.calendar .insertForm .registDate{
+    
+    border: 0;
+    width: 400px;
 }
 
 .calendar .eventList{
+    border-top: #111 1px solid;
     width: 430px;
     height:300px;
     margin-top: 50px;
@@ -84,13 +122,12 @@
     padding-top: 20px;
     padding-right: 10px;
     padding-bottom: 20px;
-    background-color: #d1d1d1;
     text-align: left;
 }
 
 .calendar .eventList .event{
     margin-top: 10px;
-    background-color: aqua;
+    
 }
 
 .calendar .eventList .event > h4{
@@ -111,4 +148,14 @@
 
 .calendar .circle-picker *{
     margin: 0 auto;
+}
+
+.calendar .text{
+    border: 0;
+    width: 80%;
+    height: 30px;
+}
+
+.calendar select{
+    border: 0;
 }
