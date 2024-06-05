@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import CustomToolbar from "./CustomToolbar"; 
+import CustomToolbar from "./CustomToolbar";
 
 const Modify = () => {
   const cate1 = useCates();
@@ -66,11 +66,10 @@ const Modify = () => {
       });
   }, [cate, no, authSlice.accessToken]);
 
-
   const handleTitleChange = (e) => {
     const newTitle = e.target.value; // input 요소의 변경된 값
-    setBoard((prevBoard) => ({
-      ...prevBoard,
+    setTitle((newTitle) => ({
+      ...newTitle,
       title: newTitle, // 변경된 제목을 포함하여 이전 상태 복사
     }));
   };
@@ -86,31 +85,31 @@ const Modify = () => {
       content,
     };
 
-  
- 
+    // 글 수정 데이터 보내기
+    axios
+      .post(
+        `http://localhost:8080/community/board/modify/${cate}/${no}`,
+        modifiedBoard,
+        {
+          headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+        }
+      )
+      .then((response) => {
+        console.log("Save response:", response.data);
+        navigate(`/board/view/${modifiedBoard.cate}/${no}`);
+      })
+      .catch((error) => {
+        console.error("Save error:", error);
+      });
+  };
 
-  // 글 수정 데이터 보내기
-  axios
-  .post(`http://localhost:8080/community/board/modify/${cate}/${no}`, modifiedBoard, {
-    headers: { Authorization: `Bearer ${authSlice.accessToken}` },
-  })
-  .then((response) => {
-    console.log("Save response:", response.data);
-    navigate(`/board/view/${modifiedBoard.cate}/${no}`);
-  })
-  .catch((error) => {
-    console.error("Save error:", error);
-  });
-};
+  if (loading) {
+    return <div>로딩 중...</div>; // 로딩 중일 때 표시할 컴포넌트
+  }
 
-if (loading) {
-  return <div>로딩 중...</div>; // 로딩 중일 때 표시할 컴포넌트
-}
-
-if (!board) {
-  return <div>데이터를 불러오지 못했습니다.</div>; // 데이터가 null일 때 표시할 컴포넌트
-}
-
+  if (!board) {
+    return <div>데이터를 불러오지 못했습니다.</div>; // 데이터가 null일 때 표시할 컴포넌트
+  }
 
   return (
     <div className="Board">
@@ -129,12 +128,11 @@ if (!board) {
       </h2>
       <div className="modify">
         <div className="mTitle">
-        <input
+          <input
             type="text"
             name="title"
             value={board.title}
             onChange={handleTitleChange}
-           
           ></input>
           <div>
             <img src="/images/testAccount_50.png"></img>
@@ -146,8 +144,8 @@ if (!board) {
         </div>
         {/*vTitle end */}
         <div className="vContent">
-        <CustomToolbar/>
-        <ReactQuill
+          <CustomToolbar />
+          <ReactQuill
             theme="snow"
             value={content}
             modules={modules}
@@ -155,13 +153,16 @@ if (!board) {
             name="content"
             onChange={handleContentChange}
           />
-        </div>   
+        </div>
         {/*vContent end */}
         <div className="btnSet">
-          <button onClick={handleSave} className="saveBtn">저장</button>
-          <Link to={`/board/list?cate=${cate}`} className="cancelBtn">취소</Link>
+          <button onClick={handleSave} className="saveBtn">
+            저장
+          </button>
+          <Link to={`/board/list?cate=${cate}`} className="cancelBtn">
+            취소
+          </Link>
         </div>
-    
       </div>
       {/*view end */}
     </div>
