@@ -234,6 +234,34 @@ const Register = () => {
     console.log("파일 업로드 : ", user.profileImg);
   }, [user.profileImg, profile]);
 
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    const isAllValid = Object.values(user).every(
+      (value) => value !== "" || value === null
+    );
+    const isIdValid = id === "";
+    const isPassValid = pass === "";
+    const isPass2Valid = user.pass === user.pass2;
+    const isNameValid = name === "";
+    const isNickValid = nick === "";
+    const isEmailValid = email === "";
+    const isEmailCodeValid =
+      emailCodeMessage === "인증 코드 인식에 성공하였습니다.";
+    const isHpValid = hp === "";
+    setIsFormValid(
+      isAllValid &&
+        isIdValid &&
+        isPassValid &&
+        isPass2Valid &&
+        isNameValid &&
+        isNickValid &&
+        isEmailValid &&
+        isEmailCodeValid &&
+        isHpValid
+    );
+  }, [user, id, pass, name, nick, email, emailCodeMessage, hp]);
+
   return (
     <div className="Register">
       <div className="container">
@@ -498,7 +526,12 @@ const Register = () => {
             </tr>
           </div>
 
-          <input type="submit" value="Sign up" className="btnRegister" />
+          <input
+            type="submit"
+            value="Sign up"
+            className="btnRegister"
+            disabled={!isFormValid}
+          />
         </form>
       </div>
       <div className="registerImg">

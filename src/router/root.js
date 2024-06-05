@@ -22,9 +22,10 @@ import FindPwPage from "../pages/user/FindPwPage";
 import AdminPage from "../pages/admin/AdminPage";
 import ChangePwPage from "../pages/user/ChangePwPage";
 import QnAPage from "../pages/qna/QnAPage";
-import WritePage2 from "../pages/qna/WritePage"
-import ModifyPage2 from "../pages/qna/ModifyPage"
-import ViewPage2 from "../pages/qna/ViewPage"
+import WritePage2 from "../pages/qna/WritePage";
+import ModifyPage2 from "../pages/qna/ModifyPage";
+import ViewPage2 from "../pages/qna/ViewPage";
+import TierPlanPage from "../pages/user/TierPlanPage";
 
 //router 생성
 const root = createBrowserRouter([
@@ -56,15 +57,16 @@ const root = createBrowserRouter([
   { path: "/user/findId", element: <FindIdPage /> }, // 아이디찾기
   { path: "/user/findPw", element: <FindPwPage /> }, // 비밀번호찾기
   { path: "/user/changePw", element: <ChangePwPage /> }, // 비밀번호변경
+  { path: "/user/tierPlan", element: <TierPlanPage /> }, // 등급별 플랜
 
   //admin
   { path: "/admin", element: <AdminPage /> },
 
   //qna
-  { path: "/qna", element: <QnAPage/> },
-  { path: "/qna/view", element: <ViewPage2/> },
-  { path: "/qna/modify", element: <ModifyPage2/> },
-  { path: "/qna/write", element: <WritePage2/> },
+  { path: "/qna", element: <QnAPage /> },
+  { path: "/qna/view", element: <ViewPage2 /> },
+  { path: "/qna/modify", element: <ModifyPage2 /> },
+  { path: "/qna/write", element: <WritePage2 /> },
 ]);
 
 // router 내보내기

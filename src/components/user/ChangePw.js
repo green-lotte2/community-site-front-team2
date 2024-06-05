@@ -7,7 +7,6 @@ const ChangePw = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const member = location.state?.user;
-  console.log("member : " + member);
 
   const [user, setUser] = useState({
     uid: member,
@@ -27,7 +26,7 @@ const ChangePw = () => {
         "영문, 숫자, 특수문자를 조합하여 8자 이상으로 설정해 주세요."
       );
     } else {
-      setPassMessage("사용 가능한 비밀번호 입니다.");
+      setPassMessage("");
     }
   };
 
@@ -51,13 +50,14 @@ const ChangePw = () => {
         },
       })
       .then((response) => {
-        const result = response.data.result;
-        console.log(result);
-        if (result !== user.pass) {
-          alert("비밀번호 변경완료!");
+        const result = response.data;
+        if (result === "비밀번호가 재설정 되었습니다.") {
+          console.log(response.data);
+          alert(response.data);
           navigate("/user/login");
         } else {
-          alert("이미 사용중인 비밀번호 입니다.");
+          console.log(response.data);
+          alert(response.data);
         }
       })
       .catch((err) => {
@@ -66,7 +66,7 @@ const ChangePw = () => {
   };
 
   useEffect(() => {
-    const isPassChange = passMessage === "사용 가능한 비밀번호 입니다.";
+    const isPassChange = passMessage === "";
     const isPassSame = user.pass === user.pass2;
     setIsChange(isPassChange && isPassSame);
   }, [user, passMessage]);
