@@ -41,6 +41,8 @@ var cate = searchParams.get('cate');
 initState.cate = cate;
 const pg = searchParams.get("pg") || 1;
 initState.pg=pg;
+var type = searchParams.get('type'); 
+initState.type = type;
 
 
 
@@ -49,21 +51,35 @@ initState.pg=pg;
 
 useEffect(()=>{
   axios.post(`${url.backendUrl}/qnaContent`, initState).then((response)=>{
+    console.log(response.data)
       setServerData(response.data)
 
   }).catch((err)=>{
       console.log(err);
   });
 },[]);
-
+const [state , setState] = useState(new Array(serverData.dtoList.length).fill(false));
 useEffect(()=>{
   axios.post(`${url.backendUrl}/qnaContent`, initState).then((response)=>{
+    console.log(response.data)
           console.log(response.data.dtoList )
           setServerData(response.data)
   }).catch((err)=>{
       console.log(err);
   });
-},[cate , pg ]);
+},[cate , pg , type]);
+
+useEffect(()=>{
+  setState(new Array(serverData.dtoList.length).fill(false));
+},[type])
+//faq 아코디언
+
+const yameAcoHandler = (index)=>{
+    const newVisibleAnswers = [...state];
+    newVisibleAnswers[index] = !newVisibleAnswers[index];
+    setState(newVisibleAnswers);
+}
+
 
   return (
 <div className="Board">
@@ -80,8 +96,7 @@ useEffect(()=>{
 
           <div className="cate">
             <Link to="/qna?cate=qna" >QnA</Link>
-            <Link to="/qna?cate=faq" >FAQ</Link>
-
+            <Link to="/qna?cate=faq&type=회원/탈퇴" >FAQ</Link>
           </div>
         <br/>
         </div>
@@ -126,13 +141,44 @@ useEffect(()=>{
   글쓰기
 </Link>
 </div>
+<Page serverData={serverData} cate={cate} />
            </>
           ):(<></>)}
 
-<Page serverData={serverData} cate={cate} />
+
+
+{initState.cate==='faq' ? (<>
+            <div className="cate">
+            <Link to="/qna?cate=faq&type=회원/탈퇴" className='myCate' >회원/탈퇴</Link>
+            <Link to="/qna?cate=faq&type=채팅"  className='myCate'>채팅</Link>
+            <Link to="/qna?cate=faq&type=프로젝트" className='myCate' >프로젝트</Link>
+            <Link to="/qna?cate=faq&type=캘린더" className='myCate'>캘린더</Link>
+            <Link to="/qna?cate=faq&type=페이지" className='myCate'>페이지</Link>
+            <Link to="/qna?cate=faq&type=기타" className='myCate'>기타</Link>
+           </div>
+           <br/>
+           <br/>
+           <div>
+            {serverData.dtoList.map((data, index)=>{
+                return(
+                  <>
+                  <p className='qnaTitle' onClick={() => yameAcoHandler(index)}>Q {data.title}</p>
+                  <p className='qnaAnswer'
+                  style={{ display: state[index] ? 'block' : 'none' }}
+                   >A {data.content}</p>
+                  <br/>
+               
+                  </>
+                )
+            })}
+           </div>
+          </>) : (<></>)}
+
+
+
         </div>
         
   )
 }
 
-export default Content
+export default Content;
