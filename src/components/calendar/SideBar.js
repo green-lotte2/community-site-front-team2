@@ -1,16 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
-import moment from "moment";
-import SideBarContents from "./SideBarContents";
-import axios from "axios";
-import url from "../../config/url";
+import React, { useEffect, useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
+import SideBarContents from './SideBarContents';
+import axios from 'axios';
+import url from '../../config/url';
 
-const SideBar = ({
-  rightSideHandlerClose,
-  scheduleInfo,
-  targetEvent,
-  setEvents,
-}) => {
+const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents, calendars }) => {
+
   const authSlice = useSelector((state) => state.authSlice);
   const [target, setTarget] = useState(targetEvent);
   const [inputs, setInputs] = useState({
@@ -42,6 +38,7 @@ const SideBar = ({
     });
   };
 
+
   const submitHandler = (e) => {
     e.preventDefault();
     console.log(inputs);
@@ -71,6 +68,7 @@ const SideBar = ({
         };
         console.log(event);
       }
+
     });
     setTarget(target);
     console.log(target);
@@ -81,7 +79,6 @@ const SideBar = ({
     target.map((event) => {
       if (event.id == targetId) {
         console.log(event);
-
         updateRef.current = {
           id: event.id,
           calendarId: event.calendarId,
@@ -140,9 +137,16 @@ const SideBar = ({
         <div className="insertForm">
           <h2>일정 등록</h2>
           <form onSubmit={submitHandler}>
-            <select name="calendarId" onChange={onInputChange}>
-              <option value={"1"}>개인</option>
-              <option value={"2"}>직장</option>
+
+            <select name='calendarId' onChange={onInputChange}>
+              {
+                calendars.map((calendar) => {
+                  return (
+                    <option value={calendar.id}>{calendar.name}</option>
+                  )
+                })
+              }
+
             </select>
             <p className="date">
               <input
@@ -182,29 +186,19 @@ const SideBar = ({
           <SideBarContents targetEvent={targetEvent} />
           {targetEvent.map((event) => {
             return (
-              <div className="event">
-                <input
-                  name="title"
-                  type="text"
-                  data-name={event.id}
-                  onChange={onUpdateChange}
-                  defaultValue={event["title"]}
-                />
-                <input
-                  name="location"
-                  type="text"
-                  data-name={event.id}
-                  onChange={onUpdateChange}
-                  defaultValue={event["location"]}
-                />
-                <select
-                  name="calendarId"
-                  data-name={event.id}
-                  onChange={onUpdateChange}
-                  defaultValue={event.calendarId}
-                >
-                  <option value={"1"}>개인</option>
-                  <option value={"2"}>직장</option>
+
+              <div className='event'>
+                <input name='title' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['title']} />
+                <input name='location' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['location']} />
+                <select name='calendarId' data-name={event.id} onChange={onUpdateChange} defaultValue={event.calendarId}>
+                  {
+                    calendars.map((calendar) => {
+                      return (
+                        <option value={calendar.id}>{calendar.name}</option>
+                      )
+                    })
+                  }
+                  
                 </select>
                 <button value={event.id} onClick={deleteBtnHandler}>
                   삭제
