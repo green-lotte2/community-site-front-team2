@@ -64,9 +64,7 @@ const root = createBrowserRouter([
   { path: "/qna", element: <QnAPage/> },
   { path: "/qna/view", element: <ViewPage2/> },
   { path: "/qna/modify", element: <ModifyPage2/> },
-  { path: "/qna/write", element: <
-   
-   /> },
+  { path: "/qna/write", element: <WritePage2/> },
 ]);
 
 // router 내보내기
