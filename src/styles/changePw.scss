@@ -1,4 +1,4 @@
-.FindId {
+.ChangePw {
   height: 100%;
   position: absolute;
   top: 50%;
@@ -68,6 +68,7 @@
         }
       }
       &:nth-child(3) {
+        opacity: 0.6;
         position: relative;
         left: 192px;
         &:hover {
@@ -75,7 +76,6 @@
         }
       }
       &:nth-child(4) {
-        opacity: 0.6;
         position: relative;
         left: 191px;
         &:hover {
@@ -112,7 +112,7 @@
           content: "";
           position: absolute;
           top: -15px;
-          left: 347px;
+          left: 418px;
           display: block;
           width: 0;
           height: 0;
@@ -139,7 +139,7 @@
           transition: 0.2s linear;
         }
       }
-      input.name {
+      input.pass1 {
         display: block;
         width: 90%;
         max-width: 680px;
@@ -159,9 +159,9 @@
           color: rgba(#0f132a, 1);
         }
       }
-      input.email {
+      input.pass2 {
         display: block;
-        width: 315px;
+        width: 90%;
         max-width: 680px;
         height: 50px;
         margin-left: 18px;
@@ -192,7 +192,7 @@
       }
     }
 
-    .btnFindId {
+    .btnChangePw {
       background: #e91e63;
       color: white;
       display: block;
@@ -267,48 +267,7 @@
   .resultId {
     text-align: center;
     color: gray;
-    font-size: 25px;
-  }
-
-  .btnFindPw,
-  .btnLogin {
-    display: block;
-    width: 90%;
-    max-width: 500px;
-    margin: 20px auto;
-    height: 50px;
-    cursor: pointer;
-    font-size: 14px;
-    font-family: "Montserrat", sans-serif;
-    border-radius: 8px;
-    border: none;
-    line-height: 40px;
-    &.btnFindPw {
-      background: #5b90f0;
-      color: white;
-      box-shadow: 0 15px 30px rgba(#5b90f0, 0.36);
-      transition: 0.2s linear;
-      .fa {
-        font-size: 20px;
-        padding: 0 5px 0 0;
-      }
-      &:hover {
-        box-shadow: 0 0 0 rgba(#5b90f0, 0);
-      }
-    }
-    &.btnLogin {
-      background: #25282d;
-      color: white;
-      box-shadow: 0 15px 30px rgba(#25282d, 0.36);
-      transition: 0.2s linear;
-      .fa {
-        font-size: 20px;
-        padding: 0 5px 0 0;
-      }
-      &:hover {
-        box-shadow: 0 0 0 rgba(#25282d, 0);
-      }
-    }
+    font-size: 18px;
   }
 
   .loginImg img {

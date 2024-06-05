@@ -11,7 +11,6 @@ const FindId = () => {
     email: "",
   });
 
-  const [name, setName] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [emailCode, setEmailCode] = useState("");
   const [emailCodeMessage, setEmailCodeMessage] = useState("");
@@ -103,7 +102,7 @@ const FindId = () => {
     }
 
     axios
-      .get("http://localhost:8080/community/findId", {
+      .get(url.backendUrl + "/findId", {
         params: {
           email: user.email,
           name: user.name,
@@ -126,7 +125,7 @@ const FindId = () => {
   };
 
   const naviFindPw = (e) => {
-    navigate("/findPw");
+    navigate("/user/findPw");
   };
 
   return (
@@ -166,7 +165,7 @@ const FindId = () => {
               placeholder="name"
               className="name"
               name="name"
-              value={user.uid}
+              value={user.name}
               onChange={changeHandler}
               required
             />

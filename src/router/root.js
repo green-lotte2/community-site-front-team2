@@ -20,11 +20,11 @@ import ProjectView from "../pages/project/ProjectView";
 import FindIdPage from "../pages/user/FindIdPage";
 import FindPwPage from "../pages/user/FindPwPage";
 import AdminPage from "../pages/admin/AdminPage";
+import ChangePwPage from "../pages/user/ChangePwPage";
 import QnAPage from "../pages/qna/QnAPage";
 import WritePage2 from "../pages/qna/WritePage"
 import ModifyPage2 from "../pages/qna/ModifyPage"
 import ViewPage2 from "../pages/qna/ViewPage"
-
 
 //router 생성
 const root = createBrowserRouter([
@@ -55,6 +55,7 @@ const root = createBrowserRouter([
   { path: "/user/terms", element: <TermsPage /> }, // 약관
   { path: "/user/findId", element: <FindIdPage /> }, // 아이디찾기
   { path: "/user/findPw", element: <FindPwPage /> }, // 비밀번호찾기
+  { path: "/user/changePw", element: <ChangePwPage /> }, // 비밀번호변경
 
   //admin
   { path: "/admin", element: <AdminPage /> },
@@ -63,7 +64,9 @@ const root = createBrowserRouter([
   { path: "/qna", element: <QnAPage/> },
   { path: "/qna/view", element: <ViewPage2/> },
   { path: "/qna/modify", element: <ModifyPage2/> },
-  { path: "/qna/write", element: <WritePage2/> },
+  { path: "/qna/write", element: <
+   
+   /> },
 ]);
 
 // router 내보내기
