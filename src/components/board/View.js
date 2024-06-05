@@ -29,22 +29,12 @@ const View = () => {
 
   const handleReport = async () => {
     try {
-      // 신고 시 status 값을 1로 설정하고, report 값을 1 증가시킴
-      const updatedBoard = {
-        ...board,
-        status: 1,
-        report: board.report + 1,
-      };
-
       const response = await axios.post(
         `http://localhost:8080/community/board/report`,
         {
           no: no, // 게시글 ID (게시글 번호)
-          cate: cate, // 게시글 카테고리
           reason: reason, // 신고 사유
-          uid: authSlice.userId, // 신고한 사용자 ID
-          status: updatedBoard.status, // 업데이트된 상태 값
-          report: updatedBoard.report, // 업데이트된 신고 횟수
+          uid: authSlice.username, // 신고한 사용자 ID
         },
         {
           headers: {
@@ -53,13 +43,10 @@ const View = () => {
           },
         }
       );
-
+      console.log("토큰: ", authSlice.accessToken);
       console.log("신고 사유:", reason);
       console.log("서버 응답:", response.data);
       alert("신고가 접수되었습니다.");
-
-      // 상태 업데이트
-      setBoard(updatedBoard);
     } catch (error) {
       console.error("신고 중 오류 발생:", error);
       alert("신고에 실패하였습니다. 다시 시도해 주세요.");
@@ -150,8 +137,6 @@ const View = () => {
                   X
                 </span>
                 <h2>게시글 신고하기</h2>
-                <input type="hidden" name="report" value={board.report + 1} />
-                <input type="hidden" name="status" value={1} />
                 <textarea
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
