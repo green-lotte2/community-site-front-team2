@@ -63,17 +63,6 @@ function ProjectBoard() {
     return tempData;
   };
 
-  // const dragCardInSameBoard = (source, destination) => {
-  //   let tempData = Array.from(data);
-  //   console.log("Data", tempData);
-  //   const index = tempData.findIndex(
-  //     (item) => item.id.toString() === source.droppableId
-  //   );
-  //   console.log(tempData[index], index);
-  //   let [removedCard] = tempData[index].card.splice(source.index, 1);
-  //   tempData[index].card.splice(destination.index, 0, removedCard);
-  //   setData(tempData);
-  // };
 
   const addCard = (title, bid) => {
     const index = data.findIndex((item) => item.id === bid);
@@ -97,14 +86,26 @@ function ProjectBoard() {
   };
 
   const addBoard = (title) => {
-    const tempData = [...data];
-    tempData.push({
-      id: uuidv4(),
+    const newBoard = {
+      boardNo: uuidv4(),
       boardName: title,
       card: [],
-    });
-    setData(tempData);
-  };
+    };
+  
+    // 새로운 보드를 tempData에 추가
+    const tempData = [...data, newBoard];
+  
+    // Board 추가시 DB 저장
+    axios.post(`${url.backendUrl}/project/boardinsert`, newBoard)
+      .then(res => {
+        console.log("프로젝트 등록");
+        
+        setData(prevData => [...prevData, res.data]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   const removeBoard = (bid) => {
     const tempData = [...data];
@@ -135,14 +136,22 @@ function ProjectBoard() {
     tempBoards[index].card[cardIndex] = card;
     console.log(tempBoards);
     setData(tempBoards);
+
+    console.log("Index위치 확인 : " +cardIndex);
   };
+
+  
 
   useEffect(() => {
     localStorage.setItem("kanban-board", JSON.stringify(data));
-  }, [data]);
+  }, [data]); //콘솔에 로컬 스토리지 저장된 데이터
+
+  const storedData = JSON.parse(localStorage.getItem("kanban-board"));
+
+  console.log("로컬데이터 확인 : ");
+  console.log(storedData);
 
 
- 
   return (
     <div>
       <DefaultLayout>
