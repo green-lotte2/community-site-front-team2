@@ -57,6 +57,12 @@ const Aside = () => {
               <img src="/images/calendar_50.png"></img>Calendar
             </Link>
           </div>
+          <div>
+            <Link to="/qna?cate=qna">
+              <img src="/images/inquiry2.png"></img>
+Inquiry
+            </Link>
+          </div>
         </div>
       </aside>
     </>
