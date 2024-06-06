@@ -64,14 +64,14 @@ const deleteHandler = ( )=>{
 <br/>
 
 <div>
-   <textarea style={{width: '100%' , minHeight: '300px', border: '1px solid lightgray', fontSize: '20px'}} 
+   <textarea style={{width: '100%' , minHeight: '300px', border: '1px solid lightgray', fontSize: '20px', padding: '10px', resize: 'none'}} 
    name="content" value={article.content} readOnly>
    </textarea>
 </div>
 <br></br>
 {article.answer ? (<div>
   <h4>답변</h4>
-   <textarea style={{width: '100%' , minHeight: '300px', border: '1px solid lightgray', fontSize: '20px'}} 
+   <textarea style={{width: '100%' , minHeight: '300px', border: '1px solid lightgray', fontSize: '20px', padding: '10px', resize: 'none'}} 
    name="answer" value={article.answer} readOnly>
    </textarea>
 </div>
