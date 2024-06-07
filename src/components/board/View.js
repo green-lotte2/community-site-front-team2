@@ -151,8 +151,25 @@ const View = () => {
           {/*모달 end */}
         </div>
         {/*vContent end */}
+
+        {/*🎈comment */}
+        <form name="commentForm" className="commentForm">
+          <input type="hidden" name="no" value={board.no} />
+          <input type="hidden" name="cate" value={board.cate} />
+          <h4>댓글</h4>
+          <div className="comment">
+            <span>{board.nick}</span>
+            <br />
+            <textarea placeholder="댓글을 남겨주세요."></textarea>
+          </div>
+          <div className="commentBtn">
+            <input type="submit" name="submit" value="등록" />
+            <button type="button">취소</button>
+          </div>
+        </form>
       </div>
       {/*view end */}
+
       <div className="vBtn">
         <div>
           <Link to={`/board/write?cate=${cate}`} className="writeBtn2">

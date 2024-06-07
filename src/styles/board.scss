@@ -412,6 +412,55 @@
     font-size: 15px;
   }
 
+  .commentForm {
+  }
+
+  .commentForm > h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+
+  .commentForm .comment {
+    border: 2px solid #dddddd;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .commentForm .comment > span {
+    font-weight: bold;
+  }
+
+  .commentForm .comment textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    outline: none;
+    margin-top: 10px;
+    font-size: 15px;
+  }
+
+  .commentBtn {
+    text-align: end;
+    margin-top: 10px;
+  }
+
+  .commentBtn > input {
+    width: 60px;
+    padding: 6px 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .commentBtn > button {
+    width: 60px;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
   .reportBtn:hover {
     border-bottom: 1px solid #c9c9c9;
   }
@@ -569,7 +618,8 @@
     background-color: #d32f2f;
   }
 
-  .myCate{
+  /*🌈관리자🌈*/
+  .myCate {
     border-radius: 7px;
     margin-right: 10px;
     padding: 5px;
@@ -578,14 +628,14 @@
     color: rgb(245, 245, 245);
   }
 
-  .qnaTitle{
+  .qnaTitle {
     border: 1px solid #aaaaaa;
     border-radius: 5px;
     padding: 5px;
     font-size: 23px;
   }
 
-  .qnaAnswer{
+  .qnaAnswer {
     background-color: #dddddd;
     border-radius: 5px;
     padding: 5px;
@@ -595,7 +645,7 @@
     display: none;
   }
 
-  .addBox{
+  .addBox {
     background-color: #dddddd;
     border-radius: 5px;
     padding: 5px;
@@ -606,7 +656,7 @@
     color: white;
   }
 
-  .insertQuestion{
+  .insertQuestion {
     width: 100%;
     height: 40px;
     text-align: center;
@@ -615,7 +665,7 @@
     background-color: #dfdfdf;
   }
 
-  .gaheeButton{
+  .gaheeButton {
     padding: 5px;
     font-size: 20px;
     margin-left: 46%;
@@ -625,7 +675,7 @@
     border-radius: 8px;
   }
 
-  .deleteGahee{
+  .deleteGahee {
     font-size: 15px;
     margin-left: 5px;
     color: red;
