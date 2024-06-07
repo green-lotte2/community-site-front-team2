@@ -12,13 +12,15 @@ import DefaultLayout from '../../layouts/DefaultLayout'
 import axios from "axios";
 
 import url from '../../config/url';
-import authSlice from "../../slices/authSlice";
+import { useSelector } from "react-redux";
 
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function ProjectBoard() {
+
+  const authSlice = useSelector((state) => state.authSlice);
   
   const [data, setData] = useState(
     localStorage.getItem("kanban-board")
@@ -85,11 +87,13 @@ function ProjectBoard() {
     setData(tempData);
   };
 
+  const lastBoardPosition = data.length > 0 ? Math.max(...data.map(board => board.boardPosition)) : 0;
   const addBoard = (title) => {
     const newBoard = {
       boardNo: uuidv4(),
-      boardName: title,
-      card: [],
+      boardTitle: title,
+      createUserId: authSlice.username,
+      boardPosition: lastBoardPosition,
     };
   
     // 새로운 보드를 tempData에 추가
