@@ -27,6 +27,7 @@ import ModifyPage2 from "../pages/qna/ModifyPage";
 import ViewPage2 from "../pages/qna/ViewPage";
 import TierPlanPage from "../pages/user/TierPlanPage";
 import AdminView from "../pages/admin/AdminView";
+import MypagePage from "../pages/user/MypagePage";
 
 //router 생성
 const root = createBrowserRouter([
@@ -59,6 +60,7 @@ const root = createBrowserRouter([
   { path: "/user/findPw", element: <FindPwPage /> }, // 비밀번호찾기
   { path: "/user/changePw", element: <ChangePwPage /> }, // 비밀번호변경
   { path: "/user/tierPlan", element: <TierPlanPage /> }, // 등급별 플랜
+  { path: "/user/mypage", element: <MypagePage /> }, // 회원정보수정
 
   //admin
   { path: "/admin", element: <AdminPage /> },

@@ -5,7 +5,7 @@ import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import url from "../../config/url";
 
-const Register = () => {
+const Mypage = () => {
   const navigate = useNavigate();
   const [id, setId] = useState("");
   const [pass, setPass] = useState();
@@ -275,7 +275,7 @@ const Register = () => {
   return (
     <div className="Register">
       <div className="container">
-        <h1>Register</h1>
+        <h1>마이페이지</h1>
 
         <form onSubmit={submitHandler}>
           <div>
@@ -554,4 +554,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Mypage;
