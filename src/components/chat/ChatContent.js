@@ -12,8 +12,6 @@ import e from 'cors';
 
 
 const ChatContent = ( props ) => {
-
-  console.log(`${url.backendUrl}+???`)
   const [userName, setUserName] = useState('');
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
@@ -130,11 +128,17 @@ const ChatContent = ( props ) => {
     setIsConnected(true);
   }, [authSlice.username]);
 
-  const ws =  props.ws;
+ var ws =  props.ws;
   const chatAll = props.chat;
 
 
   useEffect(() => {
+    if(ws.readyState === WebSocket.OPEN){
+
+    }else{
+      ws= new WebSocket(`wss://api.illrreumbow.store/community/chattings`);
+    }
+
     if ( ws.onopen ) { 
       if (chatAll.length > 0) {
         const [nickname, time, roomNumber, text] = chatAll[chatAll.length - 1].split('*');
@@ -182,7 +186,9 @@ const ChatContent = ( props ) => {
 
       }else{
         console.log('here..22!')
-        ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
+      
+          ws.send(`${userName}*${time}*${room.chatRoomPk}*${message}`);
+    
       }
       setThumbnailPreview(null);
       setNowFile(null);
