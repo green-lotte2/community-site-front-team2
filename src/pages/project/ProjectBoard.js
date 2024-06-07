@@ -42,7 +42,7 @@ function ProjectBoard() {
 
   const setName = (title, bid) => {
     const index = data.findIndex((item) => item.id === bid);
-    const tempData = [...data];
+    const tempData = [...data]; 
     tempData[index].boardName = title;
     setData(tempData);
   };
@@ -67,8 +67,15 @@ function ProjectBoard() {
 
 
   const addCard = (title, bid) => {
+
+    /*
+    console.log(title +"이거 확인~")
     const index = data.findIndex((item) => item.id === bid);
     const tempData = [...data];
+  
+    console.log(index +"here~~")
+    console.log(tempData +"here~~")
+
     tempData[index].card.push({
       id: uuidv4(),
       title: title,
@@ -76,6 +83,22 @@ function ProjectBoard() {
       task: [],
     });
     setData(tempData);
+    */
+
+    //1. title 넣기 + board부터 들고오세요~ 
+    /*  */
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectNo = urlParams.get('projectNo');
+
+    const insertCard = {titleName : title ,
+      createUserId : authSlice.username , 
+      projectNo : projectNo, 
+      boardNo : 1, //나중에는 board를 select해 와서 꼭 해당하는 pk값으로 넣어주기~
+    };
+    axios.post(url.backendUrl+'/project/insertCard', insertCard).then((resp) =>{
+      console.log(resp.data);
+    })
+    
   };
 
   const removeCard = (boardId, cardId) => {
@@ -87,10 +110,16 @@ function ProjectBoard() {
     setData(tempData);
   };
 
+  //보드 포지션 / 보드 추가
   const lastBoardPosition = data.length > 0 ? Math.max(...data.map(board => board.boardPosition)) : 0;
   const addBoard = (title) => {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectNo = urlParams.get('projectNo');
+
     const newBoard = {
       boardNo: uuidv4(),
+      projectNo : projectNo,
       boardTitle: title,
       createUserId: authSlice.username,
       boardPosition: lastBoardPosition,
@@ -133,7 +162,7 @@ function ProjectBoard() {
 
     const tempBoards = [...data];
     const cards = tempBoards[index].card;
-
+    
     const cardIndex = cards.findIndex((item) => item.id === cid);
     if (cardIndex < 0) return;
 
