@@ -154,23 +154,23 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents, 
               />
             </div>
             <div className='content'>
-              
-                <input
-                  className='text'
-                  name="title"
-                  type="text"
-                  onChange={onInputChange}
-                  placeholder="&#128197; title"
-                />
 
-                <input
-                  className='text'
-                  name="location"
-                  type="text"
-                  onChange={onInputChange}
-                  placeholder="&#128681; location"
-                />
-              
+              <input
+                className='text'
+                name="title"
+                type="text"
+                onChange={onInputChange}
+                placeholder="&#128197; title"
+              />
+
+              <input
+                className='text'
+                name="location"
+                type="text"
+                onChange={onInputChange}
+                placeholder="&#128681; location"
+              />
+
             </div>
 
             <select name='calendarId' onChange={onInputChange}>
@@ -183,7 +183,7 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents, 
               }
 
             </select>
-            <input type="submit" value={"save"} />
+            <input type="submit" value={String.fromCodePoint(128190)} />
           </form>
         </div>
         <div className="eventList">
@@ -214,7 +214,7 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents, 
                   <input className='text' name='title' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['title']} />
                 </p>
                 <p>
-                &#128681;
+                  &#128681;
                   <input className='text' name='location' type='text' data-name={event.id} onChange={onUpdateChange} defaultValue={event['location']} />
                 </p>
 
@@ -228,13 +228,12 @@ const SideBar = ({ rightSideHandlerClose, scheduleInfo, targetEvent, setEvents, 
                   }
 
                 </select>
-                <button value={event.id} onClick={deleteBtnHandler}>
-                  삭제
-                </button>
                 <button value={event.id} onClick={updateBtnHandler}>
-                  수정
+                  &#128221;
                 </button>
-
+                <button value={event.id} onClick={deleteBtnHandler}>
+                  &#10060;
+                </button>
               </div>
             );
           })}
