@@ -35,6 +35,7 @@ const formats = [
   "color",
   "background",
   "font",
+  "table",
 ];
 
 /*bold , italic 추가 */
@@ -45,6 +46,34 @@ Quill.register(bold, true);
 let italic = Quill.import("formats/italic");
 italic.tagName = "i";
 Quill.register(italic, true);
+
+//🎈img파일  인코딩
+const uploadImage = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const response = await axios.post(
+      `${url.backendUrl}/upload/image`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log(response);
+    return response.data.url; // 서버에서 반환된 이미지 URL
+  } catch (error) {
+    console.error("Image upload failed:", error);
+    throw new Error("Image upload failed");
+  }
+};
+
+const handleImageUpload = async (file) => {
+  const imageUrl = await uploadImage(file);
+  return imageUrl;
+};
 
 export default function Write() {
   // 카테값 전부 가져옴(배열인 상태)
@@ -111,10 +140,31 @@ export default function Write() {
       });
   };
 
+  //툴바의 image 버튼을 클릭하면 파일 선택 창이 열리고, 선택한 파일을 서버에 업로드한 후, 에디터에 이미지를 삽입하는 핸들러 추가
   const modules = useMemo(() => {
     return {
       toolbar: {
         container: "#toolbar", // 커스텀 툴바의 ID
+        handlers: {
+          image: async function () {
+            const input = document.createElement("input");
+            input.setAttribute("type", "file");
+            input.setAttribute("accept", "image/*");
+            input.click();
+
+            input.onchange = async () => {
+              const file = input.files[0];
+              const range = this.quill.getSelection(true);
+              this.quill.setSelection(range.index + 1);
+
+              // Upload the image to the server and get the URL
+              const imageUrl = await handleImageUpload(file);
+
+              // Insert the image into the editor
+              this.quill.insertEmbed(range.index, "image", imageUrl);
+            };
+          },
+        },
       },
     };
   }, []);
@@ -172,7 +222,7 @@ export default function Write() {
       <div className="editBtn">
         <Link to={`/board/list?cate=${cate1[1]}`}>취소</Link>
         <button className="submitBtn" onClick={submitHandler}>
-          완료
+          등록
         </button>
       </div>
     </div>
