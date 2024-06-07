@@ -6,6 +6,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import CustomToolbar from "./CustomToolbar";
+import url from "../../config/url";
 
 const Modify = () => {
   const cate1 = useCates();
@@ -51,7 +52,7 @@ const Modify = () => {
   useEffect(() => {
     console.log(`cate: ${cate}, no: ${no}`);
     axios
-      .get(`http://localhost:8080/community/board/modify/${cate}/${no}`, {
+      .get(url.backendUrl + `/board/modify/${cate}/${no}`, {
         headers: { Authorization: `Bearer ${authSlice.accessToken}` },
       })
 
@@ -86,13 +87,9 @@ const Modify = () => {
 
     // 글 수정 데이터 보내기
     axios
-      .post(
-        `http://localhost:8080/community/board/modify/${cate}/${no}`,
-        modifiedBoard,
-        {
-          headers: { Authorization: `Bearer ${authSlice.accessToken}` },
-        }
-      )
+      .post(url.backendUrl + `/board/modify/${cate}/${no}`, modifiedBoard, {
+        headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+      })
       .then((response) => {
         console.log("Save response:", response.data);
         navigate(`/board/view/${modifiedBoard.cate}/${no}`);

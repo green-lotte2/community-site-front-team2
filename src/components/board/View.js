@@ -30,7 +30,7 @@ const View = () => {
   const handleReport = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/community/board/report`,
+        `${url.backendUrl}/board/report`,
         {
           no: no, // 게시글 ID (게시글 번호)
           reason: reason, // 신고 사유
@@ -57,10 +57,12 @@ const View = () => {
   };
 
   useEffect(() => {
+    console.log(url.backendUrl);
+
     console.log(`cate: ${cate}, no: ${no}`);
 
     axios
-      .get(`http://localhost:8080/community/board/view/${cate}/${no}`, {
+      .get(url.backendUrl + `/board/view/${cate}/${no}`, {
         headers: { Authorization: `Bearer ${authSlice.accessToken}` },
       })
 
@@ -78,12 +80,9 @@ const View = () => {
     const confirmed = window.confirm("정말 삭제하시겠습니까?");
     if (confirmed) {
       try {
-        await axios.post(
-          `http://localhost:8080/community/board/delete/${cate}/${no}`,
-          {
-            headers: { Authorization: `Bearer ${authSlice.accessToken}` },
-          }
-        );
+        await axios.post(`${url.backendUrl}/board/delete/${cate}/${no}`, {
+          headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+        });
         alert("게시글이 삭제되었습니다.");
         navigate(`/board/list?cate=${cate}`);
       } catch (error) {
