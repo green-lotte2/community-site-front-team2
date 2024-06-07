@@ -76,6 +76,16 @@ export default function Write() {
   const submitHandler = (e) => {
     e.preventDefault();
 
+    if (!board.title) {
+      alert("제목을 입력해주세요.");
+      return;
+    }
+
+    if (!board.cate || (board.cate !== "daily" && board.cate !== "report")) {
+      alert("카테고리를 선택해주세요.");
+      return;
+    }
+
     console.log(board);
 
     // Update content before submitting
