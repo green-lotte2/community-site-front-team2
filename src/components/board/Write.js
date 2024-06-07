@@ -83,7 +83,7 @@ export default function Write() {
 
     axios
       .post(
-        `http://localhost:8080/community/board/write`,
+        url.backendUrl + `/board/write`,
         JSON.stringify(updatedBoard), // 데이터를 JSON 문자열로 변환
         {
           headers: {
