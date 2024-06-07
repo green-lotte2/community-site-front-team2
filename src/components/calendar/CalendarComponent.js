@@ -37,6 +37,7 @@ function CalendarComponent() {
   const rightSideHandlerClose = (event) => {
     const scheduleBox = document.getElementsByClassName("scheduleBox")[0];
     if (event.target === scheduleBox) {
+      calendarObj.current.clearGridSelections();
       return setRightSideBar(false);
 
     }
@@ -110,7 +111,6 @@ function CalendarComponent() {
       },
     };
     const calendar = new Calendar(container, options);
-
     calendarObj.current = calendar;
     /** 캘린더 리스트 조회 */
     axios.get(url.backendUrl + '/calendar/type')
@@ -163,9 +163,8 @@ function CalendarComponent() {
       });
 
       setTargetEvent(getValue(moment(start).format(), moment(end).format()));
-
+      //calendar.clearGridSelections();
       setRightSideBar(true);
-      calendar.clearGridSelections();
     });
 
     calendar.on('beforeUpdateEvent', ({ event, changes }) => {
@@ -218,11 +217,14 @@ function CalendarComponent() {
   return (
     <div className='calendar'>
       <div className='calendarOptions'>
-      <input type='month' onChange={changeMonthHandler} value={date} />
-        <button onClick={remotePrevDate}>&lt;</button>
-        <button onClick={btnToday}>오늘</button>
-        <button onClick={remoteNextDate}> &gt;</button>
-        <button className='option' onClick={optionHandler}>설정</button>
+        <input type='month' onChange={changeMonthHandler} value={date} />
+        <div>
+          <button onClick={remotePrevDate}>&lt;</button>
+          <button onClick={btnToday}>Today</button>
+          <button onClick={remoteNextDate}> &gt;</button>
+          <button className='option' onClick={optionHandler}><img src="/images/pngegg.png" style={{width: '20px'}} alt="bell" /></button>
+        </div>
+
       </div>
 
       <div ref={calendarRef} style={{ width: '100%', height: '700px' }}></div>
