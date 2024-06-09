@@ -34,6 +34,9 @@ const CustomToolbar = () => (
     <span className="ql-formats">
       <button className="ql-clean" />
     </span>
+    <span className="ql-formats">
+      <button className="ql-table" />
+    </span>
   </div>
 );
 

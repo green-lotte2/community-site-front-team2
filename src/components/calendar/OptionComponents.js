@@ -130,15 +130,17 @@ const OptionComponents = ({ rightSideHandlerClose, calendars, setEvents }) => {
         <div className='optionBox' onClick={rightSideHandlerClose}>
 
             <div className='optionContent'>
-                <div className='insertForm'>
-                    <h2>캘린더 관리</h2>
+                <div className='insertCalendar'>
+                    <h2>캘린더 추가</h2>
                     <div className='setCalendar'>
                         <input type='text' onChange={calendarNameHandler} placeholder='name' />
                         <button className='colorBtn' onClick={colorBoxHandler} style={{ width: '23px', height: '23px', backgroundColor: color }}>&nbsp;</button>
-                        <button onClick={insertCalendarTypeHandler}>등록</button>
+                        <button onClick={insertCalendarTypeHandler}>&#128190;</button>
                     </div>
                 </div>
                 <div className='calendarList'>
+                    <h2>캘린더 관리</h2>
+                    <div className='calendarType'>
                     {calendarTypes.map((calendar) => {
                         return (
                             <div>
@@ -147,6 +149,7 @@ const OptionComponents = ({ rightSideHandlerClose, calendars, setEvents }) => {
                             </div>
                         )
                     })}
+                    </div>
                 </div>
                 {colorBoxState && <CirclePicker onChangeComplete={handleChangeComplete} />}
                 {listColorBoxState && <CirclePicker onChangeComplete={handleListChangeComplete} />}
