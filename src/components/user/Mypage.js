@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
@@ -17,11 +17,12 @@ const Mypage = () => {
   const [emailCode, setEmailCode] = useState("");
   const [emailCodeMessage, setEmailCodeMessage] = useState("");
   const [savedCode, setSavedCode] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const modalBackground = useRef();
 
   const [user, setUser] = useState({
     uid: "",
     pass: "",
-    pass2: "",
     name: "",
     nick: "",
     email: "",
@@ -38,15 +39,9 @@ const Mypage = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const inputUid = (e) => {
-    const currentUid = e.target.value;
-    setUser({ ...user, uid: currentUid });
-    const uidPattern = /^[a-zA-Z0-9_]{4,20}$/;
-    if (!uidPattern.test(currentUid)) {
-      setId("영문, 숫자로 4~20자까지 설정해 주세요.");
-    } else {
-      setId("");
-    }
+  const changePass = (e) => {
+    e.preventDefault();
+    setModalIsOpen(true);
   };
 
   const inputPass = (e) => {
@@ -273,7 +268,7 @@ const Mypage = () => {
   }, [user, id, pass, name, nick, email, emailCodeMessage, hp]);
 
   return (
-    <div className="Register">
+    <div className="Mypage">
       <div className="container">
         <h1>마이페이지</h1>
 
@@ -316,19 +311,13 @@ const Mypage = () => {
                 <label>아이디</label>
               </td>
               <td>
-                <div className="uidNum">
-                  <input
-                    type="text"
-                    placeholder="아이디 입력"
-                    className="uid"
-                    name="uid"
-                    value={user.uid}
-                    onChange={inputUid}
-                  />
-                  <button type="button" className="btnUid" onClick={handleUid}>
-                    중복검색
-                  </button>
-                </div>
+                <input
+                  type="text"
+                  placeholder="test1"
+                  className="input"
+                  name="uid"
+                  value={user.uid}
+                />
                 <span class="resultId">{id}</span>
               </td>
             </tr>
@@ -340,39 +329,47 @@ const Mypage = () => {
                 <label>패스워드</label>
               </td>
               <td>
-                <input
-                  type="password"
-                  placeholder="패스워드 입력"
-                  className="input"
-                  name="pass"
-                  value={user.pass}
-                  onChange={inputPass}
-                />
-                <span class="resultPass">{pass}</span>
+                <div className="passNum">
+                  <input
+                    type="text"
+                    placeholder="************"
+                    className="pass"
+                    name="pass"
+                    readOnly
+                  />
+                  <button
+                    type="button"
+                    className="btnPass"
+                    onClick={changePass}
+                  >
+                    비밀번호 변경
+                  </button>
+                </div>
               </td>
             </tr>
           </div>
 
-          <div className="input_block">
-            <tr>
-              <td>
-                <label>확인</label>
-              </td>
-              <td>
-                <input
-                  type="password"
-                  placeholder="패스워드 입력 확인"
-                  className="input"
-                  name="pass2"
-                  onChange={changeHandler}
-                />
-                {user.pass !== user.pass2 && (
-                  <span class="resultPass2">비밀번호가 일치하지 않습니다.</span>
-                )}
-                {user.pass === user.pass2 && <span class="resultPass2"></span>}
-              </td>
-            </tr>
-          </div>
+          {modalIsOpen && (
+            <div
+              className="modal-container"
+              ref={modalBackground}
+              onClick={(e) => {
+                if (e.target === modalBackground.current) {
+                  setModalIsOpen(false);
+                }
+              }}
+            >
+              <div className={"modal-content"}>
+                <p>리액트로 모달 구현하기</p>
+                <button
+                  className="modal-close-btn"
+                  onClick={() => setModalIsOpen(false)}
+                >
+                  모달 닫기
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="input_block">
             <tr>
@@ -382,7 +379,7 @@ const Mypage = () => {
               <td>
                 <input
                   type="text"
-                  placeholder="이름 입력"
+                  placeholder="테스트"
                   className="input"
                   name="name"
                   value={user.name}
@@ -541,7 +538,7 @@ const Mypage = () => {
 
           <input
             type="submit"
-            value="Sign up"
+            value="수정완료"
             className="btnRegister"
             disabled={!isFormValid}
           />
