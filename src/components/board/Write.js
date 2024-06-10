@@ -35,7 +35,6 @@ const formats = [
   "color",
   "background",
   "font",
-  "table",
 ];
 
 /*bold , italic 추가 */
@@ -62,7 +61,7 @@ const uploadImage = async (file) => {
         },
       }
     );
-    console.log(response);
+    console.log("response", response);
     return response.data.url; // 서버에서 반환된 이미지 URL
   } catch (error) {
     console.error("Image upload failed:", error);
@@ -72,6 +71,7 @@ const uploadImage = async (file) => {
 
 const handleImageUpload = async (file) => {
   const imageUrl = await uploadImage(file);
+  console.log("imageUrl", imageUrl);
   return imageUrl;
 };
 
@@ -82,6 +82,8 @@ export default function Write() {
   console.log("cate값:" + cate1[1]);
 
   const [values, setValues] = useState("");
+  const [selectedImage, setSelectedImage] = useState(""); // 선택된 이미지의 base64 값을 저장
+
   const authSlice = useSelector((state) => state.authSlice);
   const navigate = useNavigate();
 
@@ -115,7 +117,7 @@ export default function Write() {
       return;
     }
 
-    console.log(board);
+    console.log("board", board);
 
     // Update content before submitting
     const updatedBoard = { ...board, content: values };
@@ -132,7 +134,7 @@ export default function Write() {
         }
       )
       .then((resp) => {
-        console.log(resp.data);
+        console.log("resp", resp.data);
         navigate(`/board/list?cate=${updatedBoard.cate}`);
       })
       .catch((err) => {
@@ -140,7 +142,33 @@ export default function Write() {
       });
   };
 
-  //툴바의 image 버튼을 클릭하면 파일 선택 창이 열리고, 선택한 파일을 서버에 업로드한 후, 에디터에 이미지를 삽입하는 핸들러 추가
+  // 이미지 선택 시 base64로 변환하여 state에 저장하는 함수
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64Image = reader.result;
+      setSelectedImage(base64Image);
+
+      // 이미지를 업로드하고 URL을 가져오는 작업 수행
+      try {
+        const imageUrl = await uploadImage(file); // 이미지 업로드 및 URL 가져오기
+        console.log("Uploaded Image URL:", imageUrl);
+
+        // 서버에서 반환된 이미지 URL을 사용하려면 여기서 해당 URL을 사용하거나 필요한 처리를 수행합니다.
+        // 예를 들어, 서버에 이미지 URL을 저장하거나 적절한 방식으로 이미지를 처리합니다.
+        setValues(
+          (prevValues) =>
+            prevValues + `<img src="${imageUrl}" alt="uploaded image" />`
+        );
+      } catch (error) {
+        console.error("Image upload failed:", error);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  //툴바의 image 버튼을 클릭하면 파일 선택 창이 열리고, 선택한 파일을 base64로 변환하여 화면에 표시하는 핸들러 추가
   const modules = useMemo(() => {
     return {
       toolbar: {
@@ -154,14 +182,8 @@ export default function Write() {
 
             input.onchange = async () => {
               const file = input.files[0];
-              const range = this.quill.getSelection(true);
-              this.quill.setSelection(range.index + 1);
-
-              // Upload the image to the server and get the URL
-              const imageUrl = await handleImageUpload(file);
-
-              // Insert the image into the editor
-              this.quill.insertEmbed(range.index, "image", imageUrl);
+              handleImageChange({ target: { files: [file] } }); // 이미지 선택 후 base64 변환하여 state에 저장
+              console.log("file2", file);
             };
           },
         },
