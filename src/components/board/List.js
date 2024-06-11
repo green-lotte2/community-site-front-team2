@@ -27,24 +27,52 @@ const List = () => {
   const [serverData, setServerData] = useState(initState);
   const isAdmin = authSlice.role === "admin"; // 사용자의 권한이 admin인지 확인
 
+  const [keyword, setKeyword] = useState("");
+  const [searchType, setSearchType] = useState("title");
+
   useEffect(() => {
     axios
-      .get(url.backendUrl + `/board/list?cate=${cate}&pg=${pg}`, {
+      .get(`${url.backendUrl}/board/list?cate=${cate}&pg=${pg}`, {
         headers: { Authorization: `Bearer ${authSlice.accessToken}` },
       })
       .then((resp) => {
-        console.log(resp.data);
+        console.log("resp", resp.data);
         setServerData(resp.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [cate, pg]); // pg값이나 cate값이 변경이 되면 useEffect가 실행
+  }, [cate, pg]);
 
   useEffect(() => {
     console.log("board:", board);
     console.log("cate:", cate);
   }, [board, cate]);
+
+  // cate가 "all"일 때 빈 문자열로 설정
+  const effectiveCate = cate === "all" ? "" : cate;
+
+  // 검색 기능
+  const handleSearch = () => {
+    const searchParams = new URLSearchParams({
+      cate: effectiveCate,
+      pg,
+      type: searchType,
+      keyword,
+    });
+
+    axios
+      .get(`${url.backendUrl}/board/list?${searchParams.toString()}`, {
+        headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+      })
+      .then((resp) => {
+        console.log("resp", resp.data);
+        setServerData(resp.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -71,15 +99,25 @@ const List = () => {
             <div className="first_div">
               <strong>검색 키워드</strong>
               <div className="selectBox">
-                <select>
-                  <option>제목</option>
-                  <option>내용</option>
-                  <option>제목+내용</option>
+                <select
+                  name="type"
+                  value={searchType}
+                  onChange={(e) => setSearchType(e.target.value)}
+                >
+                  <option value="title">제목</option>
+                  <option value="content">내용</option>
+                  <option value="writer">작성자</option>
                 </select>
               </div>
-              <input type="text" placeholder="검색어를 입력하세요."></input>
-              <button className="btn">
-                <img src="../images/search-40.png"></img>
+              <input
+                name="keyword"
+                type="text"
+                placeholder="검색어를 입력하세요."
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+              ></input>
+              <button className="btn" onClick={handleSearch}>
+                <img src="../images/search-40.png" alt="검색"></img>
               </button>
             </div>
           </div>
@@ -93,21 +131,22 @@ const List = () => {
               <div className="hit">조회</div>
             </div>
 
-            {serverData.dtoList.map((board, index) => (
-              <div key={index} className="tr">
-                <div className="td no">{serverData.startNo - index}</div>
-                <div className="td Btitle">
-                  <Link to={`/board/view/${board.cate}/${board.no}`}>
-                    {board.title}
-                  </Link>
+            {serverData.dtoList &&
+              serverData.dtoList.map((board, index) => (
+                <div key={index} className="tr">
+                  <div className="td no">{serverData.startNo - index}</div>
+                  <div className="td Btitle">
+                    <Link to={`/board/view/${board.cate}/${board.no}`}>
+                      {board.title}
+                    </Link>
+                  </div>
+                  <div className="td writer">{board.nick}</div>
+                  <div className="td rdate">
+                    {board.rdate ? board.rdate.substring(0, 10) : ""}
+                  </div>
+                  <div className="td hit">{board.hit}</div>
                 </div>
-                <div className="td writer">{board.writer}</div>
-                <div className="td rdate">
-                  {board.rdate ? board.rdate.substring(0, 10) : ""}
-                </div>
-                <div className="td hit">{board.hit}</div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
         {/*table end */}
