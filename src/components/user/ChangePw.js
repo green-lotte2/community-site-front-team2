@@ -14,6 +14,8 @@ const ChangePw = () => {
     pass2: "",
   });
 
+  console.log(user);
+
   const [isChange, setIsChange] = useState(false);
   const [passMessage, setPassMessage] = useState("");
 
