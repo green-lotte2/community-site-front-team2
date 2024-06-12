@@ -38,7 +38,7 @@ const Aside = () => {
             </Link>
           </div>
           <div>
-            <Link to="/page/list">
+            <Link to="/page">
               <img src="/images/page_50.png"></img>Page
             </Link>
           </div>

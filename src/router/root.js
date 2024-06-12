@@ -7,6 +7,7 @@ import ModifyPage from "../pages/board/ModifyPage";
 import ViewPage from "../pages/board/ViewPage";
 import WritePage from "../pages/board/WritePage";
 import CalendarPage from "../pages/calendar/CalendarPage";
+import Page from "../pages/page/Page";
 import ProjectList from "../pages/project/ProjectList";
 import ProjectBoard from "../pages/project/ProjectBoard";
 import LoginPage from "../pages/user/LoginPage";
@@ -48,7 +49,11 @@ const root = createBrowserRouter([
   { path: "/board/view/:cate/:no", element: <ViewPage /> }, //게시판 뷰 (카테, 글번호에 따라 동적으로 지정)
   { path: "/board/write", element: <WritePage /> }, //게시판 작성
 
+  //calendar
   { path: "/calendar", element: <CalendarPage /> }, //캘린더
+
+  //page
+  { path: "/page", element: <Page />},
 
   //project
   { path: "/project", element: <ProjectList /> }, //프로젝트 마일스톤
