@@ -360,7 +360,7 @@ const openMemberHandler = (e)=>{
                         return (
                           <div key={index}   className={exChat.status == 0 ? ('chat-unreadItem') : ('chat-item')}  >           
                             <div>
-                              <img className="chat-image" src="/images/logo.png" alt="로고" style={{ marginRight: "10px" }} />
+                              <img className="chat-image" src={url.backendUrl+'/chat/userImage?userId='+nickname.trim()} alt="로고" style={{ marginRight: "10px" }} />
                             </div>
                             <div className="chat-text">
                               <span>{nickname.trim() + ' '}</span>
@@ -401,7 +401,7 @@ const openMemberHandler = (e)=>{
                       return (
                         <div key={index} className="chat-item">
                           <div>
-                            <img className="chat-image" src="/images/logo.png" alt="로고" style={{ marginRight: "10px" }} />
+                            <img className="chat-image" src={url.backendUrl+'/chat/userImage?userId='+nickname.trim()} alt="로고" style={{ marginRight: "10px" }} />
                           </div>
                           <div className="chat-text">
                             <span>{nickname.trim() + ' '}</span>
@@ -426,7 +426,7 @@ const openMemberHandler = (e)=>{
                     return  (
                       <div key={index} className="chat-item">
                         <div>
-                          <img className="chat-image" src="/images/logo.png" alt="로고" style={{ marginRight: "10px" }} />
+                          <img className="chat-image" src={url.backendUrl+'/chat/userImage?userId='+nickname.trim()} alt="로고" style={{ marginRight: "10px" }} />
                         </div>
                         <div className="chat-text">
                           <span>{nickname.trim() + ' '}</span>
