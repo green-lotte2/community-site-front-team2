@@ -25,6 +25,7 @@ const initState = {
   total: 0,
   start: 0,
   end: 0,
+  orderBy :1,
   prev: false,
   next: false,
 };
@@ -60,18 +61,20 @@ const memberDetailHandler = (index)=>{
 }
 
 
-
 //article Modal..
 const [openArticleModal, setArticleModal] = useState(false);
 var indexUser = 0;
 const [selectedArticle, setSelectedArticle] = useState(null);
 
+const [selectCause , setSelectCause] = useState([]);
+
 const articleDetailHandler = (index)=>{
     indexUser = index;
-    console.log(index + "길이!")
-    console.log(serverData.dtoList[index] + "길이!")
-    console.log(serverData.dtoList[index].uid)
    setSelectedArticle(serverData.dtoList[index]);
+   axios.get(url.backendUrl+'/admin/searchArticleCause?no='+serverData.dtoList[index].no)
+   .then((response)=>{
+    setSelectCause(response.data);
+   })
     setArticleModal(true);
 }
 
@@ -117,6 +120,23 @@ const unStopArticleHandler = (userId)=>{
 
 var type = searchParams.get('type'); 
 initState.type = type;
+
+
+
+//article 받은신고횟수 orderBy
+const articleOrderHandler =()=>{
+  if(initState.orderBy===1){
+    initState.orderBy++;
+  }else if(initState.orderBy ===2){
+    initState.orderBy ++;
+  }else if(initState.orderBy === 3){
+    initState.orderBy --;
+  }
+  axios.post(url.backendUrl+'/admin', initState)
+  .then((response)=>{
+    setServerData(response.data)
+  })
+}
 
 //컨텐츠
     useEffect(()=>{
@@ -290,7 +310,7 @@ const openQnaHandler = ()=>{
             <th style={{ width: '15%' }}>번호</th>
             <th style={{ width: '20%' }}>아이디</th>
             <th style={{ width: '20%' }}>받은신고횟수 <span>
-            <Link ><img src="/images/upDown.png" style={{width: '17px', verticalAlign: 'middle', marginLeft: '2px'}}/></Link>
+            <Link  ><img src="/images/upDown.png" style={{width: '17px', verticalAlign: 'middle', marginLeft: '2px'}}/></Link>
             </span>
             </th>
             <th style={{ width: '30%' }}>상태
@@ -328,8 +348,8 @@ const openQnaHandler = ()=>{
         <tr >
             <th style={{ width: '10%' }}>번호</th>
             <th style={{ width: '30%' }}>글제목</th>
-            <th style={{ width: '15%' }}>받은신고횟수 <span>
-            <Link ><img src="/images/upDown.png" style={{width: '17px', verticalAlign: 'middle', marginLeft: '2px'}}/></Link>
+            <th style={{ width: '15%' }}>받은신고횟수 <span  onClick={articleOrderHandler}>
+            <img src="/images/upDown.png" style={{width: '17px', verticalAlign: 'middle', marginLeft: '2px'}}/>
             </span>
             </th>
 
@@ -500,14 +520,23 @@ const openQnaHandler = ()=>{
             <div style={{fontSize: '20px', padding: '5px'}}>
                 {selectedArticle? (  <> <p>작성자 : <span style={{marginLeft: '10px'}} id="id"> {selectedArticle.writer} </span> </p>
                 <p>제목 : <span style={{marginLeft: '10px'}} id="nick">{selectedArticle.title}</span> </p>
-                <p>내용 : <span style={{marginLeft: '10px'}} id="name"><Link to="/board" style={{textDecoration: 'underLine'}}>보러가기</Link></span> </p>
+                <p>내용 : <span style={{marginLeft: '10px'}} id="name"> 
+                  <Link to={"/board/view/"+selectedArticle.cate+"/"+selectedArticle.no} style={{textDecoration: 'underLine'}}>보러가기</Link></span> </p>
                 <p>상태 : <span style={{marginLeft: '10px'}} id="status">{selectedArticle.status === 0 ? 
                 (<span>공개</span>)
                 : (<span>비공개</span>)}</span> </p>
                 <p>신고횟수 : <span style={{marginLeft: '10px'}} id="report">{selectedArticle.report}</span> </p>
                 <p id="reason">신고사유</p>
+            
                 <div style={{border: '1px solid black', maxHeight: '100px', overflow: 'scroll'}}>
+                {selectCause.map((article, index)=>{
+                  return(
+                    <>
+                    <p>{article.reason}</p>
+                    </>
+                  )
 
+                })}
                 </div>
 
                 <br/>
