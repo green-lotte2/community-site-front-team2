@@ -208,7 +208,7 @@ const Mypage = () => {
 
     formData.append("profile", profile);
     console.log("formData : ", formData);
-    console.log("user", user);
+    console.log("유우저", user);
 
     axios
       .post(url.backendUrl + "/modify", user, {
@@ -249,7 +249,6 @@ const Mypage = () => {
 
   const passChange = (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     Object.keys(user).forEach((key) => {
       formData.append(key, user[key]);
@@ -266,6 +265,8 @@ const Mypage = () => {
         if (result === "비밀번호가 재설정 되었습니다.") {
           console.log(response.data);
           alert(response.data);
+          dispatch(logout());
+          navigate("/main");
         } else {
           console.log(response.data);
           alert(response.data);
@@ -334,20 +335,13 @@ const Mypage = () => {
             </tr>
           </div>
 
-          <div className="input_block">
+          <div className="input_pass">
             <tr>
               <td>
                 <label>패스워드</label>
               </td>
               <td>
                 <div className="passNum">
-                  <input
-                    type="password"
-                    className="pass"
-                    name="pass"
-                    readOnly
-                    value={user.pass}
-                  />
                   <button
                     type="button"
                     className="btnPass"
@@ -371,7 +365,7 @@ const Mypage = () => {
               }}
             >
               <div className="modal-content">
-                <form onSubmit={passChange}>
+                <form>
                   <div className="first-input input__block first-input__block">
                     <input
                       type="password"
@@ -399,11 +393,13 @@ const Mypage = () => {
                       <span>비밀번호가 일치합니다.</span>
                     )}
                   </div>
-                  <input
+                  <button
                     type="submit"
-                    value="비밀번호 재설정"
                     className="btnChangePw"
-                  />
+                    onClick={passChange}
+                  >
+                    비밀번호 재설정
+                  </button>
                 </form>
               </div>
             </div>
