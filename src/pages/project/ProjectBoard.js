@@ -13,11 +13,25 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import url from "../../config/url";
 
+
 function ProjectBoard() {
 
   const authSlice = useSelector((state) => state.authSlice);
   const urlParams = new URLSearchParams(window.location.search);
   const projectNo = urlParams.get('projectNo');
+
+  useEffect(() => {
+    axios
+      .get(`${url.backendUrl}/project/projectboard?projectNo=${projectNo}`, {
+        headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+      })
+      .then((resp) => {
+        console.log(resp.data);  // 성공 시 데이터 처리
+      })
+      .catch((error) => {
+        console.error('There was an error!', error);  // 오류 처리
+      });
+  }, [url.backendUrl, projectNo, authSlice.accessToken]);  // 종속성 배열 추가
 
   // 보드 추가하기
   const addBoard = (title) => {
@@ -102,6 +116,19 @@ function ProjectBoard() {
       task: [],
     });
     setData(tempData);
+
+     // Board 추가시 DB 저장
+     /*
+     axios.post(`${url.backendUrl}/project/cardinsert?boardNo=${projectNo}`, tempData)
+     .then(res => {
+       console.log("프로젝트 등록");
+       
+       setData(prevData => [...prevData, res.data]);
+     })
+     .catch(function (error) {
+       console.log(error);
+     });
+     */
   };
 
   const removeCard = (boardId, cardId) => {
