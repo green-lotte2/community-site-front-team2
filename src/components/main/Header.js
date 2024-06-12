@@ -116,6 +116,19 @@ const Header = (props) => {
     }
   };
 
+  const planHandler = async () => {
+    try {
+      const response = await axios.get(
+        `${url.backendUrl}/user/${authSlice.uid}`
+      );
+      if (response.data) {
+        navigate("/user/tierplan", { state: { user: response.data } });
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
   return (
     <>
       <header>
@@ -156,6 +169,9 @@ const Header = (props) => {
                 </Link>
                 <Link to="/user/mypage" onClick={memberHandler}>
                   <p>회원수정</p>
+                </Link>
+                <Link to="/user/tierplan" onClick={planHandler}>
+                  <p>멤버십플랜</p>
                 </Link>
               </>
             )}
