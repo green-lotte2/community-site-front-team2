@@ -10,18 +10,57 @@ import useLocalStorage from "use-local-storage";
 
 import DefaultLayout from '../../layouts/DefaultLayout'
 import axios from "axios";
-
-import url from '../../config/url';
 import { useSelector } from "react-redux";
+import url from "../../config/url";
 
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function ProjectBoard() {
 
   const authSlice = useSelector((state) => state.authSlice);
-  
+  const urlParams = new URLSearchParams(window.location.search);
+  const projectNo = urlParams.get('projectNo');
+
+  useEffect(() => {
+    axios
+      .get(`${url.backendUrl}/project/projectboard?projectNo=${projectNo}`, {
+        headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+      })
+      .then((resp) => {
+        console.log(resp.data);  // 성공 시 데이터 처리
+      })
+      .catch((error) => {
+        console.error('There was an error!', error);  // 오류 처리
+      });
+  }, [url.backendUrl, projectNo, authSlice.accessToken]);  // 종속성 배열 추가
+
+  // 보드 추가하기
+  const addBoard = (title) => {
+    const tempData = [...data];
+    console.log("대머리밀어라~" +tempData);
+    const newBoard = {
+      projectNo: projectNo,
+      boardName: title,
+      createUserId: authSlice.username,
+      card: [],
+    }
+    tempData.push(newBoard);
+    setData(tempData);
+    console.log(tempData)
+
+    // Board 추가시 DB 저장
+    axios.post(`${url.backendUrl}/project/boardinsert`, newBoard)
+      .then(res => {
+        console.log("프로젝트 등록");
+        
+        setData(prevData => [...prevData, res.data]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+
+
   const [data, setData] = useState(
     localStorage.getItem("kanban-board")
       ? JSON.parse(localStorage.getItem("kanban-board"))
@@ -42,7 +81,7 @@ function ProjectBoard() {
 
   const setName = (title, bid) => {
     const index = data.findIndex((item) => item.id === bid);
-    const tempData = [...data]; 
+    const tempData = [...data];
     tempData[index].boardName = title;
     setData(tempData);
   };
@@ -66,16 +105,10 @@ function ProjectBoard() {
   };
 
 
+  //카드 추가하기
   const addCard = (title, bid) => {
-
-    /*
-    console.log(title +"이거 확인~")
     const index = data.findIndex((item) => item.id === bid);
     const tempData = [...data];
-  
-    console.log(index +"here~~")
-    console.log(tempData +"here~~")
-
     tempData[index].card.push({
       id: uuidv4(),
       title: title,
@@ -83,22 +116,19 @@ function ProjectBoard() {
       task: [],
     });
     setData(tempData);
-    */
 
-    //1. title 넣기 + board부터 들고오세요~ 
-    /*  */
-    const urlParams = new URLSearchParams(window.location.search);
-    const projectNo = urlParams.get('projectNo');
-
-    const insertCard = {titleName : title ,
-      createUserId : authSlice.username , 
-      projectNo : projectNo, 
-      boardNo : 1, //나중에는 board를 select해 와서 꼭 해당하는 pk값으로 넣어주기~
-    };
-    axios.post(url.backendUrl+'/project/insertCard', insertCard).then((resp) =>{
-      console.log(resp.data);
-    })
-    
+     // Board 추가시 DB 저장
+     /*
+     axios.post(`${url.backendUrl}/project/cardinsert?boardNo=${projectNo}`, tempData)
+     .then(res => {
+       console.log("프로젝트 등록");
+       
+       setData(prevData => [...prevData, res.data]);
+     })
+     .catch(function (error) {
+       console.log(error);
+     });
+     */
   };
 
   const removeCard = (boardId, cardId) => {
@@ -110,36 +140,7 @@ function ProjectBoard() {
     setData(tempData);
   };
 
-  //보드 포지션 / 보드 추가
-  const lastBoardPosition = data.length > 0 ? Math.max(...data.map(board => board.boardPosition)) : 0;
-  const addBoard = (title) => {
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const projectNo = urlParams.get('projectNo');
-
-    const newBoard = {
-      boardNo: uuidv4(),
-      projectNo : projectNo,
-      boardTitle: title,
-      createUserId: authSlice.username,
-      boardPosition: lastBoardPosition,
-    };
   
-    // 새로운 보드를 tempData에 추가
-    const tempData = [...data, newBoard];
-  
-    // Board 추가시 DB 저장
-    axios.post(`${url.backendUrl}/project/boardinsert`, newBoard)
-      .then(res => {
-        console.log("프로젝트 등록");
-        
-        setData(prevData => [...prevData, res.data]);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
   const removeBoard = (bid) => {
     const tempData = [...data];
     const index = data.findIndex((item) => item.id === bid);
@@ -162,28 +163,18 @@ function ProjectBoard() {
 
     const tempBoards = [...data];
     const cards = tempBoards[index].card;
-    
+
     const cardIndex = cards.findIndex((item) => item.id === cid);
     if (cardIndex < 0) return;
 
     tempBoards[index].card[cardIndex] = card;
     console.log(tempBoards);
     setData(tempBoards);
-
-    console.log("Index위치 확인 : " +cardIndex);
   };
-
-  
 
   useEffect(() => {
     localStorage.setItem("kanban-board", JSON.stringify(data));
-  }, [data]); //콘솔에 로컬 스토리지 저장된 데이터
-
-  const storedData = JSON.parse(localStorage.getItem("kanban-board"));
-
-  console.log("로컬데이터 확인 : ");
-  console.log(storedData);
-
+  }, [data]);
 
   return (
     <div>
