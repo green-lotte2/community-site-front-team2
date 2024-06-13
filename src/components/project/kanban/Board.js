@@ -65,7 +65,7 @@ export default function Board(props) {
           )}
         </div>
       </div>
-      <Droppable droppableId={props.id}>
+      <Droppable droppableId={props.id.toString()}>
         {(provided) => (
           <div
             className="board__cards"
