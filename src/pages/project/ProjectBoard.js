@@ -8,59 +8,12 @@ import { v4 as uuidv4 } from "uuid";
 import Editable from "../../components/project/kanban/Editable";
 import useLocalStorage from "use-local-storage";
 
-import DefaultLayout from '../../layouts/DefaultLayout'
+import DefaultLayout from "../../layouts/DefaultLayout";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import url from "../../config/url";
 
-
 function ProjectBoard() {
-
-  const authSlice = useSelector((state) => state.authSlice);
-  const urlParams = new URLSearchParams(window.location.search);
-  const projectNo = urlParams.get('projectNo');
-
-  useEffect(() => {
-    axios
-      .get(`${url.backendUrl}/project/projectboard?projectNo=${projectNo}`, {
-        headers: { Authorization: `Bearer ${authSlice.accessToken}` },
-      })
-      .then((resp) => {
-        console.log(resp.data);  // 성공 시 데이터 처리
-      })
-      .catch((error) => {
-        console.error('There was an error!', error);  // 오류 처리
-      });
-  }, [url.backendUrl, projectNo, authSlice.accessToken]);  // 종속성 배열 추가
-
-  // 보드 추가하기
-  const addBoard = (title) => {
-    const tempData = [...data];
-    console.log("대머리밀어라~" +tempData);
-    const newBoard = {
-      projectNo: projectNo,
-      boardName: title,
-      createUserId: authSlice.username,
-      card: [],
-    }
-    tempData.push(newBoard);
-    setData(tempData);
-    console.log(tempData)
-
-    // Board 추가시 DB 저장
-    axios.post(`${url.backendUrl}/project/boardinsert`, newBoard)
-      .then(res => {
-        console.log("프로젝트 등록");
-        
-        setData(prevData => [...prevData, res.data]);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
-
-
   const [data, setData] = useState(
     localStorage.getItem("kanban-board")
       ? JSON.parse(localStorage.getItem("kanban-board"))
@@ -104,8 +57,18 @@ function ProjectBoard() {
     return tempData;
   };
 
+  // const dragCardInSameBoard = (source, destination) => {
+  //   let tempData = Array.from(data);
+  //   console.log("Data", tempData);
+  //   const index = tempData.findIndex(
+  //     (item) => item.id.toString() === source.droppableId
+  //   );
+  //   console.log(tempData[index], index);
+  //   let [removedCard] = tempData[index].card.splice(source.index, 1);
+  //   tempData[index].card.splice(destination.index, 0, removedCard);
+  //   setData(tempData);
+  // };
 
-  //카드 추가하기
   const addCard = (title, bid) => {
     const index = data.findIndex((item) => item.id === bid);
     const tempData = [...data];
@@ -116,19 +79,6 @@ function ProjectBoard() {
       task: [],
     });
     setData(tempData);
-
-     // Board 추가시 DB 저장
-     /*
-     axios.post(`${url.backendUrl}/project/cardinsert?boardNo=${projectNo}`, tempData)
-     .then(res => {
-       console.log("프로젝트 등록");
-       
-       setData(prevData => [...prevData, res.data]);
-     })
-     .catch(function (error) {
-       console.log(error);
-     });
-     */
   };
 
   const removeCard = (boardId, cardId) => {
@@ -140,7 +90,16 @@ function ProjectBoard() {
     setData(tempData);
   };
 
-  
+  const addBoard = (title) => {
+    const tempData = [...data];
+    tempData.push({
+      id: uuidv4(),
+      boardName: title,
+      card: [],
+    });
+    setData(tempData);
+  };
+
   const removeBoard = (bid) => {
     const tempData = [...data];
     const index = data.findIndex((item) => item.id === bid);
@@ -176,9 +135,32 @@ function ProjectBoard() {
     localStorage.setItem("kanban-board", JSON.stringify(data));
   }, [data]);
 
+
+  const authSlice = useSelector((state) => state.authSlice);
+  const urlParams = new URLSearchParams(window.location.search);
+  const projectNo = urlParams.get('projectNo');
+
+
+  const saveHandler = () =>{
+    const saveItem = localStorage.getItem("kanban-board");
+    console.log(saveItem);
+
+    axios.post(`${url.backendUrl}/project/boardinsert`, saveItem)
+      .then(res => {
+        console.log("프로젝트 등록");
+        
+        setData(prevData => [...prevData, res.data]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  }
+
   return (
-    <div>
-      <DefaultLayout>
+    <DefaultLayout>
+      <button onClick={saveHandler}>대머리깎아라</button>
+      <div id="ProjectList">
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="KanBanBoard" data-theme={theme}>
             <Navbar switchTheme={switchTheme} />
@@ -208,8 +190,8 @@ function ProjectBoard() {
             </div>
           </div>
         </DragDropContext>
-      </DefaultLayout>
-    </div>
+      </div>
+    </DefaultLayout>
   );
 }
 
