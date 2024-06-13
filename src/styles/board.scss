@@ -413,37 +413,55 @@
     font-size: 15px;
   }
 
-  .commentForm {
+  /*🎈댓글*/
+  .commentBox {
   }
-
-  .commentForm > h4 {
+  .commentBox h4 {
     font-size: 20px;
     margin-bottom: 10px;
-    padding: 5px;
   }
 
-  .commentForm .comment {
-    border: 2px solid #dddddd;
+  .commentList .comment {
+    border-bottom: 1px solid #eeeeee;
     padding: 10px;
     border-radius: 5px;
   }
 
-  .commentForm .comment > span {
+  .commentList .comment {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .commentList .comment img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .commentList .comment > div p:nth-child(1) {
     font-weight: bold;
   }
 
-  .commentForm .comment textarea {
+  .commentForm {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border: 3px solid #eeeeee;
+    border-radius: 5px;
+  }
+
+  .commentForm textarea {
     width: 100%;
+    height: 45px;
+    border-radius: 5px;
     border: none;
     resize: none;
     outline: none;
-    margin-top: 10px;
     font-size: 15px;
   }
 
   .commentBtn {
     text-align: end;
-    margin-top: 10px;
   }
 
   .commentBtn > input {
@@ -460,6 +478,7 @@
     padding: 6px 10px;
     border-radius: 5px;
     cursor: pointer;
+    outline: none;
   }
 
   .reportBtn:hover {
