@@ -72,7 +72,6 @@ const View = () => {
         }
       );
       setComments((prevComments) => [...prevComments, response.data]);
-      alert("댓글 등록 성공!");
       console.log(comment);
     } catch (error) {
       console.error("댓글 등록 중 오류 발생:", error);
