@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../../styles/board.scss";
-import CustomToolbar from "./CustomToolbar"; // CustomToolbar 컴포넌트 import
+import CustomToolbar from "./CustomToolbar";
 import { Link, useNavigate } from "react-router-dom";
 import useCates from "../../hooks/useCates";
 import { useSelector } from "react-redux";
@@ -12,7 +12,7 @@ import url from "../../config/url";
 const Size = Quill.import("formats/size");
 Size.whitelist = ["small", "medium", "large", "huge"];
 Quill.register(Size, true);
-// 폰트를 whitelist에 추가하고 Quill에 등록해준다.
+
 const Font = Quill.import("attributors/class/font");
 Font.whitelist = ["buri", "GangwonEduSaeeum"];
 Quill.register(Font, true);
@@ -37,7 +37,6 @@ const formats = [
   "font",
 ];
 
-/*bold , italic 추가 */
 let bold = Quill.import("formats/bold");
 bold.tagName = "b";
 Quill.register(bold, true);
@@ -46,7 +45,22 @@ let italic = Quill.import("formats/italic");
 italic.tagName = "i";
 Quill.register(italic, true);
 
-//🎈img파일  인코딩
+// Base64 문자열을 파일로 변환하는 함수
+const base64ToFile = (base64Data, fileName) => {
+  const dataUrlArr = base64Data.split(",");
+  const mime = dataUrlArr[0].match(/:(.*?);/)[1];
+  const bstr = atob(dataUrlArr[1]); // atob : Base64 decode
+  let n = bstr.length;
+  console.log("mime : " + mime);
+  console.log(n);
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], fileName, { type: mime });
+};
+
+// 이미지 파일을 서버로 업로드하는 함수
 const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -61,24 +75,16 @@ const uploadImage = async (file) => {
         },
       }
     );
-    console.log("response", response);
-    return response.data.url; // 서버에서 반환된 이미지 URL
+    console.log("response", response.data);
+    return response.data; // 서버에서 반환된 이미지 URL
   } catch (error) {
     console.error("Image upload failed:", error);
     throw new Error("Image upload failed");
   }
 };
 
-const handleImageUpload = async (file) => {
-  const imageUrl = await uploadImage(file);
-  console.log("imageUrl", imageUrl);
-  return imageUrl;
-};
-
 export default function Write() {
-  // 카테값 전부 가져옴(배열인 상태)
   const cate1 = useCates();
-  // useCates의 두번째 값
   console.log("cate값:" + cate1[1]);
 
   const [values, setValues] = useState("");
@@ -119,21 +125,17 @@ export default function Write() {
 
     console.log("board", board);
 
-    // Update content before submitting
     const updatedBoard = { ...board, content: values };
 
     axios
-      .post(
-        url.backendUrl + `/board/write`,
-        JSON.stringify(updatedBoard), // 데이터를 JSON 문자열로 변환
-        {
-          headers: {
-            Authorization: `Bearer ${authSlice.accessToken}`,
-            "Content-Type": "application/json",
-          }, // 명시적으로 JSON 형식을 지정
-        }
-      )
+      .post(url.backendUrl + `/board/write`, JSON.stringify(updatedBoard), {
+        headers: {
+          Authorization: `Bearer ${authSlice.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      })
       .then((resp) => {
+        alert("글이 성공적으로 등록되었습니다!");
         console.log("resp", resp.data);
         navigate(`/board/list?cate=${updatedBoard.cate}`);
       })
@@ -142,7 +144,7 @@ export default function Write() {
       });
   };
 
-  // 이미지 선택 시 base64로 변환하여 state에 저장하는 함수
+  // 이미지 선택 시 base64로 변환하여 state에 저장하고, 파일 객체로 변환한 후 서버에 업로드하는 함수
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -150,13 +152,15 @@ export default function Write() {
       const base64Image = reader.result;
       setSelectedImage(base64Image);
 
-      // 이미지를 업로드하고 URL을 가져오는 작업 수행
+      // base64 데이터를 파일 객체로 변환
+      const imageFile = base64ToFile(base64Image, file.name);
+
+      // 파일 객체를 서버로 업로드하고 URL을 반환받음
       try {
-        const imageUrl = await uploadImage(file); // 이미지 업로드 및 URL 가져오기
+        const imageUrl = await uploadImage(imageFile);
         console.log("Uploaded Image URL:", imageUrl);
 
-        // 서버에서 반환된 이미지 URL을 사용하려면 여기서 해당 URL을 사용하거나 필요한 처리를 수행합니다.
-        // 예를 들어, 서버에 이미지 URL을 저장하거나 적절한 방식으로 이미지를 처리합니다.
+        // 반환된 URL을 img 태그로 에디터에 삽입
         setValues(
           (prevValues) =>
             prevValues + `<img src="${imageUrl}" alt="uploaded image" />`
@@ -168,19 +172,19 @@ export default function Write() {
     reader.readAsDataURL(file);
   };
 
-  //툴바의 image 버튼을 클릭하면 파일 선택 창이 열리고, 선택한 파일을 base64로 변환하여 화면에 표시하는 핸들러 추가
+  // 툴바의 image 버튼을 클릭하면 파일 선택 창이 열리고, 선택한 파일을 base64로 변환하여 화면에 표시하는 핸들러 추가
   const modules = useMemo(() => {
     return {
       toolbar: {
         container: "#toolbar", // 커스텀 툴바의 ID
         handlers: {
-          image: async function () {
+          image: function () {
             const input = document.createElement("input");
             input.setAttribute("type", "file");
             input.setAttribute("accept", "image/*");
             input.click();
 
-            input.onchange = async () => {
+            input.onchange = () => {
               const file = input.files[0];
               handleImageChange({ target: { files: [file] } }); // 이미지 선택 후 base64 변환하여 state에 저장
               console.log("file2", file);
@@ -196,7 +200,6 @@ export default function Write() {
       <h2>
         {/*카테고리 값에 따라 게시판 제목 변경 */}
         <span>
-          {" "}
           {cate1[1] === "notice"
             ? "📌 공지사항"
             : cate1[1] === "daily"
@@ -204,7 +207,7 @@ export default function Write() {
             : cate1[1] === "report"
             ? "🚨 신고합니다"
             : "커뮤니티 글쓰기"}
-        </span>{" "}
+        </span>
       </h2>
       <div className="eTop">
         <div className="eCate">
