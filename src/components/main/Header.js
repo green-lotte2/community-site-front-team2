@@ -106,7 +106,7 @@ const Header = (props) => {
   const memberHandler = async () => {
     try {
       const response = await axios.get(
-        `${url.backendUrl}/user/${authSlice.uid}`
+        `${url.backendUrl}/user/${authSlice.username}`
       );
       if (response.data) {
         navigate("/user/mypage", { state: { user: response.data } });
@@ -117,16 +117,7 @@ const Header = (props) => {
   };
 
   const planHandler = async () => {
-    try {
-      const response = await axios.get(
-        `${url.backendUrl}/user/${authSlice.uid}`
-      );
-      if (response.data) {
-        navigate("/user/tierplan", { state: { user: response.data } });
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
+    navigate("/user/tierplan");
   };
 
   return (

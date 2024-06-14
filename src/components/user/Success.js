@@ -1,18 +1,51 @@
-import React, { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import url from "../../config/url";
+import authSlice from "../../slices/authSlice";
+import { useSelector } from "react-redux";
 
 const Success = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const authSlice = useSelector((state) => state.authSlice);
+
+  const [user, setUser] = useState(
+    location.state
+      ? location.state.user
+      : {
+          uid: "",
+          grade: "",
+        }
+  );
+
+  useEffect(() => {
+    axios
+      .get(url.backendUrl + "/user/" + authSlice.username)
+      .then((res) => {
+        console.log(res.data);
+        setUser({
+          ...res.data,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    console.log(user);
+  }, []);
 
   useEffect(() => {
     // 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
     // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.
     const requestData = {
+      grade: searchParams.get("tier"),
       orderId: searchParams.get("orderId"),
       amount: searchParams.get("amount"),
       paymentKey: searchParams.get("paymentKey"),
     };
+
+    console.log("데이터 오나? : " + JSON.stringify(requestData));
 
     async function confirm() {
       const response = await fetch("/confirm", {
@@ -31,7 +64,18 @@ const Success = () => {
         return;
       }
 
-      // 결제 성공 비즈니스 로직을 구현하세요.
+      // 서버에 사용자 등급 업데이트 요청
+      axios
+        .post(url.backendUrl + "/user/updateGrade", {
+          uid: authSlice.username,
+          grade: requestData.grade,
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
     confirm();
   }, []);
@@ -45,6 +89,8 @@ const Success = () => {
           searchParams.get("amount")
         ).toLocaleString()}원`}</p>
         <p>{`paymentKey: ${searchParams.get("paymentKey")}`}</p>
+        <p>{`아이디: ${user.uid}`}</p>
+        <p>{`등급: ${searchParams.get("tier")}`}</p>
       </div>
     </div>
   );

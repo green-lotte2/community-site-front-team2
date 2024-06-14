@@ -185,7 +185,7 @@ const Mypage = () => {
   const handleProfile = (files) => {
     const selectProfile = files[0];
     setProfile(selectProfile);
-    console.log("이거 잘 뜨나? : ", selectProfile);
+    console.log("프로필1 : ", selectProfile);
 
     // 선택한 프로필 사진 미리보기
     const preview = URL.createObjectURL(selectProfile);
@@ -234,7 +234,7 @@ const Mypage = () => {
 
   useEffect(() => {
     axios
-      .get(url.backendUrl + "/" + authSlice.username)
+      .get(url.backendUrl + "/user/" + authSlice.username)
       .then((res) => {
         console.log(res.data);
         setUser({
