@@ -131,11 +131,11 @@ function ProjectBoard() {
     setData(tempBoards);
   };
 
-  /*
+
   useEffect(() => {
+    console.log("ss");
     localStorage.setItem("kanban-board", JSON.stringify(data));
   }, [data]);
-  */
 
   const authSlice = useSelector((state) => state.authSlice);
   const urlParams = new URLSearchParams(window.location.search);
@@ -144,12 +144,16 @@ function ProjectBoard() {
 
   //상태 저장
   const saveHandler = () =>{
-    const saveItem = localStorage.getItem("kanban-board");
+    localStorage.setItem("kanban-board", JSON.stringify(data));
     
+    console.log("필살 화약성!");
+    console.log(localStorage.setItem);
+
     const projectInfo = {
+      boardNo: projectNo,
       projectNo: projectNo,
       userId: authSlice.username,
-      saveItem: saveItem,
+      saveItem: localStorage.getItem("kanban-board"),
     }
     console.log("누가 내머리에 똥을 쌋나?", projectInfo);
 
@@ -164,6 +168,65 @@ function ProjectBoard() {
 
   }
 
+  
+  const [isLoading, setIsLoading] = useState(true);
+
+  const loadPage = async () => {
+    setIsLoading(true); // 로딩 상태 시작
+    try {
+      const response = await axios.get(
+        `${url.backendUrl}/project/projectboard?projectNo=${projectNo}`,
+        {
+          headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+        }
+      );
+      console.log("도깨비참수");
+      console.log(response.data);
+
+      if (response.data !== "") {
+        localStorage.setItem("kanban-board", JSON.stringify(response.data));
+        setData(response.data);
+      } else {
+        localStorage.removeItem("kanban-board");
+        setData([]);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false); // 로딩 상태 종료
+    }
+  };
+
+  useEffect(() => {
+    loadPage();
+
+    return ()=>{
+      localStorage.setItem("kanban-board", JSON.stringify(data));
+    
+      console.log("연옥 도깨비 참수");
+      console.log(localStorage.getItem("kanban-board"))
+      const projectInfo = {
+        boardNo: projectNo,
+        projectNo: projectNo,
+        userId: authSlice.username,
+        saveItem: localStorage.getItem("kanban-board"),
+      }
+      console.log("양고기 슈트", projectInfo);
+  
+      axios.post(`${url.backendUrl}/project/boardsave`, projectInfo)
+        .then(res => {
+          console.log("프로젝트 등록");
+        
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        
+    }
+  }, [projectNo]);
+
+
+  /*
   //상태 가져오기
   useEffect(() => {
     console.log("마 실행되나?!");
@@ -183,12 +246,22 @@ function ProjectBoard() {
           localStorage.removeItem("kanban-board");
           console.log("여기저기")
           localStorage.setItem([]);
+          setData(resp.data);
         }
+
+        setData(resp.data);
+
       })
       .catch((err) => {
         console.log(err);
       });
   }, [projectNo]);
+  
+  11 관심기업
+  
+
+  */
+
 
   return (
     <DefaultLayout>
