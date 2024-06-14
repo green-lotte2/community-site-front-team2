@@ -438,8 +438,34 @@
     margin-right: 10px;
   }
 
+  .commentList .comment .contents {
+    width: 100%;
+  }
+
   .commentList .comment > div p:nth-child(1) {
     font-weight: bold;
+  }
+
+  .commentList .comment > div .rdate {
+    font-size: 12px;
+    color: #acacac;
+    margin-top: 5px;
+  }
+
+  .commentList .commentListBtn {
+    text-align: end;
+  }
+
+  .commentList .commentListBtn button:nth-child(1) {
+    margin-right: 5px;
+  }
+  .commentList .commentListBtn button {
+    border: none;
+    padding: 3px 4px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #383838;
+    outline: none;
   }
 
   .commentForm {
@@ -458,6 +484,12 @@
     resize: none;
     outline: none;
     font-size: 15px;
+  }
+
+  .commentForm p {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
   }
 
   .commentBtn {

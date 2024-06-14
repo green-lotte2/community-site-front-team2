@@ -58,6 +58,7 @@ const View = () => {
     }
   };
 
+  // 등록된 댓글 백에 전송 + 댓글목록 업데이트
   const handleSubmit = async (comment) => {
     try {
       const response = await axios.post(
@@ -96,6 +97,7 @@ const View = () => {
   }, [cate, no, authSlice.accessToken]);
 
   // 댓글 데이터 가져오기
+
   useEffect(() => {
     setBno(no);
     if (no) {
@@ -187,7 +189,12 @@ const View = () => {
           <h4>댓글</h4>
           <CommentList bno={no} comments={comments} />
           {/*board에 board내용물 담아서 commentForm에 전달 */}
-          <CommentForm board={board} onSubmit={handleSubmit} />
+          <CommentForm
+            bno={no}
+            cwriter={authSlice.username}
+            nick={board.nick}
+            onSubmit={handleSubmit}
+          />
         </div>
       </div>
       <div className="vBtn">
