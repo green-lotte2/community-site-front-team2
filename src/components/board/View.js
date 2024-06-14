@@ -19,6 +19,7 @@ const View = () => {
   const authSlice = useSelector((state) => state.authSlice);
   const [showModal, setShowModal] = useState(false);
   const [reason, setReason] = useState("");
+  const [bno, setBno] = useState(null);
 
   // 신고 모달
   const openModal = () => {
@@ -57,11 +58,12 @@ const View = () => {
     }
   };
 
-  const handleSubmit = async (boardNo, comment) => {
+  // 등록된 댓글 백에 전송 + 댓글목록 업데이트
+  const handleSubmit = async (comment) => {
     try {
       const response = await axios.post(
         `${url.backendUrl}/comment`,
-        { boardNo, comment },
+        comment, // comment 객체를 직접 전송합니다.
         {
           headers: {
             Authorization: `Bearer ${authSlice.accessToken}`,
@@ -69,7 +71,9 @@ const View = () => {
           },
         }
       );
-      setComments([...comments, response.data]);
+      setComments((prevComments) => [...prevComments, response.data]);
+      alert("댓글 등록 성공!");
+      console.log(comment);
     } catch (error) {
       console.error("댓글 등록 중 오류 발생:", error);
       alert("댓글 등록에 실패하였습니다.");
@@ -77,7 +81,6 @@ const View = () => {
   };
 
   useEffect(() => {
-    console.log(url.backendUrl);
     console.log(`cate: ${cate}, no: ${no}`);
 
     axios
@@ -87,12 +90,30 @@ const View = () => {
       .then((response) => {
         console.log("response data:", response.data);
         setBoard(response.data);
-        setComments(response.data.comments || []);
       })
       .catch((error) => {
         console.error(error);
       });
   }, [cate, no, authSlice.accessToken]);
+
+  // 댓글 데이터 가져오기
+
+  useEffect(() => {
+    setBno(no);
+    if (no) {
+      axios
+        .get(url.backendUrl + `/comment/${no}`, {
+          headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+        })
+        .then((response) => {
+          console.log("response comments:", response.data);
+          setComments(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [no, authSlice.accessToken]);
 
   //글 삭제
   const deleteHandler = async () => {
@@ -164,9 +185,17 @@ const View = () => {
             </div>
           )}
         </div>
-        {/*board에 board내용물 담아서 commentForm에 전달 */}
-        <CommentForm board={board} onSubmit={handleSubmit} />
-        <CommentList board={board} comments={comments} />
+        <div className="commentBox">
+          <h4>댓글</h4>
+          <CommentList bno={no} comments={comments} />
+          {/*board에 board내용물 담아서 commentForm에 전달 */}
+          <CommentForm
+            bno={no}
+            cwriter={authSlice.username}
+            nick={board.nick}
+            onSubmit={handleSubmit}
+          />
+        </div>
       </div>
       <div className="vBtn">
         <div>

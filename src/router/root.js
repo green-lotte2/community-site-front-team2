@@ -53,7 +53,7 @@ const root = createBrowserRouter([
   { path: "/calendar", element: <CalendarPage /> }, //캘린더
 
   //page
-  { path: "/page", element: <Page />},
+  { path: "/page", element: <Page /> },
 
   //project
   { path: "/project", element: <ProjectList /> }, //프로젝트 마일스톤

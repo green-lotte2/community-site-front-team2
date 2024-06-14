@@ -1,53 +1,67 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useSelector } from "react-redux";
+import url from "../../config/url";
 
-const CommentForm = ({ board, onSubmit }) => {
-  const [comment, setComment] = useState("");
+const CommentForm = ({ bno, cwriter, nick, onSubmit }) => {
   const authSlice = useSelector((state) => state.authSlice);
+  const [content, setContent] = useState("");
 
-  const changeHandler = (e) => {
-    setComment(e.target.value);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("bno:", bno);
+    console.log("content:", content);
+    console.log("cwriter:", cwriter);
+    console.log("accessToken:", authSlice.accessToken);
+
+    try {
+      const response = await axios.post(
+        `${url.backendUrl}/comment`,
+        {
+          bno: bno,
+          content: content,
+          cwriter: cwriter,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authSlice.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("댓글이 성공적으로 제출되었습니다:", response.data);
+      // 부모 컴포넌트로부터 전달받은 onSubmit 콜백 함수를 호출하여 새로운 댓글을 추가합니다.
+      onSubmit(response.data);
+      // 입력 필드 초기화
+      setContent("");
+      alert("댓글이 등록되었습니다.");
+    } catch (error) {
+      console.error(
+        "댓글 제출 중 오류 발생:",
+        error.response ? error.response.data : error.message
+      );
+      alert("댓글 등록에 실패하였습니다.");
+    }
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    if (comment.trim() === "") {
-      alert("댓글을 입력해주세요.");
-      return;
-    }
-    const commentData = {
-      bno: board.no,
-      content: comment,
-      cwriter: authSlice.username,
-      nick: board.nick,
-    };
-    onSubmit(commentData);
-    console.log("comment: ", commentData);
-    setComment("");
+  const handleChange = (e) => {
+    setContent(e.target.value);
   };
 
   return (
-    <form name="commentForm" className="commentForm" onSubmit={submitHandler}>
-      <input type="hidden" name="no" value={board.no} />
-      <input type="hidden" name="cate" value={board.cate} />
-      <h4>댓글</h4>
-      <div className="comment">
-        <span>{board.nick}</span>
-        <br />
+    <div className="commentForm">
+      <form onSubmit={handleSubmit}>
+        <p>{nick}</p>
         <textarea
-          name="content"
-          value={comment}
-          onChange={changeHandler}
-          placeholder="댓글을 남겨주세요."
+          value={content}
+          onChange={handleChange}
+          placeholder="댓글을 입력하세요"
         ></textarea>
-      </div>
-      <div className="commentBtn">
-        <input type="submit" name="submit" value="등록" />
-        <button type="button" onClick={() => setComment("")}>
-          취소
-        </button>
-      </div>
-    </form>
+        <div className="commentBtn">
+          <button type="submit">등록</button>
+        </div>
+      </form>
+    </div>
   );
 };
 
