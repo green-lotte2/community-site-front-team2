@@ -8,6 +8,7 @@ import Dropdown from "./Dropdown";
 export default function Board(props) {
   const [show, setShow] = useState(false);
   const [dropdown, setDropdown] = useState(false);
+  
 
   useEffect(() => {
     document.addEventListener("keypress", (e) => {
@@ -65,7 +66,7 @@ export default function Board(props) {
           )}
         </div>
       </div>
-      <Droppable droppableId={props.id.toString()}>
+      <Droppable droppableId={props.id}>
         {(provided) => (
           <div
             className="board__cards"

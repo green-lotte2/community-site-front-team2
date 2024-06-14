@@ -22,7 +22,7 @@ const EditorComponent = () => {
     useEffect(() => {
         // 컴포넌트가 마운트될 때 WebrtcProvider를 생성합니다.
         /** WebrtcProvider(방번호, yjs객체, 소켓주소) */
-        provider.current = new WebrtcProvider('test111111', doc, { signaling: ['ws://api.illrreumbow.store:8080/community/testaa'] });
+        provider.current = new WebrtcProvider('test111111', doc, { signaling: ['wss://api.illrreumbow.store/community/testaa'] });
         // 컴포넌트가 언마운트될 때 provider를 정리합니다.
         return () => {
             provider.current.destroy();

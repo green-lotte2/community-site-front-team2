@@ -131,31 +131,64 @@ function ProjectBoard() {
     setData(tempBoards);
   };
 
+  /*
   useEffect(() => {
     localStorage.setItem("kanban-board", JSON.stringify(data));
   }, [data]);
-
+  */
 
   const authSlice = useSelector((state) => state.authSlice);
   const urlParams = new URLSearchParams(window.location.search);
   const projectNo = urlParams.get('projectNo');
 
 
+  //상태 저장
   const saveHandler = () =>{
     const saveItem = localStorage.getItem("kanban-board");
-    console.log(saveItem);
+    
+    const projectInfo = {
+      projectNo: projectNo,
+      userId: authSlice.username,
+      saveItem: saveItem,
+    }
+    console.log("누가 내머리에 똥을 쌋나?", projectInfo);
 
-    axios.post(`${url.backendUrl}/project/boardinsert`, saveItem)
+    axios.post(`${url.backendUrl}/project/boardsave`, projectInfo)
       .then(res => {
         console.log("프로젝트 등록");
-        
-        setData(prevData => [...prevData, res.data]);
+      
       })
       .catch(function (error) {
         console.log(error);
       });
 
   }
+
+  //상태 가져오기
+  useEffect(() => {
+    console.log("마 실행되나?!");
+    axios
+      .get(`${url.backendUrl}/project/projectboard?projectNo=${projectNo}`, {
+        headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+      })
+      .then((resp) => {
+        console.log("도꺠비참수")
+        console.log(resp.data)
+
+        if(resp.data !== ""){
+          localStorage.setItem("kanban-board", JSON.stringify(resp.data));
+          console.log("여기")
+        }else{
+          console.log("저기")
+          localStorage.removeItem("kanban-board");
+          console.log("여기저기")
+          localStorage.setItem([]);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [projectNo]);
 
   return (
     <DefaultLayout>
