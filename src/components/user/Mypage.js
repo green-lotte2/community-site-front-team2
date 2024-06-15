@@ -1,12 +1,16 @@
 import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import Dropzone from "react-dropzone";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import url from "../../config/url";
+import { useDispatch } from "react-redux";
+import { logout } from "../../slices/authSlice";
+import { useSelector } from "react-redux";
 
-const Register = () => {
+const Mypage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [id, setId] = useState("");
   const [pass, setPass] = useState();
   const [name, setName] = useState();
@@ -17,36 +21,44 @@ const Register = () => {
   const [emailCode, setEmailCode] = useState("");
   const [emailCodeMessage, setEmailCodeMessage] = useState("");
   const [savedCode, setSavedCode] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const modalBackground = useRef();
+  const dispatch = useDispatch();
+  const authSlice = useSelector((state) => state.authSlice);
 
-  const [user, setUser] = useState({
-    uid: "",
-    pass: "",
-    pass2: "",
-    name: "",
-    nick: "",
-    email: "",
-    hp: "",
-    zip: "",
-    addr1: "",
-    addr2: "",
-    role: "USER",
-    grade: "Silver",
-    profileImg: null,
-  });
+  const [user, setUser] = useState(
+    location.state
+      ? location.state.user
+      : {
+          uid: "",
+          pass: "",
+          pass2: "",
+          name: "",
+          nick: "",
+          email: "",
+          hp: "",
+          zip: "",
+          addr1: "",
+          addr2: "",
+          role: "",
+          grade: "",
+          profileImg: "",
+        }
+  );
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  console.log(user);
 
   const changeHandler = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const inputUid = (e) => {
-    const currentUid = e.target.value;
-    setUser({ ...user, uid: currentUid });
-    const uidPattern = /^[a-zA-Z0-9_]{4,20}$/;
-    if (!uidPattern.test(currentUid)) {
-      setId("영문, 숫자로 4~20자까지 설정해 주세요.");
-    } else {
-      setId("");
-    }
+  const changePass = (e) => {
+    e.preventDefault();
+    setModalIsOpen(true);
   };
 
   const inputPass = (e) => {
@@ -56,7 +68,7 @@ const Register = () => {
     if (!passPattern.test(currentPass)) {
       setPass("영문, 숫자, 특수문자를 조합하여 8자 이상으로 설정해 주세요.");
     } else {
-      setPass("");
+      setPass("올바른 비밀번호 입니다.");
     }
   };
 
@@ -113,31 +125,6 @@ const Register = () => {
         setUser({ ...user, zip: data.zonecode, addr1: data.address });
       },
     });
-  };
-
-  const handleUid = (e) => {
-    e.preventDefault();
-
-    if (!user.uid) {
-      alert("아이디를 입력하세요.");
-      return;
-    }
-
-    axios
-      .get(url.backendUrl + "/checkUid?uid=" + user.uid)
-      .then((response) => {
-        const result = response.data.result;
-        setId(result);
-
-        if (result === "사용 가능한 아이디 입니다.") {
-          alert("사용 가능한 아이디 입니다.");
-        } else {
-          alert("이미 존재하는 아이디 입니다.");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   const handleSendEmail = (e) => {
@@ -198,7 +185,7 @@ const Register = () => {
   const handleProfile = (files) => {
     const selectProfile = files[0];
     setProfile(selectProfile);
-    console.log("이거 잘 뜨나? : ", selectProfile);
+    console.log("프로필1 : ", selectProfile);
 
     // 선택한 프로필 사진 미리보기
     const preview = URL.createObjectURL(selectProfile);
@@ -221,19 +208,20 @@ const Register = () => {
 
     formData.append("profile", profile);
     console.log("formData : ", formData);
-    console.log("user", user);
+    console.log("유우저", user);
 
     axios
-      .post(url.backendUrl + "/uploads", user, {
+      .post(url.backendUrl + "/modify", user, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((response) => {
         console.log(response.data);
-        alert("회원가입 완료!");
+        alert("회원정보 수정!");
 
-        navigate("/user/login");
+        dispatch(logout());
+        navigate("/main");
       })
       .catch((err) => {
         console.log(err);
@@ -244,38 +232,55 @@ const Register = () => {
     console.log("파일 업로드 : ", user.profileImg);
   }, [user.profileImg, profile]);
 
-  const [isFormValid, setIsFormValid] = useState(false);
-
   useEffect(() => {
-    const isAllValid = Object.values(user).every(
-      (value) => value !== "" || value === null
-    );
-    const isIdValid = id === "사용 가능한 아이디 입니다.";
-    const isPassValid = pass === "";
-    const isPass2Valid = user.pass === user.pass2;
-    const isNameValid = name === "";
-    const isNickValid = nick === "";
-    const isEmailValid = email === "이메일 전송에 성공하였습니다.";
-    const isEmailCodeValid =
-      emailCodeMessage === "인증 코드 인식에 성공하였습니다.";
-    const isHpValid = hp === "";
-    setIsFormValid(
-      isAllValid &&
-        isIdValid &&
-        isPassValid &&
-        isPass2Valid &&
-        isNameValid &&
-        isNickValid &&
-        isEmailValid &&
-        isEmailCodeValid &&
-        isHpValid
-    );
-  }, [user, id, pass, name, nick, email, emailCodeMessage, hp]);
+    axios
+      .get(url.backendUrl + "/user/" + authSlice.username)
+      .then((res) => {
+        console.log(res.data);
+        setUser({
+          ...res.data,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    console.log(user);
+  }, []);
+
+  const passChange = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    Object.keys(user).forEach((key) => {
+      formData.append(key, user[key]);
+    });
+
+    axios
+      .post(url.backendUrl + "/changePw", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        const result = response.data;
+        if (result === "비밀번호가 재설정 되었습니다.") {
+          console.log(response.data);
+          alert(response.data);
+          dispatch(logout());
+          navigate("/main");
+        } else {
+          console.log(response.data);
+          alert(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
-    <div className="Register">
+    <div className="Mypage">
       <div className="container">
-        <h1>Register</h1>
+        <h1>마이페이지</h1>
 
         <form onSubmit={submitHandler}>
           <div>
@@ -316,63 +321,89 @@ const Register = () => {
                 <label>아이디</label>
               </td>
               <td>
-                <div className="uidNum">
-                  <input
-                    type="text"
-                    placeholder="아이디 입력"
-                    className="uid"
-                    name="uid"
-                    value={user.uid}
-                    onChange={inputUid}
-                  />
-                  <button type="button" className="btnUid" onClick={handleUid}>
-                    중복검색
-                  </button>
-                </div>
+                <input
+                  type="text"
+                  placeholder="test1"
+                  className="input"
+                  name="uid"
+                  value={user.uid}
+                  onChange={changeHandler}
+                  readOnly
+                />
                 <span class="resultId">{id}</span>
               </td>
             </tr>
           </div>
 
-          <div className="input_block">
+          <div className="input_pass">
             <tr>
               <td>
                 <label>패스워드</label>
               </td>
               <td>
-                <input
-                  type="password"
-                  placeholder="패스워드 입력"
-                  className="input"
-                  name="pass"
-                  value={user.pass}
-                  onChange={inputPass}
-                />
-                <span class="resultPass">{pass}</span>
+                <div className="passNum">
+                  <button
+                    type="button"
+                    className="btnPass"
+                    onClick={changePass}
+                  >
+                    비밀번호 변경
+                  </button>
+                </div>
               </td>
             </tr>
           </div>
 
-          <div className="input_block">
-            <tr>
-              <td>
-                <label>확인</label>
-              </td>
-              <td>
-                <input
-                  type="password"
-                  placeholder="패스워드 입력 확인"
-                  className="input"
-                  name="pass2"
-                  onChange={changeHandler}
-                />
-                {user.pass !== user.pass2 && (
-                  <span class="resultPass2">비밀번호가 일치하지 않습니다.</span>
-                )}
-                {user.pass === user.pass2 && <span class="resultPass2"></span>}
-              </td>
-            </tr>
-          </div>
+          {modalIsOpen && (
+            <div
+              className="modal"
+              ref={modalBackground}
+              onClick={(e) => {
+                if (e.target === modalBackground.current) {
+                  setModalIsOpen(false);
+                }
+              }}
+            >
+              <div className="modal-content">
+                <form>
+                  <div className="first-input input__block first-input__block">
+                    <input
+                      type="password"
+                      placeholder="비밀번호"
+                      className="pass1"
+                      name="pass1"
+                      value={null}
+                      onChange={inputPass}
+                    />
+                    <span class="resultPass">{pass}</span>
+                  </div>
+                  <div className="input__block">
+                    <input
+                      type="password"
+                      placeholder="비밀번호 확인"
+                      className="pass2"
+                      name="pass2"
+                      value={user.pass2}
+                      onChange={changeHandler}
+                    />
+                    {user.pass !== user.pass2 && (
+                      <span>비밀번호가 일치하지 않습니다.</span>
+                    )}
+                    {user.pass === user.pass2 && (
+                      <span>비밀번호가 일치합니다.</span>
+                    )}
+                  </div>
+                  <button
+                    type="submit"
+                    className="btnChangePw"
+                    onClick={passChange}
+                  >
+                    비밀번호 재설정
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
 
           <div className="input_block">
             <tr>
@@ -382,7 +413,7 @@ const Register = () => {
               <td>
                 <input
                   type="text"
-                  placeholder="이름 입력"
+                  placeholder="테스트"
                   className="input"
                   name="name"
                   value={user.name}
@@ -539,12 +570,7 @@ const Register = () => {
             </tr>
           </div>
 
-          <input
-            type="submit"
-            value="Sign up"
-            className="btnRegister"
-            disabled={!isFormValid}
-          />
+          <input type="submit" value="수정완료" className="btnRegister" />
         </form>
       </div>
       <div className="registerImg">
@@ -554,4 +580,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Mypage;

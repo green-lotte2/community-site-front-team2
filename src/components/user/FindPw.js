@@ -20,14 +20,16 @@ const FindPw = () => {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   const changeHandler = (e) => {
-    e.preventDefault();
     setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
+  const inputEmail = (e) => {
+    const currentEmail = e.target.value;
+    setUser({ ...user, email: currentEmail });
     const emailPattern =
       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    if (!emailPattern.test(user.email)) {
+    if (!emailPattern.test(currentEmail)) {
       setEmailMessage("올바른 이메일 주소를 입력해주세요.");
-      return;
     } else {
       setEmailMessage("");
     }
@@ -174,7 +176,7 @@ const FindPw = () => {
                 className="email"
                 name="email"
                 value={user.email}
-                onChange={changeHandler}
+                onChange={inputEmail}
               />
               <button
                 type="button"

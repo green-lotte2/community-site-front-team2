@@ -4,21 +4,24 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import useCates from "../../hooks/useCates";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
-import authSlice from "../../slices/authSlice";
 import { useSelector } from "react-redux";
 import url from "../../config/url";
+import CommentForm from "./CommentForm";
+import CommentList from "./CommentList";
 
 const View = () => {
   const cate1 = useCates();
-  // useCates의 두번째 값
   console.log("cate값:" + cate1[1]);
   const { cate, no } = useParams();
   const [board, setBoard] = useState(null);
+  const [comments, setComments] = useState([]);
   const navigate = useNavigate();
   const authSlice = useSelector((state) => state.authSlice);
   const [showModal, setShowModal] = useState(false);
   const [reason, setReason] = useState("");
+  const [bno, setBno] = useState(null);
 
+  // 신고 모달
   const openModal = () => {
     setShowModal(true);
   };
@@ -32,9 +35,9 @@ const View = () => {
       const response = await axios.post(
         `${url.backendUrl}/board/report`,
         {
-          no: no, // 게시글 ID (게시글 번호)
-          reason: reason, // 신고 사유
-          uid: authSlice.username, // 신고한 사용자 ID
+          no: no,
+          reason: reason,
+          uid: authSlice.username,
         },
         {
           headers: {
@@ -49,23 +52,40 @@ const View = () => {
       alert("신고가 접수되었습니다.");
     } catch (error) {
       console.error("신고 중 오류 발생:", error);
-      alert("신고에 실패하였습니다. 다시 시도해 주세요.");
+      alert("신고에 실패하였습니다.");
     } finally {
-      // 모달 닫기
       closeModal();
     }
   };
 
-  useEffect(() => {
-    console.log(url.backendUrl);
+  // 등록된 댓글 백에 전송 + 댓글목록 업데이트
+  const handleSubmit = async (comment) => {
+    try {
+      const response = await axios.post(
+        `${url.backendUrl}/comment`,
+        comment, // comment 객체를 직접 전송합니다.
+        {
+          headers: {
+            Authorization: `Bearer ${authSlice.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setComments((prevComments) => [...prevComments, response.data]);
+      console.log(comment);
+    } catch (error) {
+      console.error("댓글 등록 중 오류 발생:", error);
+      alert("댓글 등록에 실패하였습니다.");
+    }
+  };
 
+  useEffect(() => {
     console.log(`cate: ${cate}, no: ${no}`);
 
     axios
       .get(url.backendUrl + `/board/view/${cate}/${no}`, {
         headers: { Authorization: `Bearer ${authSlice.accessToken}` },
       })
-
       .then((response) => {
         console.log("response data:", response.data);
         setBoard(response.data);
@@ -75,7 +95,26 @@ const View = () => {
       });
   }, [cate, no, authSlice.accessToken]);
 
-  // 게시글 삭제
+  // 댓글 데이터 가져오기
+
+  useEffect(() => {
+    setBno(no);
+    if (no) {
+      axios
+        .get(url.backendUrl + `/comment/${no}`, {
+          headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+        })
+        .then((response) => {
+          console.log("response comments:", response.data);
+          setComments(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [no, authSlice.accessToken]);
+
+  //글 삭제
   const deleteHandler = async () => {
     const confirmed = window.confirm("정말 삭제하시겠습니까?");
     if (confirmed) {
@@ -86,7 +125,7 @@ const View = () => {
         alert("게시글이 삭제되었습니다.");
         navigate(`/board/list?cate=${cate}`);
       } catch (error) {
-        console.error("Failed to delete board:", error);
+        console.error("err :", error);
         alert("게시글 삭제에 실패하였습니다.");
       }
     }
@@ -99,9 +138,7 @@ const View = () => {
   return (
     <div className="Board">
       <h2>
-        {/*카테고리 값에 따라 게시판 제목 변경 */}
         <span>
-          {" "}
           {cate === "notice"
             ? "📌 공지사항"
             : cate === "daily"
@@ -109,26 +146,25 @@ const View = () => {
             : cate === "report"
             ? "🚨 신고합니다"
             : "커뮤니티 글보기"}
-        </span>{" "}
+        </span>
       </h2>
       <div className="view">
         <div className="vTitle">
           <h3>{board.title}</h3>
+
           <div>
-            <img src="/images/testAccount_50.png"></img>
+            <img src="/images/testAccount_50.png" alt="profile" />
             <div className="text">
               <p>{board.nick}</p>
               <p>{board.rdate ? board.rdate.substring(0, 10) : ""}</p>
             </div>
           </div>
         </div>
-        {/*vTitle end */}
         <div className="vContent">
           <ReactQuill value={board.content} readOnly={true} theme={"bubble"} />
           <button className="reportBtn" onClick={openModal}>
             🚨신고
           </button>
-          {/* 모달 */}
           {showModal && (
             <div className="modal">
               <div className="modal-content">
@@ -147,28 +183,19 @@ const View = () => {
               </div>
             </div>
           )}
-          {/*모달 end */}
         </div>
-        {/*vContent end */}
-
-        {/*🎈comment */}
-        <form name="commentForm" className="commentForm">
-          <input type="hidden" name="no" value={board.no} />
-          <input type="hidden" name="cate" value={board.cate} />
+        <div className="commentBox">
           <h4>댓글</h4>
-          <div className="comment">
-            <span>{board.nick}</span>
-            <br />
-            <textarea placeholder="댓글을 남겨주세요."></textarea>
-          </div>
-          <div className="commentBtn">
-            <input type="submit" name="submit" value="등록" />
-            <button type="button">취소</button>
-          </div>
-        </form>
+          <CommentList bno={no} comments={comments} />
+          {/*board에 board내용물 담아서 commentForm에 전달 */}
+          <CommentForm
+            bno={no}
+            cwriter={authSlice.username}
+            nick={board.nick}
+            onSubmit={handleSubmit}
+          />
+        </div>
       </div>
-      {/*view end */}
-
       <div className="vBtn">
         <div>
           <Link to={`/board/write?cate=${cate}`} className="writeBtn2">
@@ -180,7 +207,7 @@ const View = () => {
             value="삭제"
             onClick={deleteHandler}
             className="delBtn"
-          ></input>
+          />
         </div>
         <div>
           <Link to={`/board/list?cate=${cate}`}>목록</Link>

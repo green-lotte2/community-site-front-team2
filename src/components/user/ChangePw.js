@@ -14,10 +14,17 @@ const ChangePw = () => {
     pass2: "",
   });
 
+  console.log(user);
+
   const [isChange, setIsChange] = useState(false);
   const [passMessage, setPassMessage] = useState("");
 
-  const onChange = (e) => {
+  const changeHandler = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+    console.log(user);
+  };
+
+  const inputPass = (e) => {
     const currentPass = e.target.value;
     setUser({ ...user, pass: currentPass });
     const passPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
@@ -26,13 +33,8 @@ const ChangePw = () => {
         "영문, 숫자, 특수문자를 조합하여 8자 이상으로 설정해 주세요."
       );
     } else {
-      setPassMessage("");
+      setPassMessage("올바른 비밀번호 입니다.");
     }
-  };
-
-  const changeHandler = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-    console.log(user);
   };
 
   const passChange = (e) => {
@@ -66,7 +68,7 @@ const ChangePw = () => {
   };
 
   useEffect(() => {
-    const isPassChange = passMessage === "";
+    const isPassChange = passMessage === "올바른 비밀번호 입니다.";
     const isPassSame = user.pass === user.pass2;
     setIsChange(isPassChange && isPassSame);
   }, [user, passMessage]);
@@ -108,7 +110,7 @@ const ChangePw = () => {
               className="pass1"
               name="pass1"
               value={null}
-              onChange={onChange}
+              onChange={inputPass}
             />
             <span class="resultPass">{passMessage}</span>
           </div>
@@ -122,11 +124,9 @@ const ChangePw = () => {
               onChange={changeHandler}
             />
             {user.pass !== user.pass2 && (
-              <span>비밀번호와 비밀번호 확인이 일치하지 않습니다.</span>
+              <span>비밀번호가 일치하지 않습니다.</span>
             )}
-            {user.pass === user.pass2 && (
-              <span>비밀번호와 비밀번호 확인이 일치합니다.</span>
-            )}
+            {user.pass === user.pass2 && <span>비밀번호가 일치합니다.</span>}
           </div>
           <input
             type="submit"
