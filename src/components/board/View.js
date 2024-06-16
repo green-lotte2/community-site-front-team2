@@ -191,7 +191,6 @@ const View = () => {
           <CommentForm
             bno={no}
             cwriter={authSlice.username}
-            nick={board.nick}
             onSubmit={handleSubmit}
           />
         </div>

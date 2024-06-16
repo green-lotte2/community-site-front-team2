@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import url from "../../config/url";
 
-const CommentForm = ({ bno, cwriter, nick, onSubmit }) => {
+const CommentForm = ({ bno, cwriter, onSubmit }) => {
   const authSlice = useSelector((state) => state.authSlice);
   const [content, setContent] = useState("");
 
@@ -51,7 +51,7 @@ const CommentForm = ({ bno, cwriter, nick, onSubmit }) => {
   return (
     <div className="commentForm">
       <form onSubmit={handleSubmit}>
-        <p>{nick}</p>
+        <p>{authSlice.userNick}</p>
         <textarea
           value={content}
           onChange={handleChange}

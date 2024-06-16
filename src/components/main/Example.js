@@ -37,12 +37,23 @@ const Example = () => {
 
   return (
     <>
-      <div>
-        <img
-          src={`${url.backendUrl}/images/${authSlice.userImg}`}
-          alt="profile"
-        />
+      <div className="Dashboard">
+        <div className="profile">
+          <div>
+            <img
+              src={`${url.backendUrl}/images/${authSlice.userImg}`}
+              alt="profile"
+            />
+            <ul className="userInfo">
+              <li>name: 푸바오</li>
+              <li>nick: 푸린세스</li>
+              <li>Email: fubao@naver.com</li>
+              <li>Hp:010-1234-1234</li>
+            </ul>
+          </div> 
+        </div>
       </div>
+     
     </>
   );
 };

@@ -8,8 +8,9 @@ const loadStateFromCookie = () => {
   const accessToken = auth?.accessToken;
   const userRole = auth?.userRole;
   const userImg = auth?.userImg;
+  const userNick = auth?.userNick;
 
-  return { username, accessToken, userRole, userImg };
+  return { username, accessToken, userRole, userImg, userNick };
 };
 
 const initState = {
@@ -17,6 +18,7 @@ const initState = {
   accessToken: "",
   userRole: "",
   userImg: "",
+  userNick: "",
 };
 
 const authSlice = createSlice({
@@ -31,6 +33,7 @@ const authSlice = createSlice({
       state.accessToken = data.accessToken;
       state.userRole = data.userRole;
       state.userImg = data.userImg;
+      state.userNick = data.userNick;
       // 영구보관을 위해 쿠키저장
       setCookie("auth", data, 1);
     },
