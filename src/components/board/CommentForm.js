@@ -29,7 +29,7 @@ const CommentForm = ({ bno, cwriter, nick, onSubmit }) => {
           },
         }
       );
-      console.log("댓글이 성공적으로 제출되었습니다:", response.data);
+      console.log("댓글이 등록되었습니다.", response.data);
       // 부모 컴포넌트로부터 전달받은 onSubmit 콜백 함수를 호출하여 새로운 댓글을 추가합니다.
       onSubmit(response.data);
       // 입력 필드 초기화
