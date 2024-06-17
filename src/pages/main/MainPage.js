@@ -2,12 +2,12 @@ import React from "react";
 import DefaultLayout from "../../layouts/DefaultLayout";
 import "../../styles/style.scss";
 import "../../styles/dashboard.scss";
-import Example from "../../components/main/Example";
+import Dashboard from "../../components/main/Dashboard";
 
 const MainPage = () => {
   return (
     <DefaultLayout>
-      <Example />
+      <Dashboard />
     </DefaultLayout>
   );
 };
