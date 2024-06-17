@@ -22,30 +22,32 @@ const Page = ({ serverData }) => {
   };
 
   return (
-    <div class="page">
-      {/* 이전 */}
-      {serverData.prev && (
-        <Link
-          to={`/project?pg=${serverData.start - 1}`}
-          className="prev"
-        >
-          이전
-        </Link>
-      )}
-      {/* 페이지번호 */}
-      {makePageNums()}
+    <div className="ProjectList">
+      <div class="page">
+        {/* 이전 */}
+        {serverData.prev && (
+          <Link
+            to={`/project?pg=${serverData.start - 1}`}
+            className="prev"
+          >
+            이전
+          </Link>
+        )}
+        {/* 페이지번호 */}
+        {makePageNums()}
 
-      {/*다음 */}
-      {serverData.next && (
-        <Link
-          to={`/project?pg=${
-            serverData.start + 1
-          }`}
-          className="next"
-        >
-          다음
-        </Link>
-      )}
+        {/*다음 */}
+        {serverData.next && (
+          <Link
+            to={`/project?pg=${
+              serverData.start + 1
+            }`}
+            className="next"
+          >
+            다음
+          </Link>
+        )}
+      </div>
     </div>
   );
 };

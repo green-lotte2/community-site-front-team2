@@ -227,45 +227,27 @@ function ProjectBoard() {
 
 
   /*
-  //상태 가져오기
-  useEffect(() => {
-    console.log("마 실행되나?!");
-    axios
-      .get(`${url.backendUrl}/project/projectboard?projectNo=${projectNo}`, {
-        headers: { Authorization: `Bearer ${authSlice.accessToken}` },
-      })
-      .then((resp) => {
-        console.log("도꺠비참수")
-        console.log(resp.data)
-
-        if(resp.data !== ""){
-          localStorage.setItem("kanban-board", JSON.stringify(resp.data));
-          console.log("여기")
-        }else{
-          console.log("저기")
-          localStorage.removeItem("kanban-board");
-          console.log("여기저기")
-          localStorage.setItem([]);
-          setData(resp.data);
-        }
-
-        setData(resp.data);
-
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [projectNo]);
-  
-  11 관심기업
-  
-
-  */
+  // 화면 이동을 할 때 데이터 저장
+    useEffect(() => {
+        // 사용자가 페이지를 떠나려고 할 때 실행
+        const handleBeforeUnload = (event) => {
+            saveHandler();
+            event.preventDefault();
+        };
+        // 사용자가 페이지를 떠날 때 handleBeforeUnload 함수 실행(데이터 저장)
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        // 컴포넌트가 언마운트 될 때 beforeunload 이벤트 리스너 제거 및 데이터 저장
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            saveHandler();
+        };
+    });
+    */
 
 
   return (
     <DefaultLayout>
-      <button onClick={saveHandler}>대머리깎아라</button>
+      <button onClick={saveHandler}>저장</button>
       <div id="ProjectList">
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="KanBanBoard" data-theme={theme}>
