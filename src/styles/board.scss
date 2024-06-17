@@ -45,14 +45,14 @@
     font-size: 14px !important;
   }
 
-  max-width: 1000px;
+  max-width: 1200px;
   width: 100%;
   margin: 50px auto;
   padding: 20px;
   position: relative;
 
   .freeBoard .commu_title {
-    max-width: 1000px;
+    max-width: 1200px;
     height: 120px;
     background-color: rgba(52, 103, 255, 0.8117647059);
     border-radius: 10px;
@@ -103,7 +103,7 @@
   }
 
   .freeBoard .search {
-    max-width: 1000px;
+    max-width: 1200px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -670,7 +670,7 @@
     background-color: #d32f2f;
   }
 
-  .myCate{
+  .myCate {
     border-radius: 7px;
     margin-right: 10px;
     padding: 5px;
@@ -687,7 +687,7 @@
     cursor: pointer;
   }
 
-  .qnaAnswer{
+  .qnaAnswer {
     background-color: #dddddd;
     border-radius: 5px;
     padding: 15px;
@@ -718,7 +718,7 @@
     background-color: #dfdfdf;
   }
 
-  .gaheeButton{
+  .gaheeButton {
     padding: 5px;
     font-size: 20px;
     margin-left: 46%;
@@ -737,10 +737,10 @@
   }
 
   .completed {
-   color: green;
+    color: green;
   }
-  
+
   .in-progress {
-   color: red;
+    color: red;
   }
 }
