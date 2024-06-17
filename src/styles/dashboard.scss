@@ -1,46 +1,59 @@
 .Dashboard {
   .top {
-    display: flex;
-    margin-top: 50px;
-    justify-content: space-between;
+    margin-top: 80px;
   }
 
   .profile {
-    position: relative;
-    width: 50%;
+    width: 100%;
   }
 
   .profile div {
     display: flex;
+    background-color: #f1f1f1;
+    padding: 40px;
+    margin-bottom: 50px;
+    border-radius: 10px;
+    color: #333;
   }
 
   .profile div img {
-    margin-right: 20px;
+    margin-right: 50px;
     border-radius: 50%;
     width: 220px;
   }
 
   .profile div .userInfo {
-    position: absolute;
-    left: 50%;
+    position: relative;
     top: 50%;
-    transform: translate(-50%, -50%);
-    margin-left: 60px;
+    transform: translateY(25%);
   }
 
   .profile div .userInfo li {
     font-size: 17px;
+    margin-bottom: 10px;
+  }
+
+  .noticeBoard {
+    width: 100%;
+    height: 250px;
+    background: rgba(221, 221, 221, 0.8666666667);
+    position: relative;
+    margin-top: 80px;
   }
 
   .noticeBoard h4 {
     text-align: center;
     margin-bottom: 10px;
+    font-size: 18px;
   }
 
-  .noticeBoard {
-    width: 600px;
-    background: #dddd;
-    position: relative;
+  .noticeBoard p {
+    text-align: end;
+    margin-bottom: 10px;
+  }
+
+  .noticeBoard p:hover {
+    text-decoration: underline;
   }
 
   .noticeBoard table {
@@ -54,11 +67,45 @@
     text-align: center;
   }
 
-  .calendarMain {
-    margin-top: 50px;
-    width: 600px;
+  .schedule {
+    margin-top: 80px;
+    display: flex;
+    justify-content: space-between;
     height: 400px;
-    background-color: #dddddd8a;
+    margin-bottom: 80px;
+  }
+
+  .schedule .item1 {
+    width: 48%;
     text-align: center;
+    margin-right: 10px;
+    background-color: tomato;
+  }
+
+  .schedule .item2 {
+    width: 48%;
+    text-align: center;
+    background-color: tomato;
+  }
+
+  .project {
+    margin-bottom: 80px;
+    background-color: gold;
+    border-radius: 10px;
+    width: 100%;
+    height: 500px;
+  }
+
+  .project > div {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    height: 400px;
+    padding: 50px;
+  }
+
+  .project > div > div {
+    width: 380px;
+    background-color: aliceblue;
   }
 }

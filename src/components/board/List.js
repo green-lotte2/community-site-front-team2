@@ -49,9 +49,6 @@ const List = () => {
     console.log("cate:", cate);
   }, [board, cate]);
 
-  // cate가 "all"일 때 빈 문자열로 설정
-  //const effectiveCate = cate === "all" ? "" : cate;
-
   // 검색 기능
   const handleSearch = () => {
     const searchParams = new URLSearchParams({
