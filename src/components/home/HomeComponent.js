@@ -20,7 +20,9 @@ const HomeComponent = () => {
     <div className="Home">
       <div className="first_div">
         <div className="txt_title">
-          <img src="../images/logo.png"></img>
+          <Link to="/main">
+            <img src="../images/logo.png" />
+          </Link>
           <h2>일름보에 오신걸 환영합니다.</h2>
         </div>
 
