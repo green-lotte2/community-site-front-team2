@@ -125,7 +125,9 @@ const yameAcoHandler = (index)=>{
                 <td style={{ width: '15%' }}> {qna.cate} </td>
                 <td style={{ width: '25%' }}> <Link to={'/qna/view?cate=qna&no=' + qna.qnaPk} >{qna.title}</Link>  </td>
                 <td style={{ width: '15%' }}> {qna.writer}  </td>
-                <td style={{ width: '15%' }}> {qna.status}  </td>
+                <td className={qna.status === '답변완료' ? 'completed' : 'in-progress'}>
+                    {qna.status}
+                  </td>
                         </tr>
                     )
                 })}
