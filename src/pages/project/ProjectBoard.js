@@ -131,11 +131,11 @@ function ProjectBoard() {
     setData(tempBoards);
   };
 
-  /*
+
   useEffect(() => {
+    console.log("ss");
     localStorage.setItem("kanban-board", JSON.stringify(data));
   }, [data]);
-  */
 
   const authSlice = useSelector((state) => state.authSlice);
   const urlParams = new URLSearchParams(window.location.search);
@@ -144,12 +144,16 @@ function ProjectBoard() {
 
   //상태 저장
   const saveHandler = () =>{
-    const saveItem = localStorage.getItem("kanban-board");
+    localStorage.setItem("kanban-board", JSON.stringify(data));
     
+    console.log("필살 화약성!");
+    console.log(localStorage.setItem);
+
     const projectInfo = {
+      boardNo: projectNo,
       projectNo: projectNo,
       userId: authSlice.username,
-      saveItem: saveItem,
+      saveItem: localStorage.getItem("kanban-board"),
     }
     console.log("누가 내머리에 똥을 쌋나?", projectInfo);
 
@@ -164,35 +168,86 @@ function ProjectBoard() {
 
   }
 
-  //상태 가져오기
-  useEffect(() => {
-    console.log("마 실행되나?!");
-    axios
-      .get(`${url.backendUrl}/project/projectboard?projectNo=${projectNo}`, {
-        headers: { Authorization: `Bearer ${authSlice.accessToken}` },
-      })
-      .then((resp) => {
-        console.log("도꺠비참수")
-        console.log(resp.data)
+  
+  const [isLoading, setIsLoading] = useState(true);
 
-        if(resp.data !== ""){
-          localStorage.setItem("kanban-board", JSON.stringify(resp.data));
-          console.log("여기")
-        }else{
-          console.log("저기")
-          localStorage.removeItem("kanban-board");
-          console.log("여기저기")
-          localStorage.setItem([]);
+  const loadPage = async () => {
+    setIsLoading(true); // 로딩 상태 시작
+    try {
+      const response = await axios.get(
+        `${url.backendUrl}/project/projectboard?projectNo=${projectNo}`,
+        {
+          headers: { Authorization: `Bearer ${authSlice.accessToken}` },
         }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      );
+      console.log("도깨비참수");
+      console.log(response.data);
+
+      if (response.data !== "") {
+        localStorage.setItem("kanban-board", JSON.stringify(response.data));
+        setData(response.data);
+      } else {
+        localStorage.removeItem("kanban-board");
+        setData([]);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false); // 로딩 상태 종료
+    }
+  };
+
+  useEffect(() => {
+    loadPage();
+
+    return ()=>{
+      localStorage.setItem("kanban-board", JSON.stringify(data));
+    
+      console.log("연옥 도깨비 참수");
+      console.log(localStorage.getItem("kanban-board"))
+      const projectInfo = {
+        boardNo: projectNo,
+        projectNo: projectNo,
+        userId: authSlice.username,
+        saveItem: localStorage.getItem("kanban-board"),
+      }
+      console.log("양고기 슈트", projectInfo);
+  
+      axios.post(`${url.backendUrl}/project/boardsave`, projectInfo)
+        .then(res => {
+          console.log("프로젝트 등록");
+        
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        
+    }
   }, [projectNo]);
+
+
+  /*
+  // 화면 이동을 할 때 데이터 저장
+    useEffect(() => {
+        // 사용자가 페이지를 떠나려고 할 때 실행
+        const handleBeforeUnload = (event) => {
+            saveHandler();
+            event.preventDefault();
+        };
+        // 사용자가 페이지를 떠날 때 handleBeforeUnload 함수 실행(데이터 저장)
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        // 컴포넌트가 언마운트 될 때 beforeunload 이벤트 리스너 제거 및 데이터 저장
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            saveHandler();
+        };
+    });
+    */
+
 
   return (
     <DefaultLayout>
-      <button onClick={saveHandler}>대머리깎아라</button>
+      <button onClick={saveHandler}>저장</button>
       <div id="ProjectList">
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="KanBanBoard" data-theme={theme}>

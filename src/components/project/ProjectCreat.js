@@ -18,9 +18,6 @@ const initState = {
   next: false,
 };
 
-
-
-
 const ProjectCreate = () => {
   const authSlice = useSelector((state) => state.authSlice); // 유저 정보 가져오기
   const location = useLocation();
@@ -31,6 +28,7 @@ const ProjectCreate = () => {
   const [members, setMembers] = useState([]); //멤버
   const [projectTitle, setProjectTitle] = useState(""); // 입력한 프로젝트 제목 상태
   const [projectInfo, setProjectInfo] = useState(""); // 입력한 프로젝트 설명 상태
+  const [deleteState, setDeleteState] = useState(false); // 입력한 프로젝트 설명 상태
   
   const [emailLabel, setEmailLabel] = useState(true);
   const [selectedProjectNo, setSelectedProjectNo] = useState(null);
@@ -57,7 +55,7 @@ const ProjectCreate = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [pg, projectBar]); // pg값이 변경이 되면 useEffect가 실행
+  }, [pg, projectBar, deleteState]); // pg값이 변경이 되면 useEffect가 실행
   
 
   // 새로운 프로젝트 객체 생성
@@ -139,7 +137,34 @@ const ProjectCreate = () => {
     document.getElementById('insertEmail').value = e.target.textContent;
   }
 
-  return (
+  //프로젝트 삭제
+  const delelteProject = (e)=>{
+    e.preventDefault();
+
+    const projectNo = e.target.getAttribute('data-value');
+    console.log(projectNo);
+
+    axios
+      .post(`${url.backendUrl}/project/projectdelete`, projectNo, {
+        headers:{
+          "Content-Type" : "Application/json"
+        }
+      })
+      .then(res => {
+          console.log("sss0", res);
+        if(res.data > 0){
+          console.log("삭제함")
+          setDeleteState(!deleteState);
+        }
+
+      })
+      .catch(function (error) {
+      
+      });
+      
+  }
+
+ return (
     <div id='ProjectList'>
       <h4>Project Create</h4>
       <div>
@@ -147,7 +172,7 @@ const ProjectCreate = () => {
         {projectBar && (
           <div>
             <h3>What is the name of your project?</h3>
-            <p> You must enter a title to create your project The name of the project is very important, and I think about how to mock it</p><br/>
+            <p> You must enter a title to create your project. The name of the project is very important, think carefully before naming it.</p><br />
             <input
               type="text"
               value={projectTitle}
@@ -164,62 +189,55 @@ const ProjectCreate = () => {
           </div>
         )}
       </div>
-        <div>
-          <h4>Projects List</h4>
-          <ul>
-            {serverData.dtoList.map((project, index) => (
-
-              <div style={{border : '1px solid black', margin : '5px'}}>
-              <li key={index} className='projectList'>
-                
-                <h2>Project</h2>
-                <Link to={`/project/projectboard?projectNo=${project.projectNo}`}>{project.projectTitle}</Link>
-                <p  value={project.projectNo} >Project Code : {project.projectNo}</p>
+      <div>
+        <h4>Projects List</h4>
+        <ul>
+          {serverData.dtoList.map((project, index) => (
+            <div style={{ border: '1px solid black', margin: '5px' }} key={index}>
+              <li className='projectList'>
+                <h2><Link to={`/project/projectboard?projectNo=${project.projectNo}`}>{project.projectTitle}</Link></h2>
+                <p>Project Code : {project.projectNo}</p>
                 <p>Project Content : {project.projectInfo}</p>
                 <p>Project Status : {project.projectStatus}</p>
                 <p>Created by: {project.userId}</p>
-
-
-               <div>
-                {!collaboBar[project.projectNo] && (
-                  <button onClick={() => selectProjectHandler(project.projectNo)}>Collaborators add</button>
-                )}
-                {collaboBar[project.projectNo] && (
-                  <form id={project.projectNo} onSubmit={inviteSendHandler}>
-                    {emailLabel[project.projectNo] && (
-                      <>
-                        <label>
-                          <input type="text" id="projectNo" value={project.projectNo} />
-                          <input type="text" onChange={inserEmailHandler} id="insertEmail" placeholder="이메일 입력" />
-                          <p onClick={() => closeBar(project.projectNo)}>x</p>
-                          <div className='inviteDiv' style={{ border: '1px solid gray', width: '100%', maxHeight: '100px', overflow: 'scroll', marginTop: '2px' }}>
-                            {invites.map(member => (
-                              <p key={member.uid} onClick={selectMemberHandler}>{member.email}</p>
-                            ))}
-                          </div>
-                        </label>
-                        <button type="submit" className='chatButtonp'>초대</button>
-                      </>
-                    )}
-                  </form>
-                )}
-              </div>
-              
-            {/*  참여 멤버    */}
-              {members.map((user, index) => (
-                <p key={index}>{user.name}</p>
-              ))}
-           
-            </li>
+                <p id="deleteProject" data-value={project.projectNo} onClick={delelteProject}>delete : {project.projectNo}</p>
+                <div>
+                  {!collaboBar[project.projectNo] && (
+                    <button onClick={() => selectProjectHandler(project.projectNo)}>Collaborators add</button>
+                  )}
+                  {collaboBar[project.projectNo] && (
+                    <form id={project.projectNo} onSubmit={inviteSendHandler}>
+                      {emailLabel[project.projectNo] && (
+                        <>
+                          <label>
+                            <input type="text" id="projectNo" value={project.projectNo} readOnly />
+                            <input type="text" onChange={inserEmailHandler} id="insertEmail" placeholder="이메일 입력" />
+                            <p onClick={() => closeBar(project.projectNo)}>x</p>
+                            <div className='inviteDiv'>
+                              {invites.map(member => (
+                                <p key={member.uid} onClick={selectMemberHandler}>{member.email}</p>
+                              ))}
+                            </div>
+                          </label>
+                          <button type="submit" className='chatButtonp'>초대</button>
+                        </>
+                      )}
+                    </form>
+                  )}
+                </div>
+                {/* 참여 멤버 */}
+                {members.map((user, index) => (
+                  <p key={index}>{user.name}</p>
+                ))}
+              </li>
             </div>
-
-          ))}        
+          ))}
         </ul>
-        </div>
-        <Page serverData={serverData}/>        
+      </div>
+      <Page serverData={serverData} />
     </div>
-    );
-  
-  };
+  );
+};
+
 
 export default ProjectCreate;
