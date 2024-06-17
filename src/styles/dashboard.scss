@@ -1,0 +1,64 @@
+.Dashboard {
+  .top {
+    display: flex;
+    margin-top: 50px;
+    justify-content: space-between;
+  }
+
+  .profile {
+    position: relative;
+    width: 50%;
+  }
+
+  .profile div {
+    display: flex;
+  }
+
+  .profile div img {
+    margin-right: 20px;
+    border-radius: 50%;
+    width: 220px;
+  }
+
+  .profile div .userInfo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-left: 60px;
+  }
+
+  .profile div .userInfo li {
+    font-size: 17px;
+  }
+
+  .noticeBoard h4 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .noticeBoard {
+    width: 600px;
+    background: #dddd;
+    position: relative;
+  }
+
+  .noticeBoard table {
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+  }
+
+  .noticeBoard table tr {
+    text-align: center;
+  }
+
+  .calendarMain {
+    margin-top: 50px;
+    width: 600px;
+    height: 400px;
+    background-color: #dddddd8a;
+    text-align: center;
+  }
+}
