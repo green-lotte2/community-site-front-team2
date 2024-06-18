@@ -133,8 +133,10 @@ function ProjectBoard() {
 
 
   useEffect(() => {
-    console.log("ss");
-    localStorage.setItem("kanban-board", JSON.stringify(data));
+    if(projectNo){
+      console.log("ss");
+      localStorage.setItem("kanban-board", JSON.stringify(data));
+    }
   }, [data]);
 
   const authSlice = useSelector((state) => state.authSlice);
@@ -198,57 +200,39 @@ function ProjectBoard() {
   };
 
   useEffect(() => {
-    loadPage();
-
-    return ()=>{
-      localStorage.setItem("kanban-board", JSON.stringify(data));
-    
-      console.log("연옥 도깨비 참수");
-      console.log(localStorage.getItem("kanban-board"))
-      const projectInfo = {
-        boardNo: projectNo,
-        projectNo: projectNo,
-        userId: authSlice.username,
-        saveItem: localStorage.getItem("kanban-board"),
-      }
-      console.log("양고기 슈트", projectInfo);
-  
-      axios.post(`${url.backendUrl}/project/boardsave`, projectInfo)
-        .then(res => {
-          console.log("프로젝트 등록");
-        
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-        
+    if (projectNo) {
+        loadPage();
     }
   }, [projectNo]);
 
 
-  /*
   // 화면 이동을 할 때 데이터 저장
     useEffect(() => {
         // 사용자가 페이지를 떠나려고 할 때 실행
         const handleBeforeUnload = (event) => {
+            console.log("유슈얼서스펙트")
             saveHandler();
             event.preventDefault();
         };
         // 사용자가 페이지를 떠날 때 handleBeforeUnload 함수 실행(데이터 저장)
+        console.log("유슈얼서스펙트2")
         window.addEventListener('beforeunload', handleBeforeUnload);
+        localStorage.removeItem("kanban-board");
         // 컴포넌트가 언마운트 될 때 beforeunload 이벤트 리스너 제거 및 데이터 저장
         return () => {
+            console.log("유슈얼서스펙트3")
             window.removeEventListener('beforeunload', handleBeforeUnload);
             saveHandler();
+            localStorage.removeItem("kanban-board");
         };
-    });
-    */
+    },[data]);
+  
 
 
   return (
     <DefaultLayout>
       <button onClick={saveHandler}>저장</button>
-      <div id="ProjectList">
+      <div className="projectList">
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="KanBanBoard" data-theme={theme}>
             <Navbar switchTheme={switchTheme} />
