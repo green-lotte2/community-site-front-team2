@@ -34,38 +34,26 @@ const NoticeBoard = ({ backendUrl }) => {
 
   return (
     <div className="noticeBoard">
-      <h4>공지사항</h4>
-      <p>
-        <Link to={`/board/list?cate=notice`}>view all</Link>
-      </p>
-      <table border="1">
-        <thead>
-          <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성일</th>
-            <th>조회</th>
-          </tr>
-        </thead>
+      <h4>Notice</h4>
+      <table>
         <tbody>
           {notices.map((notice, index) => (
             <tr key={index}>
-              <td>{index + 1}</td>
+              <td className="rdate">
+                {removeLastDot(new Date(notice.rdate).toLocaleDateString())}
+              </td>
               <td>
-                <Link to={`/board/view/notice/${notice.no}`}>
+                <Link to={`/board/view/notice/${notice.no}`} className="title">
                   {notice.title}
                 </Link>
               </td>
-              <td>{notice.nick}</td>
-              <td>
-                {removeLastDot(new Date(notice.rdate).toLocaleDateString())}
-              </td>
-              <td>{notice.hit}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      <p className="viewText">
+        <Link to={`/board/list?cate=notice`}>View all &nbsp;&nbsp; {">"}</Link>
+      </p>
     </div>
   );
 };
@@ -117,37 +105,37 @@ const Dashboard = () => {
         <>
           <div className="Dashboard">
             <div className="top">
-              <div className="profile">
-                <div>
-                  <img
-                    src={`${url.backendUrl}/images/${authSlice.userImg}`}
-                    alt="profile"
-                  />
-                  <ul className="userInfo">
-                    <li>이름 : {user.uid}</li>
-                    <li>닉네임: {user.nick}</li>
-                    <li>이메일: {user.email}</li>
-                    <li>전화번호: {user.hp}</li>
-                  </ul>
+              <div className="profileBox">
+                <p className="loginUser">Welcome, {user.uid}</p>
+                <div className="profile">
+                  <div className="profile_img">
+                    <img
+                      src={`${url.backendUrl}/images/${authSlice.userImg}`}
+                      alt="profile"
+                    />
+                  </div>
+                  <div className="info">
+                    <ul className="userInfo">
+                      <li>이름 : {user.uid}</li>
+                      <li>닉네임: {user.nick}</li>
+                      <li>이메일: {user.email}</li>
+                      <li>전화번호: {user.hp}</li>
+                    </ul>
+                  </div>
                 </div>
+                {/*profile end*/}
+                <p className="viewText">My profile &nbsp;&nbsp;{">"} </p>
               </div>
+              {/*profileBox end */}
+              <NoticeBoard backendUrl={url.backendUrl} />
             </div>
-            <NoticeBoard backendUrl={url.backendUrl} />
-            <div className="schedule">
-              <div className="item1">
-                <div>calendar</div>
+            {/*top end*/}
+            <div className="bottom">
+              <div className="toDoList">
+                <div>toDoList</div>
               </div>
-              <div className="item2">
-                <div>To Do List</div>
-              </div>
-              {/*todo end */}
-            </div>
-            <h4>프로젝트</h4>
-            <div className="project">
-              <div>
-                <div className="item1"></div>
-                <div className="item2"></div>
-                <div className="item3"></div>
+              <div className="projectBox">
+                <div>프로젝트</div>
               </div>
             </div>
           </div>
