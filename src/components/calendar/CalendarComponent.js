@@ -133,7 +133,7 @@ function CalendarComponent() {
 
 
     /** 스케줄 목록 조회 */
-    axios.get(url.backendUrl + '/calendar')
+    axios.get(url.backendUrl + '/calendar?uid=' + authSlice.username)
       .then((Response) => {
         Response.data.forEach(element => {
           const type = {
