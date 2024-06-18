@@ -31,7 +31,7 @@ const Footer = () => {
                 <li>(주)일름보</li>&nbsp;&nbsp;
                 <li>부산시 해운대구 반여1동</li><br/>
                 <li>대표이사 : 김준형</li>&nbsp;&nbsp;&nbsp;
-                <li>임원진 : 조영흥, 이예나, 이승윤, 이가희</li><br/>
+                <li>임원진 : 이예나, 이승윤, 이가희</li><br/>
                 <li>SNAP-SHOT: {process.env.REACT_APP_VERSION}</li>
              </ul>
         </div>
