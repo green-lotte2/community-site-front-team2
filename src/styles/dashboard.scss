@@ -1,50 +1,81 @@
 .Dashboard {
   .top {
+    display: flex;
     margin-top: 80px;
   }
 
-  .profile {
-    width: 100%;
+  .loginUser {
+    color: #313d6b;
+    font-weight: bold;
+    font-size: 17px;
+    background-color: #eaf5ff8c;
+    border-bottom: 1px solid #ddd;
+    padding: 25px;
+    border-radius: 5px 5px 0 0;
   }
 
-  .profile div {
-    display: flex;
-    background-color: #f1f1f1;
-    padding: 40px;
-    margin-bottom: 50px;
-    border-radius: 10px;
-    color: #333;
+  .profileBox {
+    width: 50%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 20px;
   }
 
-  .profile div img {
-    margin-right: 50px;
+  .profileBox .profile {
+    background-color: #ffffff;
+    position: relative;
+  }
+
+  .profileBox .profile .profile_img {
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .profileBox .profile .profile_img > img {
     border-radius: 50%;
     width: 220px;
   }
 
-  .profile div .userInfo {
-    position: relative;
-    top: 50%;
-    transform: translateY(25%);
+  .profileBox .profile .info {
+    text-align: center;
+    margin-bottom: 20px;
   }
 
-  .profile div .userInfo li {
-    font-size: 17px;
-    margin-bottom: 10px;
+  .profileBox .profile .info .userInfo li {
+    color: #676767;
+  }
+
+  .profileBox .viewText {
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    cursor: pointer;
+    color: #009eff;
+    font-weight: bold;
+  }
+
+  .profileBox .viewText:hover {
+    text-decoration: underline;
   }
 
   .noticeBoard {
-    width: 100%;
-    height: 250px;
-    background: rgba(221, 221, 221, 0.8666666667);
+    width: 50%;
     position: relative;
-    margin-top: 80px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
   }
 
   .noticeBoard h4 {
-    text-align: center;
+    text-align: left;
     margin-bottom: 10px;
     font-size: 18px;
+    background-color: #eaf5ff8c;
+    padding: 25px;
+    border-bottom: 1px solid #ddd;
+    color: #313d6b;
+    font-weight: bold;
+    font-size: 17px;
   }
 
   .noticeBoard p {
@@ -58,54 +89,71 @@
 
   .noticeBoard table {
     width: 100%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%);
+    height: 365px;
+    border-collapse: collapse;
   }
 
   .noticeBoard table tr {
     text-align: center;
   }
 
-  .schedule {
-    margin-top: 80px;
-    display: flex;
-    justify-content: space-between;
-    height: 400px;
-    margin-bottom: 80px;
+  .noticeBoard table tr:hover {
+    background-color: #e6f6ff;
   }
 
-  .schedule .item1 {
-    width: 48%;
+  .noticeBoard table tr td {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .noticeBoard table tr td:nth-child(1) {
+    width: 30%;
+    padding-left: 20px;
+  }
+
+  .noticeBoard table tr td:nth-child(2) {
+    width: 70%;
+  }
+
+  .noticeBoard table .rdate {
+    color: #a8a8a8;
+  }
+
+  .noticeBoard table .title {
+    color: #555d89;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .noticeBoard .viewText {
+    padding: 20px;
     text-align: center;
-    margin-right: 10px;
-    background-color: tomato;
+    cursor: pointer;
+    color: #009eff;
   }
 
-  .schedule .item2 {
-    width: 48%;
-    text-align: center;
-    background-color: tomato;
+  .noticeBoard .viewText a {
+    font-weight: bold;
   }
 
-  .project {
-    margin-bottom: 80px;
-    background-color: gold;
-    border-radius: 10px;
-    width: 100%;
-    height: 500px;
-  }
-
-  .project > div {
+  .bottom {
     display: flex;
-    justify-content: space-between;
-    border-radius: 10px;
+    margin-top: 30px;
+    margin-bottom: 80px;
     height: 400px;
-    padding: 50px;
   }
 
-  .project > div > div {
-    width: 380px;
-    background-color: aliceblue;
+  .bottom .toDoList {
+    width: 50%;
+    margin-right: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .bottom .projectBox {
+    width: 50%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
   }
 }
