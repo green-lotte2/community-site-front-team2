@@ -453,6 +453,14 @@
     margin-top: 5px;
   }
 
+  .commentList .comment .modifyContent {
+    min-width: 800px;
+    min-height: 70px;
+    border: none;
+    resize: none;
+    outline: none;
+  }
+
   .commentList .commentListBtn {
     text-align: end;
   }
