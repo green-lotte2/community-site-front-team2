@@ -90,48 +90,49 @@ const CommentList = ({ comments }) => {
 
   return (
     <div className="commentList">
-      {commentList.map(
-        (
-          comment // commentList 상태를 기준으로 렌더링
-        ) => (
-          <div key={comment.cno} className="comment">
-            <img src={`${url.backendUrl}/images/${comment.image}`} alt="user" />
-            <div className="contents">
-              <p>{comment.nick}</p>
-              <p>{comment.content}</p>
-              <p className="rdate">
-                {moment(comment.rdate).format("YYYY-MM-DD")}
-              </p>
-              <div className="commentListBtn">
-                {editMode === comment.cno ? (
-                  // 수정 모드일 때 수정 및 취소 버튼 보여주기
-                  <>
-                    <button onClick={() => handleUpdate(comment.cno)}>
-                      완료
-                    </button>
-                    <button onClick={cancelEdit}>취소</button>
-                  </>
-                ) : (
-                  // 수정 모드가 아닐 때 수정 및 삭제 버튼 보여주기
-                  <>
-                    <button className="userReport">신고</button>
-                    <button
-                      onClick={() =>
-                        enterEditMode(comment.cno, comment.content)
-                      }
-                    >
-                      수정
-                    </button>
-                    <button onClick={() => handleDelete(comment.cno)}>
-                      삭제
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
+      {commentList.map((comment) => (
+        <div key={comment.cno} className="comment">
+          <img src={`${url.backendUrl}/images/${comment.image}`} alt="user" />
+          <div className="contents">
+            <p>{comment.nick}</p>
+            {editMode === comment.cno ? (
+              // 수정 모드에서는 textarea를 보여주고 수정 취소 및 완료 버튼을 표시
+              <>
+                <textarea
+                  className="modifyContent"
+                  value={editedContent}
+                  onChange={(e) => setEditedContent(e.target.value)}
+                />
+                <div className="commentListBtn">
+                  <button onClick={() => handleUpdate(comment.cno)}>
+                    완료
+                  </button>
+                  <button onClick={cancelEdit}>취소</button>
+                </div>
+              </>
+            ) : (
+              // 수정 모드가 아닐 때는 수정 및 삭제 버튼 표시
+              <>
+                <p>{comment.content}</p>
+                <p className="rdate">
+                  {moment(comment.rdate).format("YYYY-MM-DD")}
+                </p>
+                <div className="commentListBtn">
+                  <button className="userReport">신고</button>
+                  <button
+                    onClick={() => enterEditMode(comment.cno, comment.content)}
+                  >
+                    수정
+                  </button>
+                  <button onClick={() => handleDelete(comment.cno)}>
+                    삭제
+                  </button>
+                </div>
+              </>
+            )}
           </div>
-        )
-      )}
+        </div>
+      ))}
     </div>
   );
 };

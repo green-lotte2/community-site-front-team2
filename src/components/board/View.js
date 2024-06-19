@@ -71,12 +71,21 @@ const View = () => {
           },
         }
       );
-      setComments((prevComments) => [...prevComments, response.data]);
+
       console.log(comment);
     } catch (error) {
       console.error("댓글 등록 중 오류 발생:", error);
       alert("댓글 등록에 실패하였습니다.");
     }
+
+    axios
+      .get(url.backendUrl + `/comment/${no}`, {
+        headers: { Authorization: `Bearer ${authSlice.accessToken}` },
+      })
+      .then((response) => {
+        console.log("response comments:", response.data);
+        setComments(response.data);
+      });
   };
 
   useEffect(() => {
