@@ -7,6 +7,8 @@ import axios from "axios";
 const CommentList = ({ comments }) => {
   const authSlice = useSelector((state) => state.authSlice);
   const [commentList, setCommentList] = useState(comments);
+  const [editMode, setEditMode] = useState(null); // 수정 모드 상태 관리
+  const [editedContent, setEditedContent] = useState(""); // 수정할 댓글 내용 상태 관리
 
   // 댓글 삭제 함수
   const handleDelete = async (cno) => {
@@ -34,6 +36,49 @@ const CommentList = ({ comments }) => {
     }
   };
 
+  // 댓글 수정 모드로 변경하는 함수
+  const enterEditMode = (cno, initialContent) => {
+    setEditMode(cno); // 수정 모드로 변경
+    setEditedContent(initialContent); // 수정할 내용 설정
+  };
+
+  // 수정 취소 함수
+  const cancelEdit = () => {
+    setEditMode(null); // 수정 모드 해제
+    setEditedContent(""); // 수정 내용 초기화
+  };
+
+  // 댓글 업데이트 함수
+  const handleUpdate = async (cno) => {
+    try {
+      // 서버에 수정된 댓글 내용 전송
+      await axios.put(
+        `${url.backendUrl}/comment/${cno}`,
+        { content: editedContent },
+        {
+          headers: {
+            Authorization: `Bearer ${authSlice.accessToken}`,
+          },
+        }
+      );
+
+      // 수정된 댓글을 화면에 반영하기 위해 댓글 목록을 다시 불러옴 (또는 수정된 내용으로 직접 업데이트)
+      const updatedComments = commentList.map((comment) =>
+        comment.cno === cno ? { ...comment, content: editedContent } : comment
+      );
+      setCommentList(updatedComments);
+
+      // 수정 완료 알림
+      alert("댓글이 수정되었습니다.");
+
+      // 수정 모드 종료
+      setEditMode(null);
+    } catch (error) {
+      console.error("댓글 수정 중 오류 발생:", error);
+      alert("댓글 수정에 실패하였습니다.");
+    }
+  };
+
   useEffect(() => {
     // comments props가 변경될 때 commentList 상태 업데이트
     setCommentList(comments);
@@ -50,7 +95,7 @@ const CommentList = ({ comments }) => {
           comment // commentList 상태를 기준으로 렌더링
         ) => (
           <div key={comment.cno} className="comment">
-            <img src="/images/testAccount_50.png" alt="user" />
+            <img src={`${url.backendUrl}/images/${comment.image}`} alt="user" />
             <div className="contents">
               <p>{comment.nick}</p>
               <p>{comment.content}</p>
@@ -58,8 +103,30 @@ const CommentList = ({ comments }) => {
                 {moment(comment.rdate).format("YYYY-MM-DD")}
               </p>
               <div className="commentListBtn">
-                <button>수정</button>
-                <button onClick={() => handleDelete(comment.cno)}>삭제</button>
+                {editMode === comment.cno ? (
+                  // 수정 모드일 때 수정 및 취소 버튼 보여주기
+                  <>
+                    <button onClick={() => handleUpdate(comment.cno)}>
+                      완료
+                    </button>
+                    <button onClick={cancelEdit}>취소</button>
+                  </>
+                ) : (
+                  // 수정 모드가 아닐 때 수정 및 삭제 버튼 보여주기
+                  <>
+                    <button className="userReport">신고</button>
+                    <button
+                      onClick={() =>
+                        enterEditMode(comment.cno, comment.content)
+                      }
+                    >
+                      수정
+                    </button>
+                    <button onClick={() => handleDelete(comment.cno)}>
+                      삭제
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
