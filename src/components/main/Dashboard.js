@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import url from "../../config/url";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Modal from "./Modal"; // 모달 컴포넌트 추가
 
 // noticeBoard 정의
 const NoticeBoard = ({ backendUrl }) => {
@@ -76,6 +77,15 @@ const Dashboard = () => {
         }
   );
 
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     if (!authSlice.username) {
       alert("로그인 해주세요.");
@@ -116,15 +126,29 @@ const Dashboard = () => {
                   </div>
                   <div className="info">
                     <ul className="userInfo">
-                      <li>이름 : {user.uid}</li>
-                      <li>닉네임: {user.nick}</li>
-                      <li>이메일: {user.email}</li>
-                      <li>전화번호: {user.hp}</li>
+                      <li>
+                        <span className="label">이름 :</span>
+                        <span className="value">{user.uid}</span>
+                      </li>
+                      <li>
+                        <span className="label">닉네임 :</span>
+                        <span className="value">{user.nick}</span>
+                      </li>
+                      <li>
+                        <span className="label">이메일 :</span>
+                        <span className="value">{user.email}</span>
+                      </li>
+                      <li>
+                        <span className="label">전화번호 :</span>
+                        <span className="value">{user.hp}</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
                 {/*profile end*/}
-                <p className="viewText">My profile &nbsp;&nbsp;{">"} </p>
+                <p className="viewText">
+                  <Link to={`/user/mypage`}>My profile &nbsp;&nbsp; {">"}</Link>
+                </p>
               </div>
               {/*profileBox end */}
               <NoticeBoard backendUrl={url.backendUrl} />
@@ -132,7 +156,39 @@ const Dashboard = () => {
             {/*top end*/}
             <div className="bottom">
               <div className="toDoList">
-                <div>toDoList</div>
+                <div className="taskTitle">
+                  <p>Today Task</p>
+                  <button onClick={openModal}>
+                    <img src="../../images/plus_50.png" alt="addBtn" />
+                  </button>
+                </div>
+                <div className="taskList">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <input type="checkbox"></input>
+                        </td>
+                        <td>제목입니다</td>
+                        <td>2024.06.18</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input type="checkbox"></input>
+                        </td>
+                        <td>제목입니다</td>
+                        <td>2024.06.18</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input type="checkbox"></input>
+                        </td>
+                        <td>제목입니다</td>
+                        <td>2024.06.18</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <div className="projectBox">
                 <div>프로젝트</div>
@@ -140,6 +196,8 @@ const Dashboard = () => {
             </div>
           </div>
           {/*Dashboard end */}
+          <Modal isOpen={isModalOpen} onClose={closeModal} />{" "}
+          {/* 모달 컴포넌트 추가 */}
         </>
       ) : (
         <h2>로그인 해주세요.</h2>

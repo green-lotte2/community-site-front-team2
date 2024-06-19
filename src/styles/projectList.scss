@@ -1,3 +1,4 @@
+
 .ProjectList {
     .page {
         display: flex;
@@ -30,563 +31,579 @@
 #ProjectList {
     margin: 20px;
     font-family: Arial, sans-serif;
-  }
-  
-  .projectBox {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin: 10px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .projectBox:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .projectItem {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .projectItem h2 {
-    margin: 0;
-    padding: 0;
-    font-size: 1.5em;
-    color: #333;
-  }
-  
-  .projectItem p {
-    margin: 5px 0;
-    color: #666;
-  }
-  
-  .projectItem a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  button {
-    padding: 8px 12px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .cancelButton {
-    background-color: #dc3545;
-  }
-  
-  .cancelButton:hover {
-    background-color: #c82333;
-  }
-  
-  .deleteButton {
-    background-color: #bebebf;
-    color: #6c757d;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: inline-block;
-    margin-left: 5px;
-  }
-  
-  .deleteButton:hover {
-    background-color: #565e64;
-    color: #fff;
-  }
-  
-  input[type="text"] {
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 16px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  input[type="text"]:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
-    outline: none;
-  }
-  
-  .project-create {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .project-create h3 {
-    margin-top: 0;
-    color: #333;
-  }
-  
-  .project-create p {
-    color: #666;
-    line-height: 1.5;
-  }
-  
-  .hidden {
-    display: none;
-  }
 
 
-.projectListBox h4 {
-    padding: 10px;
-    margin-bottom: 20px;
-    width: 98%;
-    border-bottom: solid black 1px;
-    font-size: 30px;
-}
-
-.createProjectButton{
-    padding: 8px 12px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 4px;
-    background-color: #61bd4f;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-
-.ProjectList{
-
-    .projectBox > h4{
-        padding: 10px;
-    }
-
-    body {
+    ////🎈🎈🎈🎈시작////
+    .projectBox {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin: 10px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        transition: box-shadow 0.3s ease;
+      }
+      
+      .projectBox:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .projectItem {
+        list-style: none;
         margin: 0;
         padding: 0;
-    }
-    .container {
-        display: flex;
-        width: 1200px;
-        margin: 0 auto;
-    }
-    nav {
-        background-color: gray;
-        flex: 0.2; /* 네비게이션 영역이 늘어날 수 있도록 */
-        padding: 10px;
-        text-align: center; /* 텍스트 가운데 정렬 */
-    }
-    nav button {
-        vertical-align: middle; /* 버튼의 텍스트와 이모지를 수직으로 가운데 정렬 */
-        line-height: 1; /* 텍스트와 이모지를 수직으로 가운데 정렬하기 위해 */
-    }
-    nav p {
-        margin: 0; /* 문단의 기본 마진 제거 */
-        color: white; /* 텍스트 색상 설정 */
-    }
-    nav2 {
-        background-color:  rgb(202, 202, 202);
-        flex: 0.5; /* 네비게이션 영역이 늘어날 수 있도록 */
-        padding: 10px;
-        color:  black
-    }
-    #content {
-        border: 1px solid black;
-        flex: 2; /* 콘텐츠 영역이 늘어날 수 있도록 */
-        min-height: 1000px; /* 임의의 높이 설정 */
-        padding: 10px;
-
-    }
-    #chatting{
-        display: flex;
-        flex-direction: column-reverse;
-        height: 800px;
-    }
-    header {
-        margin: 0 auto;
-        border: 1px solid black;
-        width: 1200px;
-        padding: 10px;
-        box-sizing: border-box; 
-    }
-
-    footer {
-        margin: 0 auto;
-        border: 1px solid black;
-        width: 1200px;
-        padding: 10px;
-        box-sizing: border-box; 
-    }
-    .flex-container {
-        display: flex;
-        align-items: center;
-        border:  1px solid gray;
-    }
-    .flex-container p {
-        margin: 0;
-        color: rgb(0, 0, 0);
-    }
-    .home{
-    background-color:gray;
-    border: none;
-    text-align: center;
-    padding: 3px 3px;
-    border-radius: 10px;
-    font-size: 45px;
-    margin-bottom: 2px;
-    }
-
-
-    .home3{
-    color: white;
-    }
-
-    .homeOn{
-        background-color:  rgb(202, 202, 202);
-    }
-
-    .title{
-        margin-left: 10px;
-    }
-
-    .Project ul {
-        padding-left: 0;
-        display: flex;
-        border-bottom: 1px solid grey;
-    }
-
-    .Project ul > li {
-        list-style: none;
-        padding-right: 60px;
-        padding-bottom: 10px;
-        padding-left: l;
-    }
-
-
-
-    .Project {
-        margin-left: 10px;
-        align-items: center;
-    }
-
-    /*searchBox.css*/
-    .search-box {
-        height: 15px;
-        width: 98%;
-        background: white;
-        border-radius: 40px;
-        padding: 10px;
-        border: 1px solid #797979;
-    }
-
-    .search-txt {
-        border: none;
-        background: none;
-        outline: none;
-        float: left;
-        padding: 0px;
-        color: #797979;
-        font-size: 16px;
-        line-height: 0px;
-        width: 90%;
-    }
-
-    .search-btn {
-        color: #797979;
-        float: right;
-        width: 40px;
-        height: 100%;
-        border-radius: 50%;
-        background: white;
-        border: none;
-        font-size: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-
-    /*마일스톤 타이틀 */
-
-    .timeline-title ul {
-        padding-left: 0;
-        display: flex;
-        
-    }
-
-    /*마일스톤 오브젝트*/
-    .mileStone {
-        border: 1px solid blue;
-        padding: 10px; /* 내부 여백 추가 */
-        box-sizing: border-box;
-    }
-
-    .mileStoneLayout {
-        display: flex;
-        position: relative;
-        border: 1px solid red;
-        justify-content: space-between;
-        width: 100%;
-        gap: 10px;
-        box-sizing: border-box;
-    }
-
-    .mileStoneLayout div {
-        flex-grow: 1;
-        width: calc(33.33% - 10px);
-        box-sizing: border-box;
-    }
-
-    .Ready {
-        border: #2cbe4e solid 3px;
-        height: auto;
-
-        display: flex;
-        align-items: center;
-        
-    }
-
-    .Ready > i {
-        padding: 10px;
-        padding-right: 5px;
-    }
-
-    .Ready > h4 {
-        color: green;
-
-        margin: 0; 
-        margin-right: 5px; 
-        
-    }
-
-    .InPrograss {
-        border: #1e90ff solid 3px;
-        height: auto;
-        
-        display: flex;
-        align-items: center;
-    }
-
-    .InPrograss > i {
-        padding: 10px;
-        padding-right: 5px;
-    }
-
-    .InPrograss > h4{
-        color: blue;
-    }
-
-    .Completed {
-        border: #cb2431 solid 3px;
-        height: auto;
-
-        display: flex;
-        align-items: center;
-    }
-
-    .Completed > i{
-        padding: 10px;
-        padding-right: 5px;
-    }
-
-    .Completed > h4 {
-        color: red;
-    }
-
-
-    .ReadyContent {
-        border: 1px solid black;
-        height: 50px;
-        display: block;
-        border-radius: 20px;
-    }
-
-    .Project ul > li > a {
-        color : black;
-        
-    }
-
-    //드래그 앤 드롭
-    .draggable {
-        padding: 10px;
-        margin-bottom: 10px;
-        background: #ffffff;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        user-select: none;
-        display: flex;
-        flex-direction: column; /* 요소들을 세로로 배치 */
-        align-items: center;
-    }
-    
-    /* 그 외 스타일은 동일하게 유지 */
-    .droppable {
-        padding: 10px;
-        width: 30%;
-        margin-bottom: 10px;
-        background: #ffffff;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        user-select: none;
-        display: column;
-        align-items: center;
-    }
-    
-    .droppable-container {
-        display: flex;
-        padding: 15px;
-        justify-content: space-between;
-    }
-    
-    .drag-handle {
-        width: 20px;
-        height: 20px;
-        background: #6c757d;
-        margin-right: 10px;
-        cursor: grab;
-        border-radius: 3px;
-    }
-    
-    .draggable:active {
-        background: #e9ecef;
-    }
-    
-    .draggable.is-dragging {
-        background: #cce5ff;
-    }
-
-    //프로젝트 정보
-    .projectBox {
-        display: flex;
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        right: -100%;
-        background-color: rgba(125, 125, 125, 0.3);
-        transform: translateX("-300px");
-        z-index: 200;
-        justify-content: end;
-    }
-    .projectContent {
-        width: 70%;
-        height: 100%px;
-        background-color: white;
-        border-top-left-radius: 50px;
-        border-bottom-left-radius: 50px;
-        box-shadow: 0 15px 8px rgba(0, 0, 0, 0.3);
-    
-    }
-
-    .projectContent > h4 {
-        padding: 3%;
-        font-size: 50px;
-        
-    }
-
-    .projectContent > p {
-        border-top: 1px solid #d0d7deb3;
-        display: block;
-        width: 94%;
-        margin: 0 auto;
-    }
-
-    .stateLabel {
-        display: flex;
-        border-bottom: 1px solid #d0d7deb3;
-        width: 94%;
-        margin: 0 auto;
-    }
-
-    .stateLabel > p:nth-child(1) {
-    
-        text-align: center;
-        border: 1px solid #d0d7deb3;
-        border-radius: 20px;
-        width: 80px;
-        height: 30px;
-        margin-right: 10px;
-        margin-bottom: 10px;
-
-    }
-
-    .stateLabel > p:nth-child(2) {
-    
-        text-align: center;
-        border: 1px solid #d0d7deb3;
-        border-radius: 20px;
-        width: 80px;
-        height: 30px;
-    
-    }
-
-    .projectConetentInfo {
-        border: 1px solid #d0d7deb3;
-        padding: 3px;
-        margin: 3%;
-    }
-
-    .editor {
-        margin: 3%;
-       
-    }
-
-    .quill {
-        height: 180px;
-    }
-
-    .editBtn {
-        display: flex;
-        border-bottom: 1px solid #d0d7deb3;
-        width: 94%;
-        margin: 0 auto;
-    }
-
-    .editBtn > p:nth-child(1){
-        text-align: center;
-        border: 1px solid #d0d7deb3;
-        border-radius: 20px;
-        width: 80px;
-        height: 30px;
-        margin-right: 10px;
-        margin-bottom: 10px;
-    }
-
-    .editBtn > p:nth-child(2){
-
-        text-align: center;
-        border: 1px solid #d0d7deb3;
-        border-radius: 20px;
-        width: 80px;
-        height: 30px;
-
-    }
-
-    .profileImage {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-       // background-image: url();
-    
       }
+      
+      .projectItem h2 {
+        margin: 0;
+        padding: 0;
+        font-size: 1.5em;
+        color: #333;
+      }
+      
+      .projectItem p {
+        margin: 5px 0;
+        color: #666;
+      }
+      
+      .projectItem a {
+        text-decoration: none;
+        color: inherit;
+      }
+      
+      button {
+        padding: 8px 12px;
+        margin: 5px 0;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      
+      button:hover {
+        background-color: #0056b3;
+      }
+      
+      .cancelButton {
+        background-color: #dc3545;
+      }
+      
+      .cancelButton:hover {
+        background-color: #c82333;
+      }
+      
+      .deleteButton {
+        background-color: #bebebf;
+        color: #6c757d;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+        margin-left: 5px;
+      }
+      
+      .deleteButton:hover {
+        background-color: #565e64;
+        color: #fff;
+      }
+      
+      input[type="text"] {
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      input[type="text"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        outline: none;
+      }
+      
+      .project-create {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .project-create h3 {
+        margin-top: 0;
+        color: #333;
+      }
+      
+      .project-create p {
+        color: #666;
+        line-height: 1.5;
+      }
+      
+      .hidden {
+        display: none;
+      }
+    
+    
+    .projectListBox h4 {
+        padding: 10px;
+        margin-bottom: 20px;
+        width: 98%;
+        border-bottom: solid black 1px;
+        font-size: 30px;
+    }
+    
+    .createProjectButton{
+        padding: 8px 12px;
+        margin: 5px 0;
+        border: none;
+        border-radius: 4px;
+        background-color: #61bd4f;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+    
+    
+    .ProjectList{
+    
+        .projectBox > h4{
+            padding: 10px;
+        }
+    
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            width: 1200px;
+            margin: 0 auto;
+        }
+        nav {
+            background-color: gray;
+            flex: 0.2; /* 네비게이션 영역이 늘어날 수 있도록 */
+            padding: 10px;
+            text-align: center; /* 텍스트 가운데 정렬 */
+        }
+        nav button {
+            vertical-align: middle; /* 버튼의 텍스트와 이모지를 수직으로 가운데 정렬 */
+            line-height: 1; /* 텍스트와 이모지를 수직으로 가운데 정렬하기 위해 */
+        }
+        nav p {
+            margin: 0; /* 문단의 기본 마진 제거 */
+            color: white; /* 텍스트 색상 설정 */
+        }
+        nav2 {
+            background-color:  rgb(202, 202, 202);
+            flex: 0.5; /* 네비게이션 영역이 늘어날 수 있도록 */
+            padding: 10px;
+            color:  black
+        }
+        #content {
+            border: 1px solid black;
+            flex: 2; /* 콘텐츠 영역이 늘어날 수 있도록 */
+            min-height: 1000px; /* 임의의 높이 설정 */
+            padding: 10px;
+    
+        }
+        #chatting{
+            display: flex;
+            flex-direction: column-reverse;
+            height: 800px;
+        }
+        header {
+            margin: 0 auto;
+            border: 1px solid black;
+            width: 1200px;
+            padding: 10px;
+            box-sizing: border-box; 
+        }
+    
+        footer {
+            margin: 0 auto;
+            border: 1px solid black;
+            width: 1200px;
+            padding: 10px;
+            box-sizing: border-box; 
+        }
+        .flex-container {
+            display: flex;
+            align-items: center;
+            border:  1px solid gray;
+        }
+        .flex-container p {
+            margin: 0;
+            color: rgb(0, 0, 0);
+        }
+        .home{
+        background-color:gray;
+        border: none;
+        text-align: center;
+        padding: 3px 3px;
+        border-radius: 10px;
+        font-size: 45px;
+        margin-bottom: 2px;
+        }
+    
+    
+        .home3{
+        color: white;
+        }
+    
+        .homeOn{
+            background-color:  rgb(202, 202, 202);
+        }
+    
+        .title{
+            margin-left: 10px;
+        }
+    
+        .Project ul {
+            padding-left: 0;
+            display: flex;
+            border-bottom: 1px solid grey;
+        }
+    
+        .Project ul > li {
+            list-style: none;
+            padding-right: 60px;
+            padding-bottom: 10px;
+            padding-left: l;
+        }
+    
+    
+    
+        .Project {
+            margin-left: 10px;
+            align-items: center;
+        }
+    
+        /*searchBox.css*/
+        .search-box {
+            height: 15px;
+            width: 98%;
+            background: white;
+            border-radius: 40px;
+            padding: 10px;
+            border: 1px solid #797979;
+        }
+    
+        .search-txt {
+            border: none;
+            background: none;
+            outline: none;
+            float: left;
+            padding: 0px;
+            color: #797979;
+            font-size: 16px;
+            line-height: 0px;
+            width: 90%;
+        }
+    
+        .search-btn {
+            color: #797979;
+            float: right;
+            width: 40px;
+            height: 100%;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+    
+        /*마일스톤 타이틀 */
+    
+        .timeline-title ul {
+            padding-left: 0;
+            display: flex;
+            
+        }
+    
+        /*마일스톤 오브젝트*/
+        .mileStone {
+            border: 1px solid blue;
+            padding: 10px; /* 내부 여백 추가 */
+            box-sizing: border-box;
+        }
+    
+        .mileStoneLayout {
+            display: flex;
+            position: relative;
+            border: 1px solid red;
+            justify-content: space-between;
+            width: 100%;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+    
+        .mileStoneLayout div {
+            flex-grow: 1;
+            width: calc(33.33% - 10px);
+            box-sizing: border-box;
+        }
+    
+        .Ready {
+            border: #2cbe4e solid 3px;
+            height: auto;
+    
+            display: flex;
+            align-items: center;
+            
+        }
+    
+        .Ready > i {
+            padding: 10px;
+            padding-right: 5px;
+        }
+    
+        .Ready > h4 {
+            color: green;
+    
+            margin: 0; 
+            margin-right: 5px; 
+            
+        }
+    
+        .InPrograss {
+            border: #1e90ff solid 3px;
+            height: auto;
+            
+            display: flex;
+            align-items: center;
+        }
+    
+        .InPrograss > i {
+            padding: 10px;
+            padding-right: 5px;
+        }
+    
+        .InPrograss > h4{
+            color: blue;
+        }
+    
+        .Completed {
+            border: #cb2431 solid 3px;
+            height: auto;
+    
+            display: flex;
+            align-items: center;
+        }
+    
+        .Completed > i{
+            padding: 10px;
+            padding-right: 5px;
+        }
+    
+        .Completed > h4 {
+            color: red;
+        }
+    
+    
+        .ReadyContent {
+            border: 1px solid black;
+            height: 50px;
+            display: block;
+            border-radius: 20px;
+        }
+    
+        .Project ul > li > a {
+            color : black;
+            
+        }
+    
+        //드래그 앤 드롭
+        .draggable {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            user-select: none;
+            display: flex;
+            flex-direction: column; /* 요소들을 세로로 배치 */
+            align-items: center;
+        }
+        
+        /* 그 외 스타일은 동일하게 유지 */
+        .droppable {
+            padding: 10px;
+            width: 30%;
+            margin-bottom: 10px;
+            background: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            user-select: none;
+            display: column;
+            align-items: center;
+        }
+        
+        .droppable-container {
+            display: flex;
+            padding: 15px;
+            justify-content: space-between;
+        }
+        
+        .drag-handle {
+            width: 20px;
+            height: 20px;
+            background: #6c757d;
+            margin-right: 10px;
+            cursor: grab;
+            border-radius: 3px;
+        }
+        
+        .draggable:active {
+            background: #e9ecef;
+        }
+        
+        .draggable.is-dragging {
+            background: #cce5ff;
+        }
+    
+        //프로젝트 정보
+        .projectBox {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            background-color: rgba(125, 125, 125, 0.3);
+            transform: translateX("-300px");
+            z-index: 200;
+            justify-content: end;
+        }
+        .projectContent {
+            width: 70%;
+            height: 100%px;
+            background-color: white;
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+            box-shadow: 0 15px 8px rgba(0, 0, 0, 0.3);
+        
+        }
+    
+        .projectContent > h4 {
+            padding: 3%;
+            font-size: 50px;
+            
+        }
+    
+        .projectContent > p {
+            border-top: 1px solid #d0d7deb3;
+            display: block;
+            width: 94%;
+            margin: 0 auto;
+        }
+    
+        .stateLabel {
+            display: flex;
+            border-bottom: 1px solid #d0d7deb3;
+            width: 94%;
+            margin: 0 auto;
+        }
+    
+        .stateLabel > p:nth-child(1) {
+        
+            text-align: center;
+            border: 1px solid #d0d7deb3;
+            border-radius: 20px;
+            width: 80px;
+            height: 30px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+    
+        }
+    
+        .stateLabel > p:nth-child(2) {
+        
+            text-align: center;
+            border: 1px solid #d0d7deb3;
+            border-radius: 20px;
+            width: 80px;
+            height: 30px;
+        
+        }
+    
+        .projectConetentInfo {
+            border: 1px solid #d0d7deb3;
+            padding: 3px;
+            margin: 3%;
+        }
+    
+        .editor {
+            margin: 3%;
+           
+        }
+    
+        .quill {
+            height: 180px;
+        }
+    
+        .editBtn {
+            display: flex;
+            border-bottom: 1px solid #d0d7deb3;
+            width: 94%;
+            margin: 0 auto;
+        }
+    
+        .editBtn > p:nth-child(1){
+            text-align: center;
+            border: 1px solid #d0d7deb3;
+            border-radius: 20px;
+            width: 80px;
+            height: 30px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+    
+        .editBtn > p:nth-child(2){
+    
+            text-align: center;
+            border: 1px solid #d0d7deb3;
+            border-radius: 20px;
+            width: 80px;
+            height: 30px;
+    
+        }
+    
+        .profileImage {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+           // background-image: url();
+        
+          }
 
-}
+          // 🎈🎈🎈🎈🎈end////////
+    
+    }
+
+
+
+
+
+
+
+
+
+
+  }
+  
+ 
 
       
 .KanBanBoard {

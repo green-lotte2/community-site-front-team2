@@ -38,13 +38,39 @@
   }
 
   .profileBox .profile .info {
-    text-align: center;
+    text-align: left;
+    margin: 0 auto;
     margin-bottom: 20px;
+    width: 300px;
   }
 
-  .profileBox .profile .info .userInfo li {
-    color: #676767;
+  //
+  .userInfo {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
   }
+
+  .userInfo li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid #ededed;
+  }
+
+  .userInfo li .label {
+    font-weight: bold;
+    color: #333;
+    flex: 1;
+  }
+
+  .userInfo li .value {
+    flex: 2;
+    text-align: left;
+    color: #555;
+  }
+  //
 
   .profileBox .viewText {
     padding: 20px;
@@ -57,6 +83,10 @@
 
   .profileBox .viewText:hover {
     text-decoration: underline;
+  }
+
+  .profileBox .viewText a {
+    font-weight: bold;
   }
 
   .noticeBoard {
@@ -81,6 +111,9 @@
   .noticeBoard p {
     text-align: end;
     margin-bottom: 10px;
+    position: relative;
+    bottom: -74px;
+    border-top: 1px solid #ddd;
   }
 
   .noticeBoard p:hover {
@@ -131,10 +164,12 @@
     text-align: center;
     cursor: pointer;
     color: #009eff;
+    font-weight: bold;
   }
 
   .noticeBoard .viewText a {
     font-weight: bold;
+    display: block;
   }
 
   .bottom {
@@ -149,6 +184,72 @@
     margin-right: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
+  }
+
+  .bottom .toDoList .taskTitle {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 17px;
+    background-color: #eaf5ff8c;
+    border-bottom: 1px solid #ddd;
+    padding: 25px;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .bottom .toDoList .taskTitle p {
+    color: #555d89;
+    font-weight: bold;
+    font-size: 17px;
+  }
+
+  .bottom .toDoList button {
+    border: none;
+    background-color: inherit;
+    outline: none;
+  }
+
+  .bottom .toDoList button img {
+    width: 25px;
+    cursor: pointer;
+  }
+
+  .bottom .toDoList .taskList {
+    padding: 20px;
+  }
+
+  .bottom .toDoList .taskList table {
+    width: 100%;
+  }
+
+  .bottom .toDoList .taskList table {
+    border-collapse: collapse;
+  }
+
+  .bottom .toDoList .taskList table tr {
+    height: 45px;
+  }
+
+  .bottom .toDoList .taskList table tr td:nth-child(1) {
+    width: 10%;
+  }
+
+  .bottom .toDoList .taskList table tr input[type="checkbox"] {
+    width: 25px;
+    position: relative;
+    top: 2px;
+    scale: 1.6;
+  }
+
+  .bottom .toDoList .taskList table tr td:nth-child(2) {
+    width: 70%;
+    cursor: pointer;
+  }
+
+  .bottom .toDoList .taskList table tr td:nth-child(3) {
+    width: 20%;
+    color: #009eff;
+    font-weight: bold;
   }
 
   .bottom .projectBox {

@@ -433,9 +433,10 @@
   }
 
   .commentList .comment img {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     margin-right: 10px;
+    border-radius: 50%;
   }
 
   .commentList .comment .contents {
@@ -466,6 +467,16 @@
     cursor: pointer;
     color: #383838;
     outline: none;
+    margin-left: 5px;
+  }
+
+  .commentList .commentListBtn .userReport {
+    background-color: #fff;
+  }
+
+  .commentList .commentListBtn .userReport:hover {
+    text-decoration: underline;
+    color: tomato;
   }
 
   .commentForm {
