@@ -9,6 +9,7 @@ import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
 import axios from 'axios';
 import url from '../../config/url';
+import moment from 'moment/moment';
 
 const EditorComponent = () => {
 
@@ -17,25 +18,67 @@ const EditorComponent = () => {
     const provider = useRef(null);
     const [title, setTitle] = useState("제목을 입력하세요");
     const [pageList, setPageList] = useState([]);
+    const [pageKey, setPageKey] = useState(0);
     const authSlice = useSelector((state) => state.authSlice);
 
     useEffect(() => {
-
-    }, []);
+        
+        if (pageKey == 0) {
+            console.log("?");
+            setTitle("제목을 입력하세요")
+            editor.replaceBlocks(editor.document,[{
+                "id":"initialBlockId",
+                "type":"paragraph",
+                "props":{
+                    "textColor":"default",
+                    "backgroundColor":"default",
+                    "textAlignment":"left"
+                },
+                "content":[{"type":"text","text":"","styles":{}}],
+                "children":[]}])
+            
+            return
+        }
+        axios.get(url.backendUrl + '/page/contents?id=' + pageKey)
+            .then((res) => {
+                console.log(res)
+                setTitle(res.data.title)
+                for (let i = 0; i < 1; i++) {
+                    const docView = JSON.parse(res.data.document);
+                    editor.replaceBlocks(editor.document, docView)
+                }
+            })
+            .catch((e) => {
+                console.log(e)
+            })
+            
+    }, [pageKey])
 
     /** 소켓 연결 */
     useEffect(() => {
+
+        axios.get(url.backendUrl + '/page?uid=' + authSlice.username)
+            .then((res) => {
+                setPageList(res.data)
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+
         // 컴포넌트가 마운트될 때 WebrtcProvider를 생성합니다.
         /** WebrtcProvider(방번호, yjs객체, 소켓주소) */
-        provider.current = new WebrtcProvider('test111111', doc, { signaling: ['wss://api.illrreumbow.store/community/testaa'] });
+        let roomId = ''
+        if(pageKey == 0){
+            roomId = 'room' + moment(new Date()).format("YYMMDDHHMMSS");
+        }else{
+            roomId = 'room' + pageKey.toString();
+        }
+        provider.current = new WebrtcProvider(roomId, doc, { signaling: ['ws:/127.0.0.1:8080/community/testaa'] });
         // 컴포넌트가 언마운트될 때 provider를 정리합니다.
-
         return () => {
             provider.current.destroy();
         };
-    }, []);
-
-    const [blocks, setBlocks] = useState([]);
+    }, [pageKey]);
 
     /** 에디터 설정 */
     const editor = useCreateBlockNote({
@@ -51,41 +94,64 @@ const EditorComponent = () => {
         },
     });
 
-
-    const click = () => {
+    const saveHandler = () => {
         console.log(editor.document)
         const saveDoc = {
-            
+            pdId: pageKey,
             uid: authSlice.username,
             title: title,
             document: JSON.stringify(editor.document),
         }
-        axios.post(url.backendUrl+'/page', saveDoc)
-        .then((res)=>{
-            console.log(res)
-        }).catch((e)=>{
-            console.log(e)
-        })
+        axios.post(url.backendUrl + '/page', saveDoc)
+            .then((res) => {
+                console.log(res)
+            }).catch((e) => {
+                console.log(e)
+            })
     }
 
-    const titleHandler = (e) =>{
+    const titleHandler = (e) => {
         setTitle(e.target.value);
-        console.log(title);
+    }
+
+    const pageContentHandler = (e) => {
+        setPageKey(e.target.value);
     }
 
     return (
-        <div className='pageMain'>
-            <input
-            className='title'
-            value={title}
-            onChange={titleHandler}
-            />
+        <>
+            <div className='editorSideBar'>
+                <h2>페이지 선택</h2>
+                <button
+                    onClick={pageContentHandler}
+                    className={`pageList ${pageKey==0 ? 'active' : 'inactive'}`}
+                    value={0}>
+                    새 페이지
+                </button>
+                {pageList.map((page) => {
+                    return (
+                        <button
+                            onClick={pageContentHandler}
+                            className={`pageList ${pageKey==page.id ? 'active' : 'inactive'}`}
+                            value={page.id}>
+                            {page.title}
+                        </button>
+                    )
+                })}
+            </div>
+            <div className='pageMain'>
+                <input
+                    className='title'
+                    value={title}
+                    onChange={titleHandler}
+                />
 
-            <BlockNoteView
-                editor={editor}
-            />
-            <button onClick={click}>임시 저장</button>
-        </div>
+                <BlockNoteView
+                    editor={editor}
+                />
+                <button onClick={saveHandler}>임시 저장</button>
+            </div>
+        </>
     )
 }
 

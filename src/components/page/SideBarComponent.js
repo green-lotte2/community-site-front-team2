@@ -1,8 +1,14 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import url from '../../config/url'
+import authSlice from '../../slices/authSlice';
 
-const SideBarComponent = () => {
+const SideBarComponent = (pageList) => {
+
+  console.log(pageList)
+
   return (
-    <div className='editorSideBar'>SideBarComponent</div>
+    <h1>이거이제안써!</h1>
   )
 }
 
