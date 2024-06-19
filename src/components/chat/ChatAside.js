@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import url from "../../config/url";
 import Modal from "react-modal";
+import axios from "axios";
 
 const ChatAside = (props) => {
   console.log(props.ws + "이거는 되나???");
@@ -55,17 +56,25 @@ const ChatAside = (props) => {
     const submitHandler = (e)=>{
         e.preventDefault();
         if(window.confirm(`${roomName} 으로 생성하시겠습니까?`)){
-          fetch(`${url.backendUrl}/chatRegister?userId=`+authSlice.username+'&chatName='+roomName)
-          .then(response => response.json())
-          .then(data =>   {
-            console.log(data.result);
-           if(data.result != null){
-              alert('생성되었습니다.')
-              setInviteModalIsOpen(false);
-              navigate(`/chat?room=${data.result}`)
-           }
+          axios.get(`${url.backendUrl}/chat/userGrade?userId=`+authSlice.username)
+          .then((rep)=>{
+            if(rep.data <1){
+              alert('방 생성이 불가능합니다. 멤버십 정책을 확인해주세요.')
+            }else{
+              fetch(`${url.backendUrl}/chatRegister?userId=`+authSlice.username+'&chatName='+roomName)
+              .then(response => response.json())
+              .then(data =>   {
+                console.log(data.result);
+               if(data.result != null){
+                  alert('생성되었습니다.')
+                  setInviteModalIsOpen(false);
+                  navigate(`/chat?room=${data.result}`)
+               }
+              })
+              .catch(error => console.error('Error fetching user rooms:', error));
+            }
           })
-          .catch(error => console.error('Error fetching user rooms:', error));
+        
         }
        
     }
