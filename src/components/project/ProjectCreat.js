@@ -139,13 +139,10 @@ const ProjectCreate = () => {
 
   //프로젝트 삭제
   const delelteProject = (projectNo) => {
+    console.log("11", projectNo)
     if (window.confirm("삭제하겠습니까?")) {
       axios
-        .post(`${url.backendUrl}/project/projectdelete`, { projectNo }, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
+        .post(`${url.backendUrl}/project/projectdelete`,  projectNo)
         .then((res) => {
           console.log(res.data);
           if (res.data > 0) {
@@ -226,7 +223,7 @@ const ProjectCreate = () => {
                         )}
                       </form>
                     )}
-                    <button className="deleteButton" id="deleteProject" data-value={project.projectNo} onClick={delelteProject}>delete</button>
+                    <button className="deleteButton" id="deleteProject" data-value={project.projectNo} onClick={() => delelteProject(project.projectNo)}>delete</button>
                   </div>
                   
                 {/* 참여 멤버 */}
