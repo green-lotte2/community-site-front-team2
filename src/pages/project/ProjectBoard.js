@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import "../../styles/projectList.scss";
-import Navbar from "../../components/project/kanban/Navbar";
-import Board from "../../components/project/kanban/Board";
+import "./bootstrap.css";
+import './App.css';
+import Navbar from "../../components/project/kanban/Navbar/Navbar";
+import Board from "../../components/project/kanban/Board/Board";
+import Editable from "../../components/project/kanban/Editable/Editable";
+
 // import data from '../data'
 import { DragDropContext } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
-import Editable from "../../components/project/kanban/Editable";
 import useLocalStorage from "use-local-storage";
 
 import DefaultLayout from "../../layouts/DefaultLayout";
@@ -57,17 +59,19 @@ function ProjectBoard() {
     return tempData;
   };
 
-  // const dragCardInSameBoard = (source, destination) => {
-  //   let tempData = Array.from(data);
-  //   console.log("Data", tempData);
-  //   const index = tempData.findIndex(
-  //     (item) => item.id.toString() === source.droppableId
-  //   );
-  //   console.log(tempData[index], index);
-  //   let [removedCard] = tempData[index].card.splice(source.index, 1);
-  //   tempData[index].card.splice(destination.index, 0, removedCard);
-  //   setData(tempData);
-  // };
+  
+
+   const dragCardInSameBoard = (source, destination) => {
+     let tempData = Array.from(data);
+     console.log("Data", tempData);
+     const index = tempData.findIndex(
+       (item) => item.id.toString() === source.droppableId
+     );
+     console.log(tempData[index], index);
+     let [removedCard] = tempData[index].card.splice(source.index, 1);
+     tempData[index].card.splice(destination.index, 0, removedCard);
+     setData(tempData);
+   };
 
   const addCard = (title, bid) => {
     const index = data.findIndex((item) => item.id === bid);
@@ -107,9 +111,17 @@ function ProjectBoard() {
     setData(tempData);
   };
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async (result) => {
     const { source, destination } = result;
     if (!destination) return;
+
+    if (source.droppableId === destination.droppableId) {
+      setData(dragCardInSameBoard(source, destination));
+      await setData(data);
+    }else {
+      setData(dragCardInBoard(source, destination));
+            await setData(data);
+    }
 
     if (source.droppableId === destination.droppableId) return;
 
@@ -231,7 +243,6 @@ function ProjectBoard() {
 
   return (
     <DefaultLayout>
-      <button onClick={saveHandler}>저장</button>
       <div className="projectList">
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="KanBanBoard" data-theme={theme}>

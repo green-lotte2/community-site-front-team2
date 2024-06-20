@@ -132,7 +132,6 @@ const ProjectCreate = () => {
     .catch(error => console.error('Error fetching user rooms:', error));
   }
 
-
   const selectMemberHandler = (e)=>{
     e.preventDefault()
     document.getElementById('insertEmail').value = e.target.textContent;
@@ -147,7 +146,7 @@ const ProjectCreate = () => {
             "Content-Type": "application/json"
           }
         })
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
           if (res.data > 0) {
             console.log("삭제되었습니다.");
@@ -156,7 +155,7 @@ const ProjectCreate = () => {
             console.log("삭제 실패");
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("삭제 요청 중 오류 발생:", error);
         });
     } else {
