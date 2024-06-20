@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Modal from "./Modal"; // 모달 컴포넌트 추가
 
+
 // noticeBoard 정의
 const NoticeBoard = ({ backendUrl }) => {
   const [notices, setNotices] = useState([]);
@@ -58,6 +59,75 @@ const NoticeBoard = ({ backendUrl }) => {
     </div>
   );
 };
+
+
+// projectList 정의
+
+const ProjectList = ({ backendUrl }) => {
+
+  const initState = {
+    dtoList: [],
+    cate: "",
+    pg: 0,
+    size: 0,
+    total: 0,
+    start: 0,
+    end: 0,
+    prev: false,
+    next: false,
+  };
+
+  const [projectList, setProjectList] = useState([]);
+  const authSlice = useSelector((state) => state.authSlice);
+  const [serverData, setServerData] = useState(initState);
+
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const response = await axios.get(`${url.backendUrl}/project?userId=${authSlice.username}`, {
+          params: { pg: "1" },
+        })
+        .then((resp) => {
+          setServerData(resp.data);
+        })
+        ;
+        console.log("response : ", response.data);
+        setProjectList(response.data);
+      } catch (error) {
+        console.error("Error :", error);
+      }
+    };
+
+    fetchProject();
+  }, [backendUrl]);
+
+  return (
+      <div className="projectBox">
+        <div className="projectBoxTitle"><p>Project List</p></div>
+        <div className="projectBoxTitleBack"></div>
+          <div className="projectBoxTitleList">
+            <ul>
+            {serverData.dtoList.map((project, index) => (
+              <div key={index}>
+                <li className='projectItem' >
+                <Link to={`/project/projectboard?projectNo=${project.projectNo}`}>
+                      <h2>{project.projectTitle}</h2>
+                      <p style={{display : 'none'}}>Project Code : {project.projectNo}</p>
+                      <p>Project Content : {project.projectInfo}</p>
+                      <p>Project Status : {project.projectStatus}</p>
+                      <p>Created by: {project.userId}</p>
+                </Link>
+                </li>
+              </div>
+            ))}
+          </ul>     
+          </div>
+        </div>
+
+  );
+};
+
 
 // Dashboard 컴포넌트 정의
 const Dashboard = () => {
@@ -190,9 +260,10 @@ const Dashboard = () => {
                   </table>
                 </div>
               </div>
-              <div className="projectBox">
-                <div>프로젝트</div>
-              </div>
+
+              <ProjectList backendUrl={url.backendUrl} />
+              
+
             </div>
           </div>
           {/*Dashboard end */}
