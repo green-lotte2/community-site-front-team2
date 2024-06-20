@@ -9,7 +9,33 @@ const CommentList = ({ comments }) => {
   const [commentList, setCommentList] = useState(comments);
   const [editMode, setEditMode] = useState(null); // 수정 모드 상태 관리
   const [editedContent, setEditedContent] = useState(""); // 수정할 댓글 내용 상태 관리
+  const [openReportModal, setOpenModal]= useState(false);
+  const [reason, setReason] = useState("");
+  const [number, setNumber]= useState("");
 
+  const openReportModalHandler = (cno) =>{
+    setNumber(cno)
+    setOpenModal(true);
+  }
+
+  const closedModal = ()=>{
+    setOpenModal(false);
+  }
+
+  const sendHandler = ()=>{
+    if(reason === ""){
+      alert('내용을 입력해 주세요.')
+    }else{
+      const jsonData = {cno: number , reason: reason, reporter: authSlice.username};
+      axios.post(url.backendUrl+'/comment/report', jsonData)
+      .then((rep)=>
+        {
+          alert('신고되었습니다.')
+          setOpenModal(false);
+        }
+    )
+    }
+  }
   // 댓글 삭제 함수
   const handleDelete = async (cno) => {
     if (window.confirm("정말로 이 댓글을 삭제하시겠습니까?")) {
@@ -118,7 +144,7 @@ const CommentList = ({ comments }) => {
                   {moment(comment.rdate).format("YYYY-MM-DD")}
                 </p>
                 <div className="commentListBtn">
-                  <button className="userReport">신고</button>
+                  <button className="userReport" onClick={()=>openReportModalHandler(comment.cno)}>신고</button>
                   <button
                     onClick={() => enterEditMode(comment.cno, comment.content)}
                   >
@@ -133,7 +159,29 @@ const CommentList = ({ comments }) => {
           </div>
         </div>
       ))}
+      
+      {openReportModal && (
+            <div className="modal">
+              <div className="modal-content">
+                <span className="close" onClick={closedModal}>
+                  X
+                </span>
+                <h2>댓글신고하기</h2>
+                <textarea
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  placeholder="신고 사유를 입력하세요."
+                />
+                <button className="rSubmit" onClick={sendHandler} >
+                  신고
+                </button>
+              </div>
+            </div>
+          )}
+          
     </div>
+
+    
   );
 };
 
