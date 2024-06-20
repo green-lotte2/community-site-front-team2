@@ -103,7 +103,15 @@ const Login = () => {
         <div>
           <p style={{ textAlign: "center", color: "gray" }}>
             SNAP-SHOT: {process.env.REACT_APP_VERSION}
-          </p>
+          </p><br/>
+          <div style={{ textAlign: "center", color: "gray" }}>
+              <div style={{trxtAlign: "center", color:"gray"}}>
+                  로그인 ID : <p style={{color: "green", display: "inline"}}> fubao </p>
+              </div>
+              <div style={{trxtAlign: "center", color:"gray"}}>
+                  PASSWORD : <p style={{color: "green", display: "inline"}}> abcd@1234 </p>
+              </div>
+          </div>
         </div>
       </div>
       <div className="loginImg">
