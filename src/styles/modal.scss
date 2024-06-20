@@ -59,7 +59,7 @@
   margin-top: 10px;
 }
 
-.submitBtn {
+.modal-buttons .submitBtn {
   background-color: #4070ff;
   color: white;
   padding: 10px 20px;
@@ -97,20 +97,3 @@
 .taskTitle > button:hover img {
   transform: rotate(180deg);
 }
-/*
-
-.rotate {
-  animation: rotate-animation 0.6s forwards;
-}
-
-@keyframes rotate-animation {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}*/

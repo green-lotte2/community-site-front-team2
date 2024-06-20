@@ -267,6 +267,7 @@
 
   .eTop {
     display: flex;
+    justify-content: space-between;
   }
 
   .eTop .eCate {
@@ -285,7 +286,7 @@
   }
 
   .eTitle {
-    width: 960px;
+    width: 1060px;
     margin-top: 20px;
     display: flex;
   }
@@ -443,6 +444,11 @@
     width: 100%;
   }
 
+  .commentList .comment .contents p {
+    position: relative;
+    top: 10px;
+  }
+
   .commentList .comment > div p:nth-child(1) {
     font-weight: bold;
   }
@@ -454,11 +460,17 @@
   }
 
   .commentList .comment .modifyContent {
-    min-width: 800px;
-    min-height: 70px;
+    height: 100px;
+    width: 99%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    min-height: 80px;
     border: none;
+    margin-top: 25px;
     resize: none;
     outline: none;
+    border: 1px solid #ddd;
+    padding: 5px;
   }
 
   .commentList .commentListBtn {
@@ -651,6 +663,7 @@
     float: right;
     font-size: 28px;
     font-weight: bold;
+    text-align: end;
   }
 
   .close:hover,
@@ -661,7 +674,7 @@
   }
 
   .modal textarea {
-    width: 300px;
+    width: 370px;
     height: 100px;
     margin-top: 10px;
     padding: 10px;
