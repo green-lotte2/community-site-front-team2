@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import "../../styles/modal.scss";
+import authSlice from "../../slices/authSlice";
+import moment from "moment";
+import url from "../../config/url";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Modal = ({ isOpen, onClose }) => {
+
+  const authSlice = useSelector((state) => state.authSlice);
+
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
@@ -11,6 +19,22 @@ const Modal = ({ isOpen, onClose }) => {
     console.log("제목:", title);
     console.log("날짜:", date);
     console.log("장소:", location);
+
+    axios
+      .post(url.backendUrl + "/calendar/insert", {
+        uid: authSlice.username,
+        title: title,
+        location: location,
+        start: moment(new Date()).format("YYYY-MM-DD HH:MM:SS"),
+        end: date
+      })
+      .then((Response) => {
+        console.log(Response.data);
+      })
+      .catch((Error) => {
+        console.log(Error);
+      });
+
     onClose();
   };
 
@@ -30,7 +54,7 @@ const Modal = ({ isOpen, onClose }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
           <input
-            type="date"
+            type="datetime-local"
             placeholder="날짜"
             value={date}
             onChange={(e) => setDate(e.target.value)}
