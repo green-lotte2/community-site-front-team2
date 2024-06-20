@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { MoreHorizontal } from "react-feather";
 import { Droppable } from "react-beautiful-dnd";
-import Card from "./Card";
-import Editable from "./Editable";
-import Dropdown from "./Dropdown";
+import Card from "../Card/Card";
+import Editable from "../Editable/Editable";
+import Dropdown from "../Dropdown/Dropdown";
+
+import "./Board.css";
 
 export default function Board(props) {
   const [show, setShow] = useState(false);
