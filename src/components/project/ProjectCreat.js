@@ -139,10 +139,17 @@ const ProjectCreate = () => {
 
   //프로젝트 삭제
   const delelteProject = (projectNo) => {
+    const data = {
+      projectNo : projectNo
+    }
     console.log("11", projectNo)
     if (window.confirm("삭제하겠습니까?")) {
       axios
-        .post(`${url.backendUrl}/project/projectdelete`,  projectNo)
+        .post(`${url.backendUrl}/project/projectdelete`,  data, {
+          headers : {
+            'Content-Type': 'application/json'
+          }
+        })
         .then((res) => {
           console.log(res.data);
           if (res.data > 0) {
