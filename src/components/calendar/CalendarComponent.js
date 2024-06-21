@@ -113,7 +113,7 @@ function CalendarComponent() {
     const calendar = new Calendar(container, options);
     calendarObj.current = calendar;
     /** 캘린더 리스트 조회 */
-    axios.get(url.backendUrl + '/calendar/type')
+    axios.get(url.backendUrl + '/calendar/type?uid='+authSlice.username)
       .then((Response) => {
         Response.data.forEach(element => {
           const calendar = {
