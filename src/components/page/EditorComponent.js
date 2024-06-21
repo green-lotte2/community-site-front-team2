@@ -87,7 +87,7 @@ const EditorComponent = () => {
             provider.current.destroy();
         }
 
-        provider.current = new WebrtcProvider(roomId, doc, { signaling: ['ws:/127.0.0.1:8080/community/testaa'] });
+        provider.current = new WebrtcProvider(roomId, doc, { signaling: ['wss://api.illrreumbow.store/community/testaa'] });
         // 컴포넌트가 언마운트될 때 provider를 정리합니다.
         console.log(pageList)
         console.log(provider.current)
