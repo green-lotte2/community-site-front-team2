@@ -132,7 +132,6 @@ const ProjectCreate = () => {
     .catch(error => console.error('Error fetching user rooms:', error));
   }
 
-
   const selectMemberHandler = (e)=>{
     e.preventDefault()
     document.getElementById('insertEmail').value = e.target.textContent;
@@ -140,14 +139,11 @@ const ProjectCreate = () => {
 
   //프로젝트 삭제
   const delelteProject = (projectNo) => {
+    console.log("11", projectNo)
     if (window.confirm("삭제하겠습니까?")) {
       axios
-        .post(`${url.backendUrl}/project/projectdelete`, { projectNo }, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-        .then(res => {
+        .post(`${url.backendUrl}/project/projectdelete`,  projectNo)
+        .then((res) => {
           console.log(res.data);
           if (res.data > 0) {
             console.log("삭제되었습니다.");
@@ -156,7 +152,7 @@ const ProjectCreate = () => {
             console.log("삭제 실패");
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("삭제 요청 중 오류 발생:", error);
         });
     } else {
@@ -227,7 +223,7 @@ const ProjectCreate = () => {
                         )}
                       </form>
                     )}
-                    <button className="deleteButton" id="deleteProject" data-value={project.projectNo} onClick={delelteProject}>delete</button>
+                    <button className="deleteButton" id="deleteProject" data-value={project.projectNo} onClick={() => delelteProject(project.projectNo)}>delete</button>
                   </div>
                   
                 {/* 참여 멤버 */}

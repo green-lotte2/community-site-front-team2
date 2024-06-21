@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Plus, X } from "react-feather";
 
+import "./Editable.css";
+
 const Editable = (props) => {
   const [show, setShow] = useState(props?.handler || false);
   const [text, setText] = useState(props.defaultValue || "");
@@ -34,7 +36,9 @@ const Editable = (props) => {
                 className="close"
                 onClick={() => {
                   setShow(false);
-                  props?.setHandler(false);
+                  if (props.setHandler){
+                    props.setHandler(false);
+                  }
                 }}
               />
             </div>

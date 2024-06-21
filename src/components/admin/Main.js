@@ -26,6 +26,7 @@ const initState = {
   start: 0,
   end: 0,
   orderBy :1,
+  userOrderBy: 1,
   prev: false,
   next: false,
 };
@@ -57,6 +58,13 @@ const memberDetailHandler = (index)=>{
     console.log(serverData.dtoList[index] + "길이!")
     console.log(serverData.dtoList[index].uid)
     setSelectedUser(serverData.dtoList[index]);
+
+    axios.get(url.backendUrl+'/admin/searchUserCause?uid='+serverData.dtoList[index].uid)
+    .then((response)=>{
+      console.log(response.data)
+     setSelectCause(response.data);
+    })
+
     setOpenModal(true);
 }
 
@@ -125,6 +133,21 @@ initState.type = type;
 
 //article 받은신고횟수 orderBy
 const articleOrderHandler =()=>{
+  if(initState.orderBy===1){
+    initState.orderBy++;
+  }else if(initState.orderBy ===2){
+    initState.orderBy ++;
+  }else if(initState.orderBy === 3){
+    initState.orderBy --;
+  }
+  axios.post(url.backendUrl+'/admin', initState)
+  .then((response)=>{
+    setServerData(response.data)
+  })
+}
+
+//user 받은 신고 횟수 orderBy
+const userOrderHandler =()=>{
   if(initState.orderBy===1){
     initState.orderBy++;
   }else if(initState.orderBy ===2){
@@ -310,7 +333,7 @@ const openQnaHandler = ()=>{
             <th style={{ width: '15%' }}>번호</th>
             <th style={{ width: '20%' }}>아이디</th>
             <th style={{ width: '20%' }}>받은신고횟수 <span>
-            <Link  ><img src="/images/upDown.png" style={{width: '17px', verticalAlign: 'middle', marginLeft: '2px'}}/></Link>
+            <Link onClick={userOrderHandler} ><img src="/images/upDown.png" style={{width: '17px', verticalAlign: 'middle', marginLeft: '2px'}}/></Link>
             </span>
             </th>
             <th style={{ width: '30%' }}>상태
@@ -486,7 +509,14 @@ const openQnaHandler = ()=>{
                 <p>신고횟수 : <span style={{marginLeft: '10px'}} id="report">{selectedUser.report}</span> </p>
                 <p id="reason">신고사유</p>
                 <div style={{border: '1px solid black', maxHeight: '100px', overflow: 'scroll'}}>
+                {selectCause.map((article, index)=>{
+                  return(
+                    <>
+                    <p>{article.reason}</p>
+                    </>
+                  )
 
+                })}
                 </div>
 
                 <br/>

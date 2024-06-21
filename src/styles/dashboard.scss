@@ -1,8 +1,89 @@
 .Dashboard {
+
   .top {
     display: flex;
     margin-top: 80px;
   }
+
+  //프로젝트 박스
+  .projectBox {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow-x: auto; /* 가로 스크롤 처리 */
+  }
+  
+  .projectBoxTitle {
+    background-color: rgb(234 245 255);
+    border-bottom: 1px solid #ddd;
+    border-radius: 5px 5px 0 0;
+    padding: 27px;
+    font-weight: bold;
+    font-size: 18px;
+    position: sticky;
+    top: 0; /* 화면 상단에 고정 */
+    z-index: 1; /* 다른 요소들 위에 나타나도록 설정 */
+  }
+
+  .projectBoxTitle p {
+    color: #555d89;
+    font-weight: bold;
+    font-size: 17px;
+  }
+  
+  .projectBoxTitleList {
+    padding: 20px;
+  }
+  
+  .projectList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: nowrap; /* 가로 정렬 유지 */
+  }
+  
+  .projectItem {
+    margin-right: 10px;
+    padding: 15px;
+    margin-bottom: 7px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-width: 250px; /* 최소 너비 */
+    box-sizing: border-box;
+    text-align: left;
+  }
+  
+  .projectItem h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .projectItem p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .projectItem a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* 가로 스크롤바 스타일링 */
+  .projectBox::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .projectBox::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  .projectBox::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+  }
+
+  //////////////////////////////////////////
+  
 
   .loginUser {
     color: #313d6b;
@@ -43,6 +124,7 @@
     margin-bottom: 20px;
     width: 300px;
   }
+  ////////////////////
 
   //
   .userInfo {
@@ -191,7 +273,7 @@
     justify-content: space-between;
     font-weight: bold;
     font-size: 17px;
-    background-color: #eaf5ff8c;
+    background-color: rgb(234 245 255);
     border-bottom: 1px solid #ddd;
     padding: 25px;
     border-radius: 5px 5px 0 0;
