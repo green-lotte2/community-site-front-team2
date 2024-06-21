@@ -25,7 +25,9 @@ const initState = {
   total: 0,
   start: 0,
   end: 0,
+
   orderBy: 1,
+
   prev: false,
   next: false,
 };
@@ -57,6 +59,13 @@ const Main = () => {
     console.log(serverData.dtoList[index] + "길이!");
     console.log(serverData.dtoList[index].uid);
     setSelectedUser(serverData.dtoList[index]);
+
+    axios.get(url.backendUrl+'/admin/searchUserCause?uid='+serverData.dtoList[index].uid)
+    .then((response)=>{
+      console.log(response.data)
+     setSelectCause(response.data);
+    })
+
     setOpenModal(true);
   };
 
@@ -113,12 +122,55 @@ const Main = () => {
 
         const updatedUser = response.data;
 
-        const updatedDtoList = serverData.dtoList.map((article) =>
-          article.no === response.data.no ? updatedUser : article
-        );
-        setServerData({
-          ...serverData,
-          dtoList: updatedDtoList,
+
+//article 받은신고횟수 orderBy
+const articleOrderHandler =()=>{
+  if(initState.orderBy===1){
+    initState.orderBy++;
+  }else if(initState.orderBy ===2){
+    initState.orderBy ++;
+  }else if(initState.orderBy === 3){
+    initState.orderBy --;
+  }
+  axios.post(url.backendUrl+'/admin', initState)
+  .then((response)=>{
+    setServerData(response.data)
+  })
+}
+
+//user 받은 신고 횟수 orderBy
+const userOrderHandler =()=>{
+  if(initState.orderBy===1){
+    initState.orderBy++;
+  }else if(initState.orderBy ===2){
+    initState.orderBy ++;
+  }else if(initState.orderBy === 3){
+    initState.orderBy --;
+  }
+  axios.post(url.backendUrl+'/admin', initState)
+  .then((response)=>{
+    setServerData(response.data)
+  })
+}
+
+//컨텐츠
+    useEffect(()=>{
+        axios.post(`${url.backendUrl}/admin`, initState).then((response)=>{
+            setServerData(response.data)
+    
+        }).catch((err)=>{
+            console.log(err);
+        });
+    },[]);
+
+    useEffect(()=>{
+        axios.post(`${url.backendUrl}/admin`, initState).then((response)=>{
+                console.log(response.data.dtoList )
+                setServerData(response.data)
+                
+        }).catch((err)=>{
+            console.log(err);
+
         });
       })
       .catch((err) => {
@@ -325,53 +377,31 @@ const Main = () => {
             </Link>
           </div>
 
-          <br />
 
-          {/*악성유저페이지 */}
-          {initState.cate === "user" ? (
-            <table
-              style={{
-                borderTop: "1px solid gray",
-                width: "100%",
-                padding: "4px",
-                overflow: "hidden",
-              }}
-            >
-              <thead>
-                <tr>
-                  <th style={{ width: "15%" }}>번호</th>
-                  <th style={{ width: "20%" }}>아이디</th>
-                  <th style={{ width: "20%" }}>
-                    받은신고횟수
-                    <span>
-                      <Link>
-                        <img
-                          src="/images/upDown.png"
-                          style={{
-                            width: "17px",
-                            verticalAlign: "middle",
-                            marginLeft: "2px",
-                          }}
-                        />
-                      </Link>
-                    </span>
-                  </th>
-                  <th style={{ width: "30%" }}>상태</th>
-                  <th style={{ width: "15%" }}>자세히</th>
-                </tr>
-              </thead>
-              <hr
-                style={{
-                  width: "1000%",
-                  margin: "5px 0px",
-                  border: "1px solid 3467ffcf",
-                  marginLeft: "0px",
-                }}
-              />
-              <tbody style={{ textAlign: "center" }}>
-                {serverData.dtoList.map((user, index) => {
-                  console.log(serverData.dtoList + "왜?");
-                  return (
+        <br/>
+
+        {/*악성유저페이지 */}
+        {initState.cate === 'user' ?(     
+        <table style={{borderTop: '1px solid gray', width: '100%', padding: '4px', overflow: 'hidden'}}>
+        <thead  >
+        <tr >
+            <th style={{ width: '15%' }}>번호</th>
+            <th style={{ width: '20%' }}>아이디</th>
+            <th style={{ width: '20%' }}>받은신고횟수 <span>
+            <Link onClick={userOrderHandler} ><img src="/images/upDown.png" style={{width: '17px', verticalAlign: 'middle', marginLeft: '2px'}}/></Link>
+            </span>
+            </th>
+            <th style={{ width: '30%' }}>상태
+            </th>
+            <th style={{ width: '15%' }} >자세히</th>
+        </tr>
+        </thead>
+        <hr style={{width: '1000%', margin: '5px 0px', border: '1px solid 3467ffcf', marginLeft: '0px'}}/>
+        <tbody style={{textAlign: 'center'}}>
+            {serverData.dtoList.map((user, index)=>{
+                console.log(serverData.dtoList + "왜?")
+                return(
+
                     <tr key={index}>
                       <td style={{ width: "15%" }}>
                         {serverData.startNo - index}
@@ -740,7 +770,7 @@ const Main = () => {
                   </span>
                 </p>
                 <p id="reason">신고사유</p>
-                <div
+            <div
                   style={{
                     border: "1px solid black",
                     maxHeight: "100px",
@@ -770,6 +800,7 @@ const Main = () => {
               </>
             ) : (
               <></>
+
             )}
           </div>
         </Modal>

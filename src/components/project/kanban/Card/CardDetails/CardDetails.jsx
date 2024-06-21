@@ -12,10 +12,11 @@ import {
   Type,
   X,
 } from "react-feather";
-import Editable from "./Editable";
-import Modal from "./Modal";
+import Editable from "../../Editable/Editable";
+import Modal from "../../Modal/Modal";
 import { v4 as uuidv4 } from "uuid";
-import Label from "./Label";
+import Label from "../../Label/Label";
+import "./CardDetails.css";
 
 export default function CardDetails(props) {
   const colors = ["#61bd4f", "#f2d600", "#ff9f1a", "#eb5a46", "#c377e0"];
