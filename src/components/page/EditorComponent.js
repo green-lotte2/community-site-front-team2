@@ -17,6 +17,7 @@ const EditorComponent = () => {
     const provider = useRef(null);
     const [title, setTitle] = useState("제목을 입력하세요");
     const [pageList, setPageList] = useState([]);
+    const [pageState, setPageState] = useState(false);
     const [pageKey, setPageKey] = useState(0);
     const authSlice = useSelector((state) => state.authSlice);
 
@@ -61,7 +62,7 @@ const EditorComponent = () => {
 
     /** 소켓 연결 */
     useEffect(() => {
-
+        setPageState(false)
         axios.get(url.backendUrl + '/page?uid=' + authSlice.username)
             .then((res) => {
                 setPageList(res.data)
@@ -80,7 +81,7 @@ const EditorComponent = () => {
             roomId = 'room' + pageKey;
         }
             */
-        console.log(roomId)
+        
 
         if(provider.current != null){
             provider.current.destroy();
@@ -88,11 +89,12 @@ const EditorComponent = () => {
 
         provider.current = new WebrtcProvider(roomId, doc, { signaling: ['ws:/127.0.0.1:8080/community/testaa'] });
         // 컴포넌트가 언마운트될 때 provider를 정리합니다.
+        console.log(pageList)
         console.log(provider.current)
         return () => {
             provider.current.destroy();
         };
-    }, [pageKey]);
+    }, [pageKey, pageState]);
 
     /** 에디터 설정 */
     const editor = useCreateBlockNote({
@@ -122,6 +124,8 @@ const EditorComponent = () => {
             }).catch((e) => {
                 console.log(e)
             })
+            setPageState(true)
+            console.log(pageState)
     }
 
     const titleHandler = (e) => {

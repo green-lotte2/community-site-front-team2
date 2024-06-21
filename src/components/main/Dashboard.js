@@ -141,8 +141,10 @@ const Dashboard = () => {
   const authSlice = useSelector((state) => state.authSlice) || {};
   const navigate = useNavigate();
   const [todayTask, setTodayTask] = useState([]);
+  const [calendarState, setCalendarState] = useState(0);
 
   useEffect(() => {
+    setCalendarState(0);
     axios.get(url.backendUrl + '/calendar/dash?uid='+authSlice.username)
       .then((res) => {
         console.log(res)
@@ -151,18 +153,22 @@ const Dashboard = () => {
       .catch((e) => {
         console.log(e)
       })
-  }, [])
+  }, [calendarState])
 
   const deleteTaskHandler = (e) => {
     console.log(e.target.value)
     if(window.confirm("삭제하시겠습니까?")){
-      axios.delete(url.backendUrl + '/calendar/delete?uid='+e.target.value)
+      axios.delete(url.backendUrl + '/calendar/delete?delId='+e.target.value)
+      .then((res)=>{
+        setCalendarState(1)
+      })
       .catch((e)=>{
         console.log(e)
       })
     }else{
       e.target.checked = false
     }
+    
   }
 
   const [user, setUser] = useState(
@@ -287,7 +293,7 @@ const Dashboard = () => {
             </div>
           </div>
           {/*Dashboard end */}
-          <Modal isOpen={isModalOpen} onClose={closeModal} />{" "}
+          <Modal isOpen={isModalOpen} onClose={closeModal} setCalendarState={setCalendarState} />{" "}
           {/* 모달 컴포넌트 추가 */}
         </>
       ) : (

@@ -14,27 +14,28 @@ const Modal = ({ isOpen, onClose }) => {
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = (setCalendarState) => {
     // 일정 등록 로직을 여기에 추가합니다.
     console.log("제목:", title);
     console.log("날짜:", date);
     console.log("장소:", location);
-
+    console.log(date)
     axios
       .post(url.backendUrl + "/calendar/insert", {
         uid: authSlice.username,
         title: title,
         location: location,
-        start: moment(new Date()).format("YYYY-MM-DD HH:MM:SS"),
+        start: moment(new Date()).format("YYYY-MM-DDTHH:MM:SS"),
         end: date
       })
       .then((Response) => {
         console.log(Response.data);
+        setCalendarState(1)
       })
       .catch((Error) => {
         console.log(Error);
       });
-
+      
     onClose();
   };
 
