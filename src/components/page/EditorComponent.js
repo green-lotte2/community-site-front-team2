@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import "@blocknote/core/fonts/inter.css";
-import { Block } from "@blocknote/core";
 import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
@@ -18,45 +17,52 @@ const EditorComponent = () => {
     const provider = useRef(null);
     const [title, setTitle] = useState("제목을 입력하세요");
     const [pageList, setPageList] = useState([]);
+    const [pageState, setPageState] = useState(false);
     const [pageKey, setPageKey] = useState(0);
     const authSlice = useSelector((state) => state.authSlice);
 
     useEffect(() => {
-        
-        if (pageKey == 0) {
-            console.log("?");
-            setTitle("제목을 입력하세요")
-            editor.replaceBlocks(editor.document,[{
-                "id":"initialBlockId",
-                "type":"paragraph",
-                "props":{
-                    "textColor":"default",
-                    "backgroundColor":"default",
-                    "textAlignment":"left"
-                },
-                "content":[{"type":"text","text":"","styles":{}}],
-                "children":[]}])
-            
-            return
+        try {
+            if (pageKey == 0) {
+                console.log("?");
+                setTitle("제목을 입력하세요")
+                editor.replaceBlocks(editor.document, [{
+                    "id": "initialBlockId",
+                    "type": "paragraph",
+                    "props": {
+                        "textColor": "default",
+                        "backgroundColor": "default",
+                        "textAlignment": "left"
+                    },
+                    "content": [{ "type": "text", "text": "", "styles": {} }],
+                    "children": []
+                }])
+
+                return
+            }
+
+            axios.get(url.backendUrl + '/page/contents?id=' + pageKey)
+                .then((res) => {
+                    console.log(res)
+                    setTitle(res.data.title)
+                    for (let i = 0; i < 1; i++) {
+                        const docView = JSON.parse(res.data.document);
+                        editor.replaceBlocks(editor.document, docView)
+                    }
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+        } catch (e) {
+            console.log(e)
         }
-        axios.get(url.backendUrl + '/page/contents?id=' + pageKey)
-            .then((res) => {
-                console.log(res)
-                setTitle(res.data.title)
-                for (let i = 0; i < 1; i++) {
-                    const docView = JSON.parse(res.data.document);
-                    editor.replaceBlocks(editor.document, docView)
-                }
-            })
-            .catch((e) => {
-                console.log(e)
-            })
-            
+
+
     }, [pageKey])
 
     /** 소켓 연결 */
     useEffect(() => {
-
+        setPageState(false)
         axios.get(url.backendUrl + '/page?uid=' + authSlice.username)
             .then((res) => {
                 setPageList(res.data)
@@ -67,18 +73,28 @@ const EditorComponent = () => {
 
         // 컴포넌트가 마운트될 때 WebrtcProvider를 생성합니다.
         /** WebrtcProvider(방번호, yjs객체, 소켓주소) */
-        let roomId = ''
-        if(pageKey == 0){
+        let roomId = 'room' + pageKey;
+        /*
+        if (pageKey == 0) {
             roomId = 'room' + moment(new Date()).format("YYMMDDHHMMSS");
-        }else{
-            roomId = 'room' + pageKey.toString();
+        } else {
+            roomId = 'room' + pageKey;
         }
+            */
+        
+
+        if(provider.current != null){
+            provider.current.destroy();
+        }
+
         provider.current = new WebrtcProvider(roomId, doc, { signaling: ['ws:/127.0.0.1:8080/community/testaa'] });
         // 컴포넌트가 언마운트될 때 provider를 정리합니다.
+        console.log(pageList)
+        console.log(provider.current)
         return () => {
             provider.current.destroy();
         };
-    }, [pageKey]);
+    }, [pageKey, pageState]);
 
     /** 에디터 설정 */
     const editor = useCreateBlockNote({
@@ -108,6 +124,8 @@ const EditorComponent = () => {
             }).catch((e) => {
                 console.log(e)
             })
+            setPageState(true)
+            console.log(pageState)
     }
 
     const titleHandler = (e) => {
@@ -124,7 +142,7 @@ const EditorComponent = () => {
                 <h2>페이지 선택</h2>
                 <button
                     onClick={pageContentHandler}
-                    className={`pageList ${pageKey==0 ? 'active' : 'inactive'}`}
+                    className={`pageList ${pageKey == 0 ? 'active' : 'inactive'}`}
                     value={0}>
                     새 페이지
                 </button>
@@ -132,7 +150,7 @@ const EditorComponent = () => {
                     return (
                         <button
                             onClick={pageContentHandler}
-                            className={`pageList ${pageKey==page.id ? 'active' : 'inactive'}`}
+                            className={`pageList ${pageKey == page.id ? 'active' : 'inactive'}`}
                             value={page.id}>
                             {page.title}
                         </button>

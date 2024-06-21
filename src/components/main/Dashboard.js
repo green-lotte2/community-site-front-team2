@@ -4,9 +4,14 @@ import url from "../../config/url";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Modal from "./Modal"; // 모달 컴포넌트 추가
+import moment from "moment";
+import { Target } from "react-feather";
+
 
 
 // noticeBoard 정의
+
+
 const NoticeBoard = ({ backendUrl }) => {
   const [notices, setNotices] = useState([]);
 
@@ -24,6 +29,7 @@ const NoticeBoard = ({ backendUrl }) => {
     };
 
     fetchNotices();
+
   }, [backendUrl]);
 
   // 마지막의 마침표를 제거하는 함수
@@ -134,17 +140,47 @@ const Dashboard = () => {
   const location = useLocation();
   const authSlice = useSelector((state) => state.authSlice) || {};
   const navigate = useNavigate();
+  const [todayTask, setTodayTask] = useState([]);
+  const [calendarState, setCalendarState] = useState(0);
+
+  useEffect(() => {
+    setCalendarState(0);
+    axios.get(url.backendUrl + '/calendar/dash?uid='+authSlice.username)
+      .then((res) => {
+        console.log(res)
+        setTodayTask(res.data);
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }, [calendarState])
+
+  const deleteTaskHandler = (e) => {
+    console.log(e.target.value)
+    if(window.confirm("삭제하시겠습니까?")){
+      axios.delete(url.backendUrl + '/calendar/delete?delId='+e.target.value)
+      .then((res)=>{
+        setCalendarState(1)
+      })
+      .catch((e)=>{
+        console.log(e)
+      })
+    }else{
+      e.target.checked = false
+    }
+    
+  }
 
   const [user, setUser] = useState(
     location.state
       ? location.state.user
       : {
-          uid: "",
-          nick: "",
-          image: "",
-          email: "",
-          hp: "",
-        }
+        uid: "",
+        nick: "",
+        image: "",
+        email: "",
+        hp: "",
+      }
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
@@ -235,27 +271,17 @@ const Dashboard = () => {
                 <div className="taskList">
                   <table>
                     <tbody>
-                      <tr>
-                        <td>
-                          <input type="checkbox"></input>
-                        </td>
-                        <td>제목입니다</td>
-                        <td>2024.06.18</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input type="checkbox"></input>
-                        </td>
-                        <td>제목입니다</td>
-                        <td>2024.06.18</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input type="checkbox"></input>
-                        </td>
-                        <td>제목입니다</td>
-                        <td>2024.06.18</td>
-                      </tr>
+                      {todayTask.map((task, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>
+                              <input type="checkbox" value={task.id} onClick={deleteTaskHandler} />
+                            </td>
+                            <td>{task.title}</td>
+                            <td>{moment(task.start).format("yyyy-MM-DD")}</td>
+                          </tr>
+                        )
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -267,7 +293,7 @@ const Dashboard = () => {
             </div>
           </div>
           {/*Dashboard end */}
-          <Modal isOpen={isModalOpen} onClose={closeModal} />{" "}
+          <Modal isOpen={isModalOpen} onClose={closeModal} setCalendarState={setCalendarState} />{" "}
           {/* 모달 컴포넌트 추가 */}
         </>
       ) : (
