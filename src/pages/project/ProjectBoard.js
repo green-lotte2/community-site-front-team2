@@ -49,29 +49,30 @@ function ProjectBoard() {
     const sourceBoardIdx = tempData.findIndex(
       (item) => item.id.toString() === source.droppableId
     );
+  
     tempData[destinationBoardIdx].card.splice(
       destination.index,
       0,
       tempData[sourceBoardIdx].card[source.index]
     );
     tempData[sourceBoardIdx].card.splice(source.index, 1);
-
-    return tempData;
+  
+    return tempData; // 변경된 데이터 반환
   };
-
   
 
-   const dragCardInSameBoard = (source, destination) => {
-     let tempData = Array.from(data);
-     console.log("Data", tempData);
-     const index = tempData.findIndex(
-       (item) => item.id.toString() === source.droppableId
-     );
-     console.log(tempData[index], index);
-     let [removedCard] = tempData[index].card.splice(source.index, 1);
-     tempData[index].card.splice(destination.index, 0, removedCard);
-     setData(tempData);
-   };
+  const dragCardInSameBoard = (source, destination) => {
+    let tempData = Array.from(data);
+    const index = tempData.findIndex(
+      (item) => item.id.toString() === source.droppableId
+    );
+  
+    let [removedCard] = tempData[index].card.splice(source.index, 1);
+    tempData[index].card.splice(destination.index, 0, removedCard);
+  
+    return tempData; // 변경된 데이터 반환
+  };
+  
 
   const addCard = (title, bid) => {
     const index = data.findIndex((item) => item.id === bid);
@@ -111,21 +112,17 @@ function ProjectBoard() {
     setData(tempData);
   };
 
-  const onDragEnd = async (result) => {
+  const onDragEnd = (result) => {
     const { source, destination } = result;
     if (!destination) return;
-
+  
     if (source.droppableId === destination.droppableId) {
-      setData(dragCardInSameBoard(source, destination));
-      await setData(data);
-    }else {
-      setData(dragCardInBoard(source, destination));
-            await setData(data);
+      const newData = dragCardInSameBoard(source, destination);
+      setData(newData);
+    } else {
+      const newData = dragCardInBoard(source, destination);
+      setData(newData);
     }
-
-    if (source.droppableId === destination.droppableId) return;
-
-    setData(dragCardInBoard(source, destination));
   };
 
   const updateCard = (bid, cid, card) => {
